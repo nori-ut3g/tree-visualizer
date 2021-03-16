@@ -59,7 +59,7 @@ AnythingAnythingAnything
 
 ## Author
 
-[@TanakanoAnchan](https://twitter.com/TanakanoAnchan)
+
 mail to: xxxx@mail.com
 
 ## License
