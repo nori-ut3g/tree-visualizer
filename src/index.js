@@ -11,6 +11,7 @@ export default class Pruner {
             boxSize : settings.boxSize || "50px",//ボックスのサイズ
             boxShape : settings.boxShape || "round",//ボックスの形
             animation : settings.animation || true,//animationの有無
+            info :
         }
         // this.draw = new Draw(settings);
         // switch (this.dataType) {
