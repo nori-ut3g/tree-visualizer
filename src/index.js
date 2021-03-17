@@ -1,6 +1,7 @@
 import Draw from "./Draw.js";
 import BinaryTreeController from "./BinaryTree";
 
+//
 export default class Pruner {
     constructor(settings) {
         this.drawSettings = {
@@ -44,6 +45,7 @@ export default class Pruner {
     //     let boxesData = this.dataConstructor.getNodeBoxes();
     //     this.draw.refreshBoxes()
     // }
+
 }
 
 
