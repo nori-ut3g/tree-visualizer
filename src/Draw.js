@@ -4,32 +4,54 @@ import anime from "../../animeJS/lib/anime.es.js";
 /*
     一度描写されたBox、Arrowは削除せずにOpacityで操作する。
  */
-export class Draw {
-    constructor(drawSetting, boxesData, info) {
-        this.targetDiv = document.getElementById(drawSetting.target);
-        this.targetDiv.style.position = "absolute";
-        this.log = [];
-        this.animationStep = 0;
+export default class Draw {
+    constructor(drawSettings) {
+        this.targetDiv = document.getElementById(drawSettings.target);
 
-        //仮置
-        this.boxXMargin = 35;
-        this.boxYMargin = 75;
+        //animation
+        this.needsAnimation = drawSettings.animation;
+        this.animationInterval = drawSettings.interval;
 
-        this.boxXOffset = 0;
-        this.boxYOffset = 50;
-
-        // this.targetDiv.style.width = 2000 + "px";
-        // this.targetDiv.style.height = 2000 + "px";
-
-        this.delay =10000;
-        this.animationTime = 500;
-
-        this.tl = anime.timeline({
-            easing: 'easeOutExpo',
-            duration: this.animationTime
-        });
-        this.initBoxes(boxesData);
-        if(info) this.initInfoBox(info);
+        this.drawSettings = {
+            target : settings.target || 0,//表示させるDivID
+            boxColor : settings.boxColor || 'rgb(255,0,0)',//ボックスのいろ
+            textColor : settings.textColor || 'rgb(0,0,0)',//テキストの色
+            arrowColor : settings.arrowColor || 'rgb(0,0,0)',//矢印の色
+            dataType : settings.dataType || "BinaryTree",//データの種類
+            interval : settings.interval || 500,//アニメーションの間隔
+            boxSize : settings.boxSize || "50px",//ボックスのサイズ
+            boxShape : settings.boxShape || "round",//ボックスの形
+            animation : settings.animation || true,//animationの有無
+            info : settings.info || "" //infoBox
+        }
+        //
+        //
+        //
+        //
+        // this.targetDiv = document.getElementById(drawSetting.target);
+        // this.targetDiv.style.position = "absolute";
+        // this.log = [];
+        // this.animationStep = 0;
+        //
+        // //仮置
+        // this.boxXMargin = 35;
+        // this.boxYMargin = 75;
+        //
+        // this.boxXOffset = 0;
+        // this.boxYOffset = 50;
+        //
+        // // this.targetDiv.style.width = 2000 + "px";
+        // // this.targetDiv.style.height = 2000 + "px";
+        //
+        // this.delay =10000;
+        // this.animationTime = 500;
+        //
+        // this.tl = anime.timeline({
+        //     easing: 'easeOutExpo',
+        //     duration: this.animationTime
+        // });
+        // this.initBoxes(boxesData);
+        // if(info) this.initInfoBox(info);
     }
     initInfoBox(info) {
         let infoDiv = document.createElement("div");

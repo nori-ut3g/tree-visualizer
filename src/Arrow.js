@@ -1,20 +1,16 @@
 export default class Arrow {
     constructor(id) {
+    }
+
+    createArrowDiv() {
+        let length = 100;
         this.arrowDiv = document.createElement("div");
         this.lineDiv = document.createElement("div");
         this.arrowHeadDiv = document.createElement("div");
         this.arrowDiv.setAttribute("id", `arrow-${id}`);
         this.lineDiv.setAttribute("id", `arrowLine-${id}`);
-        // this.createArrowDiv();
         this.id = id;
         this.thickness = 5;
-        // this.addDragEventDrawingArea(x,y,btnDiv);
-        this._arrowMoving = "notMoving"; //0:notMoving 1:lineMoving 2:headMoving
-    }
-
-    createArrowDiv() {
-        let length = 100;
-
 
         this.arrowDiv.style.position = "absolute";
         this.arrowDiv.style.left = 0 + "px";
@@ -49,47 +45,5 @@ export default class Arrow {
         return this.arrowDiv
     }
 
-    addDragEventDrawingArea(x,y,btnDiv){
-        const parentDiv = document.getElementById("drawing-area");
-        const arrowDiv = this.arrowDiv;
-        const lineDiv = this.lineDiv;
-        let x1 = x;
-        let y1 = y;
-        let x2 = 0;
-        let y2 = 0;
 
-        // btnDiv.addEventListener("mousedown", e => {
-        // if (this._arrowMoving === "notMoving") {
-
-        arrowDiv.style.left = x  + "px";
-        arrowDiv.style.top = y + "px";
-        arrowDiv.style.width = 0 + "px";
-        arrowDiv.style.height = 0 + "px";
-        lineDiv.style.width = 0 + "px";
-        x1 = x; //- arrowDiv.getBoundingClientRect().left;
-        y1 = y; // - arrowDiv.getBoundingClientRect().top;
-        this._arrowMoving = "Moving";
-        // }else if(this._arrowMoving === "Moving"){
-        //
-        //     this._arrowMoving = "notMoving";
-        // }
-
-        // })
-
-        // window.addEventListener("mousemove", e => {
-        //     if (this._arrowMoving === "Moving") {
-        //         console.log("tetete")
-        //         let thickness = 5;
-        //         let length = this.calcArrowLength(x1, e.clientX, y1, e.clientY)
-        //         arrowDiv.style.width = length * Math.sqrt(2) / 2+ "px";
-        //         arrowDiv.style.height = length * Math.sqrt(2) / 2+ "px";
-        //         lineDiv.style.width = length -this.thickness+ "px";
-        //         arrowDiv.style.transformOrigin = "top left";
-        //         arrowDiv.style.transform = `rotate(${-45 + this.calcArrowDeg(x1, e.clientX, y1, e.clientY)*180/Math.PI}deg)`
-        //     }else if(this._arrowMoving === "headMoving") {
-        //
-        //     }
-        // })
-
-    }
 }
