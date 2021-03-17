@@ -127,6 +127,19 @@ class BinaryTreeNode {
         this.ID = ID;
         this.rootID = ID;
         this.data = stringData;
+        this.arrowXY = {left:{x:0,y:0}, right:{x:0,y:0}}
+        this.boxXY = {x:0,y:0};
+    }
+    getBoxWidthSize() {
+
+    }
+    setArrowXY(direction, x, y) {
+        this.arrowXY[direction].x = x;
+        this.arrowXY[direction].y = y;
+    }
+    setBoxXY(x,y) {
+        this.boxXY.x = x;
+        this.boxXY.y = y;
     }
     setBoxConfig(boxConfig) {
         this.boxConfig = boxConfig;

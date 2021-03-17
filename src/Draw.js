@@ -3,82 +3,78 @@ import anime from "../../animeJS/lib/anime.es.js";
 
 /*
     一度描写されたBox、Arrowは削除せずにOpacityで操作する。
+    既にあるDivと新しいDivの差分でアニメーション
  */
 export default class Draw {
     constructor(drawSettings) {
         this.targetDiv = document.getElementById(drawSettings.target);
-
         //animation
         this.needsAnimation = drawSettings.animation;
         this.animationInterval = drawSettings.interval;
+        this.animationSteps = 0;
+        this.delay = 10000;
 
-        this.drawSettings = {
-            target : settings.target || 0,//表示させるDivID
-            boxColor : settings.boxColor || 'rgb(255,0,0)',//ボックスのいろ
-            textColor : settings.textColor || 'rgb(0,0,0)',//テキストの色
-            arrowColor : settings.arrowColor || 'rgb(0,0,0)',//矢印の色
-            dataType : settings.dataType || "BinaryTree",//データの種類
-            interval : settings.interval || 500,//アニメーションの間隔
-            boxSize : settings.boxSize || "50px",//ボックスのサイズ
-            boxShape : settings.boxShape || "round",//ボックスの形
-            animation : settings.animation || true,//animationの有無
-            info : settings.info || "" //infoBox
+        //info
+        this.needsInfo = drawSettings.needsInfo;
+
+        //log
+        this.log = [];
+
+        //position
+        this.boxXMargin = 35;
+        this.boxYMargin = 75;
+        //
+        this.boxXOffset = 0;
+        this.boxYOffset = 50;
+        if(this.needsAnimation){
+            this.tl = anime.timeline({
+                easing: 'easeOutExpo',
+                duration: this.animationInterval
+            });
         }
-        //
-        //
-        //
-        //
-        // this.targetDiv = document.getElementById(drawSetting.target);
-        // this.targetDiv.style.position = "absolute";
-        // this.log = [];
-        // this.animationStep = 0;
-        //
-        // //仮置
-        // this.boxXMargin = 35;
-        // this.boxYMargin = 75;
-        //
-        // this.boxXOffset = 0;
-        // this.boxYOffset = 50;
-        //
-        // // this.targetDiv.style.width = 2000 + "px";
-        // // this.targetDiv.style.height = 2000 + "px";
-        //
-        // this.delay =10000;
-        // this.animationTime = 500;
-        //
-        // this.tl = anime.timeline({
-        //     easing: 'easeOutExpo',
-        //     duration: this.animationTime
-        // });
         // this.initBoxes(boxesData);
         // if(info) this.initInfoBox(info);
     }
+    initData(dataConstructor,info) {
+        if(this.needsInfo)this.refreshInfobox(info);
+        this.dataConstructor = dataConstructor;
+
+    }
+    refreshBoxes() {
+
+    }
+    refreshArrows() {
+
+    }
+
+    refresh(dataConstructor,info) {
+        this.refreshInfobox(info);
+        this.dataConstructor = dataConstructor;
+
+    }
+
     initInfoBox(info) {
         let infoDiv = document.createElement("div");
         infoDiv.setAttribute("id", `info`);
-        // boxDiv.innerHTML = `<div>${this.data}</div>`;
-        // boxDiv.style.width = this.size.width + "px";
-        // boxDiv.style.height = this.size.height + "px";
         infoDiv.style.position = "absolute";
-        // boxDiv.style.display = "flex"
-        // boxDiv.style.flexDirection = "column";
-        // boxDiv.style.justifyContent = "center";
-        // boxDiv.style.alignItems = "center";
         this.targetDiv.append(infoDiv)
-        console.log(info)
-        this.tl.add({
-            targets:infoDiv,
-            duration:this.animationTime,
-            update: function (){infoDiv.innerHTML = info}
-        },`${(this.animationStep+1) * this.animationTime+this.delay}`);
+        if(this.needsAnimation){
+            this.tl.add({
+                targets:infoDiv,
+                duration:this.animationInterval,
+                update: function (){infoDiv.innerHTML = info}
+            },`${(this.animationSteps+1) * this.animationInterval+this.delay}`);
+        }else{
+            infoDiv.innerHTML = info;
+        }
     }
     refreshInfobox(info) {
         let infoDiv = document.getElementById("info")
         this.tl.add({
             targets:infoDiv,
-            duration:this.animationTime,
+            duration:this.animationInterval,
             update: function (){infoDiv.innerHTML = info}
-        },`${(this.animationStep+1) * this.animationTime+this.delay}`);
+        },`${(this.animationSteps+1) * this.animationSteps+this.delay}`);
     }
     initBoxes(boxesData) {
         let currentConfig = this.setXYPosition(boxesData)
@@ -131,7 +127,7 @@ export default class Draw {
     }
 
 
-    refreshBoxes(boxesData,info) {
+    notrefreshBoxes(boxesData,info) {
         this.refreshInfobox(info)
         let previousConfig = this.log[this.animationStep-1];
         let currentConfig = this.setXYPosition(boxesData);
@@ -431,7 +427,16 @@ export default class Draw {
         }
         return rootsPositionList;
     }
-    setXYPosition(boxesData) {
+    setBoxXYPosition() {
+        let boxes = this.dataConstructor.getBoxes();
+        for(let ID in boxes) {
+
+        }
+    }
+    setArrowXYPosition() {
+        let boxes = this.dataConstructor.getBoxes();
+    }
+    notsetXYPosition(boxesData) {
         /*
         ID:{x:
         y:

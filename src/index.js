@@ -16,7 +16,7 @@ export default class Pruner {
             boxSize : settings.boxSize || "50px",//ボックスのサイズ
             boxShape : settings.boxShape || "round",//ボックスの形
             animation : settings.animation || true,//animationの有無
-            info : settings.info || "" //infoBox
+            needsInfo : settings.info || true //infoBox
         }
         this.createDrawingArea();
     }
@@ -24,22 +24,26 @@ export default class Pruner {
         this.draw = new Draw(this.drawSettings);
     }
 
-    createBoxController() {
+    createBoxController(inputData) {
         switch (this.drawSettings.dataType) {
             case "BinaryTree":
-                this.dataConstructor = new BinaryTreeController();
+                this.nodeController = new BinaryTreeController(inputData);
         }
     }
     drawData(inputData) {
-        this.createBoxController();
-        let boxesData = this.dataConstructor.getNodeBoxes();
-        this.draw.refreshBoxes()
+        let info = inputData.info;
+        let nodeData = inputData.nodeData;
+        this.createBoxController(nodeData);
+        this.draw.initData(this.nodeController, info)
     }
-    nextStep(data) {
-        this.dataConstructor.refreshNodes();
-        let boxesData = this.dataConstructor.getNodeBoxes();
-        this.draw.refreshBoxes()
+    nextStep(inputData) {
+
     }
+    // nextStep(data) {
+    //     this.dataConstructor.refreshNodes();
+    //     let boxesData = this.dataConstructor.getNodeBoxes();
+    //     this.draw.refreshBoxes()
+    // }
 }
 
 
