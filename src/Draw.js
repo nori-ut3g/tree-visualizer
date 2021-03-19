@@ -427,23 +427,54 @@ export default class Draw {
         }
         return rootsPositionList;
     }
+
+    //log
+    /*
+    ID:{
+    rootID
+    x,y:
+    boxColor:
+    textColor:
+    }
+     */
     setBoxXYPosition() {
-        let boxes = this.dataConstructor.getBoxes();
-        for(let ID in boxes) {
+        let nodes = this.dataConstructor.getNodes();
+        for(let ID in nodes) {
+            let node = nodes[ID];
+            let boxSize = node.getSize();
+            let rootID = node.getRootID();
+            let boxX = (Tools.binToInt(box.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(box.getPosition().length+1));
+            let boxY = box.getPosition().length * this.boxYMargin + rootPositionList[rootID].y;
 
         }
+        config[ID] = {
+            "x":(MathTools.binToInt(box.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(box.getPosition().length+1)) - box.size.width/2,
+            "y":box.getPosition().length * this.boxYMargin + rootPositionList[rootID].y,
+            "boxColor":box.getBoxColor(),
+            "textColor":box.getTextColor(),
+        }
+
     }
     setArrowXYPosition() {
+
         let boxes = this.dataConstructor.getBoxes();
-    }
-    notsetXYPosition(boxesData) {
+        let log
+        //nodeが新たに加わったか確認
+        //nodeが
         /*
-        ID:{x:
-        y:
-        boxColor:
-        textColor:
+        ID:{
+        Head x y:
+        Tail x y:
+        color:
+
         }
          */
+
+
+    }
+
+    notsetXYPosition(boxesData) {
+
 
         let rootPositionList = this.setRootsPosition(boxesData);
         let xyPositions = {

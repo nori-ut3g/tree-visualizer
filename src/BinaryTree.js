@@ -75,7 +75,7 @@ export default class BinaryTreeController {
     getRootIDs() {
         return this.rootID;
     }
-    getBoxes(){
+    getNodes(){
         return this.nodes;
     }
     getMaxDepth() {
