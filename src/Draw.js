@@ -1,4 +1,4 @@
-import {MathTools} from "../Tools/MathTools.js";
+import Tools from "./Tools.js";
 import anime from "../../animeJS/lib/anime.es.js";
 
 /*
@@ -402,17 +402,13 @@ export default class Draw {
     }
 
 
-    setRootsPosition(boxesData){
 
-        let boxes = boxesData.boxes;
-        let rootIDList = boxesData.rootID;
-        let maxDepthList = boxesData.maxDepth;
-
-        let rootsPositionList = {};
+    setRootsPosition(){
+        let roots = this.dataConstructor.getRootIDs();
         let tmpRootYPosition = 0;
-        for(let i = 0; i < rootIDList.length; i++ ) {
-            let rootID = rootIDList[i];
-            let maxDepth = maxDepthList[i];
+        let rootsPositionList = {};
+        for(let root of roots){
+            let maxDepth = this.dataConstructor.getMaxDepth(root);
             let drawingAreaWidth = this.boxXMargin * (2 ** (maxDepth-1) + 1);
             let drawingAreaHeight = this.boxYMargin * (maxDepth-1);
             let rootYPosition = tmpRootYPosition;
@@ -420,11 +416,33 @@ export default class Draw {
 
             let rootXPosition = Number(drawingAreaWidth) / 2;
 
-            rootsPositionList[rootID] = {
+            rootsPositionList[root.getID()] = {
                 "x":rootXPosition,
                 "y":rootYPosition
             }
         }
+
+        // let boxes = boxesData.boxes;
+        // let rootIDList = boxesData.rootID;
+        // let maxDepthList = boxesData.maxDepth;
+        //
+        // let rootsPositionList = {};
+        // let tmpRootYPosition = 0;
+        // for(let i = 0; i < rootIDList.length; i++ ) {
+        //     let rootID = rootIDList[i];
+        //     let maxDepth = maxDepthList[i];
+        //     let drawingAreaWidth = this.boxXMargin * (2 ** (maxDepth-1) + 1);
+        //     let drawingAreaHeight = this.boxYMargin * (maxDepth-1);
+        //     let rootYPosition = tmpRootYPosition;
+        //     tmpRootYPosition += drawingAreaHeight;
+        //
+        //     let rootXPosition = Number(drawingAreaWidth) / 2;
+        //
+        //     rootsPositionList[rootID] = {
+        //         "x":rootXPosition,
+        //         "y":rootYPosition
+        //     }
+        // }
         return rootsPositionList;
     }
 
@@ -437,25 +455,34 @@ export default class Draw {
     textColor:
     }
      */
-    setBoxXYPosition() {
-        let nodes = this.dataConstructor.getNodes();
-        for(let ID in nodes) {
-            let node = nodes[ID];
-            let boxSize = node.getSize();
-            let rootID = node.getRootID();
-            let boxX = (Tools.binToInt(box.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(box.getPosition().length+1));
-            let boxY = box.getPosition().length * this.boxYMargin + rootPositionList[rootID].y;
 
-        }
-        config[ID] = {
-            "x":(MathTools.binToInt(box.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(box.getPosition().length+1)) - box.size.width/2,
-            "y":box.getPosition().length * this.boxYMargin + rootPositionList[rootID].y,
-            "boxColor":box.getBoxColor(),
-            "textColor":box.getTextColor(),
-        }
+    setCurrentLog() {
+        this.log.push({box:{},arrow:{}});
+        this.log[this.log.length-1].box = this.setBoxXYConfig();
+        this.log[this.log.length-1].box = this.setArrowXYConfig();
 
     }
-    setArrowXYPosition() {
+    setBoxXYConfig() {
+        let config = {};
+        let nodes = this.dataConstructor.getNodes();
+        let rootPositionList = this.setRootsPosition();
+        for(let node of nodes) {
+            let boxSize = node.getBoxSize();
+            let rootID = node.getMyRootID();
+            let boxX = (Tools.binToInt(node.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(node.getPosition().length+1)) - boxSize.width/2;
+            let boxY = node.getPosition().length * this.boxYMargin + rootPositionList[rootID].y;
+
+            config[node.getID()] = {
+                x: boxX,
+                y: boxY,
+                boxColor: node.getBoxColor(),
+                textColor: node.getTextColor(),
+
+            }
+        }
+        return config;
+    }
+    setArrowXYConfig() {
 
         let boxes = this.dataConstructor.getBoxes();
         let log
@@ -484,9 +511,9 @@ export default class Draw {
         let config = {}
         for(let ID in boxes) {
             let box = boxes[ID];
-            let boxSize = box.getSize();
+            let boxSize = box.getBoxSize();
             let rootID = box.getRootID();
-            let boxX = (MathTools.binToInt(box.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(box.getPosition().length+1));
+            let boxX = (Tools.binToInt(box.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(box.getPosition().length+1));
             let boxY = box.getPosition().length * this.boxYMargin + rootPositionList[rootID].y;
             let arrowTail = {"x":boxX,"y":boxY+boxSize.width};
             let leftArrowHead = null;

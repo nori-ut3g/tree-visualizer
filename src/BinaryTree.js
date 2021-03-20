@@ -59,10 +59,7 @@ export default class BinaryTreeController {
         this.rootID = [];
         this.nodes = {};
 
-        this.rootID = [];
-        for(let i in inputData.rootID){
-            this.rootID.push(inputData.rootID[i]);
-        }
+        this.roots = [];
 
         this.nodes = {};
         for(let ID in inputData.nodes){
@@ -70,17 +67,21 @@ export default class BinaryTreeController {
             this.setArrowConfig(inputData);
             this.setBoxConfig(inputData);
         }
+        for(let i in inputData.rootID){
+            this.roots.push(this.nodes[inputData.rootID[i]]);
+        }
+
         this.connectNodes(inputData)
     }
-    getRootIDs() {
-        return this.rootID;
+    getRoots() {
+        return this.roots;
     }
     getNodes(){
         return this.nodes;
     }
-    getMaxDepth() {
-        return this.rootID.map(ID=>this.maxDepth(this.nodes[ID]));
-    }
+    // getMaxDepth() {
+    //     return this.rootID.map(ID=>this.maxDepth(this.nodes[ID]));
+    // }
     getNodeBoxes() {
         // let boxes={};
         // for(let ID in this.nodes) {
@@ -99,7 +100,7 @@ export default class BinaryTreeController {
         }
     }
 
-    maxDepth(root) {
+    getMaxDepth(root) {
         if(root === null) return 0
         else return this.maxDepthHelper([root])
     }
@@ -130,8 +131,20 @@ class BinaryTreeNode {
         this.arrowXY = {left:{x:0,y:0}, right:{x:0,y:0}}
         this.boxXY = {x:0,y:0};
     }
-    getBoxWidthSize() {
-
+    getID (){
+        return this.ID;
+    }
+    getMyRootID() {
+        return this.rootID();
+    }
+    getBoxSize() {
+        return this.boxConfig.boxSize;
+    }
+    getBoxColor() {
+        return this.boxConfig.boxColor;
+    }
+    getTextColor() {
+        return this.boxConfig.textColor;
     }
     setArrowXY(direction, x, y) {
         this.arrowXY[direction].x = x;
