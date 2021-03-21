@@ -4,9 +4,9 @@ export default class Tools {
     }
     static createArrowDiv(settings) {
         let id = settings.id
-        let thickness = settings.thickness;
+        let thickness = settings.thickness || 2;
         let color = settings.color;
-        let headSize = settings.headSize;
+        let headSize = settings.headSize || 7;
 
 
         let arrowDiv = document.createElement("div");

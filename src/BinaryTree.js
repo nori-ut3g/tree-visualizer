@@ -7,7 +7,7 @@ export default class BinaryTreeController {
         this.refreshNodes(inputData)
     }
 
-    setArrowConfig(inputData) {
+    setAllArrowConfig(inputData) {
         for(let ID in inputData.nodes) {
             let arrowConfig = {
                 leftArrowColor: inputData.arrowColor.left || this.defaultSettings.arrowColor,
@@ -20,7 +20,7 @@ export default class BinaryTreeController {
             this.nodes[ID].setArrowConfig(arrowConfig);
         }
     }
-    setBoxConfig(inputData) {
+    setAllBoxConfig(inputData) {
         for(let ID in inputData.nodes) {
             let boxConfig = {
                 boxColor: inputData.boxColor || this.defaultSettings.boxColor,
@@ -146,6 +146,10 @@ class BinaryTreeNode {
     getTextColor() {
         return this.boxConfig.textColor;
     }
+
+    getBoxXY() {
+        return this.boxXY;
+    }
     setArrowXY(direction, x, y) {
         this.arrowXY[direction].x = x;
         this.arrowXY[direction].y = y;
@@ -159,6 +163,14 @@ class BinaryTreeNode {
     }
     setArrowConfig(arrowConfig) {
         this.arrowConfig = arrowConfig;
+    }
+    getArrowColor(direction) {
+        switch (direction) {
+            case "left":
+                return this.arrowConfig.leftArrowColor;
+            case "right":
+                return this.arrowConfig.rightArrowColor;
+        }
     }
 
     createBoxDiv() {

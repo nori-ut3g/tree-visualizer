@@ -44,6 +44,4 @@ export default class Arrow {
         this.arrowDiv.append(this.lineDiv);
         return this.arrowDiv
     }
-
-
 }

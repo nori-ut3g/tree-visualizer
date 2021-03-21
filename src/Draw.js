@@ -18,7 +18,7 @@ export default class Draw {
         this.needsInfo = drawSettings.needsInfo;
 
         //log
-        this.log = [];
+        this.log = [{box:{},arrow:{}}];
 
         //position
         this.boxXMargin = 35;
@@ -456,6 +456,118 @@ export default class Draw {
     }
      */
 
+    //refresh
+    refreshBox() {
+        //change
+        let prevBoxConfig = this.log[this.log.length-2].box;
+        let nextBoxConfig = this.log[this.log.length-1].box;
+        let nodes = this.dataConstructor.getNodes();
+
+        //add
+        for(let ID in nextBoxConfig) {
+            if (!prevBoxConfig[ID]){
+                let newBoxDiv = nodes[ID].createBoxDiv();
+                newBoxDiv.style.opacity = 0;
+                newBoxDiv.style.top = this.boxYOffset + "px";
+                this.targetDiv.append(newBoxDiv);
+                this.tl.add({
+                    easing: 'easeInOutQuad',
+                    targets: newBoxDiv,
+                    translateX: nextBoxConfig[ID].boxXY.x,
+                    translateY: nextBoxConfig[ID].boxXY.y,
+                    opacity: 1,
+                    duration:this.animationInterval,
+                }`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+            }
+            //change
+            else{
+                let boxDiv = document.getElementById("box-" + ID);
+                this.tl.add({
+                    targets: boxDiv,
+                    easing: 'easeInOutQuad',
+                    translateX: nextBoxConfig[ID].boxXY.x,
+                    translateY: nextBoxConfig[ID].boxXY.y,
+                    backgroundColor:nextBoxConfig[ID].boxColor,
+                    duration:this.animationInterval
+                },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+            }
+        }
+
+        //delete
+        for(let ID in prevBoxConfig) {
+            if (!nextBoxConfig[ID]){
+                let boxDiv = document.getElementById("box-" + ID);
+                this.tl.add({
+                    targets: boxDiv,
+                    opacity: 0,
+                    duration:this.animationInterval,
+                },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+            }
+        }
+
+
+    }
+    refreshArrow() {
+        //change
+        let prevArrowConfig = this.log[this.log.length-2].arrow;
+        let nextArrowConfig = this.log[this.log.length-1].arrow;
+        let nodes = this.dataConstructor.getNodes();
+
+        //add
+        for(let ID in nextArrowConfig) {
+            if (!prevArrowConfig[ID]){
+                let setting = {
+                    id:ID,
+                    color:nextArrowConfig.arrowColor
+                }
+                let newArrowDiv = Tools.createBoxDiv();
+                newBoxDiv.style.opacity = 0;
+                newBoxDiv.style.top = this.boxYOffset + "px";
+                this.targetDiv.append(newBoxDiv);
+                this.tl.add({
+                    easing: 'easeInOutQuad',
+                    targets: newBoxDiv,
+                    translateX: nextBoxConfig[ID].boxXY.x,
+                    translateY: nextBoxConfig[ID].boxXY.y,
+                    opacity: 1,
+                    duration:this.animationInterval,
+                }`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+            }
+            //change
+            else{
+                let boxDiv = document.getElementById("box-" + ID);
+                this.tl.add({
+                    targets: boxDiv,
+                    easing: 'easeInOutQuad',
+                    translateX: nextBoxConfig[ID].boxXY.x,
+                    translateY: nextBoxConfig[ID].boxXY.y,
+                    backgroundColor:nextBoxConfig[ID].boxColor,
+                    duration:this.animationInterval
+                },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+            }
+        }
+
+        //delete
+        for(let ID in deleteBoxList) {
+            if (!nextPositions[ID]){
+                let boxDiv = document.getElementById("box-" + ID);
+                this.tl.add({
+                    targets: boxDiv,
+                    opacity: 0,
+                    duration:this.animationInterval,
+                },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+            }
+        }
+
+
+    }
+    //前のlogとの違いを検索
+    //delete
+
+
+
+
+
     setCurrentLog() {
         this.log.push({box:{},arrow:{}});
         this.log[this.log.length-1].box = this.setBoxXYConfig();
@@ -471,32 +583,44 @@ export default class Draw {
             let rootID = node.getMyRootID();
             let boxX = (Tools.binToInt(node.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(node.getPosition().length+1)) - boxSize.width/2;
             let boxY = node.getPosition().length * this.boxYMargin + rootPositionList[rootID].y;
-
+            node.setBoxXY(boxX, boxY);
             config[node.getID()] = {
-                x: boxX,
-                y: boxY,
+                boxXY:{x:boxX, y:boxY},
                 boxColor: node.getBoxColor(),
-                textColor: node.getTextColor(),
-
+                textColor: node.getTextColor()
             }
         }
         return config;
     }
     setArrowXYConfig() {
+        let config = {};
+        let nodes = this.dataConstructor.getNodes();
 
-        let boxes = this.dataConstructor.getBoxes();
-        let log
-        //nodeが新たに加わったか確認
-        //nodeが
-        /*
-        ID:{
-        Head x y:
-        Tail x y:
-        color:
-
+        for(let node of nodes) {
+            let arrowTailX = node.getBoxXY().x;
+            let arrowTailY = node.getBoxXY().y + node.getBoxSize();
+            if(node.left) {
+                let arrowHeadX = node.left.getBoxXY().x;
+                let arrowHeadY = node.left.getBoxXY().y;
+                let arrowColor = node.getArrowColor("left");
+                config[node.getID()+"-"+"left"] = {
+                    headXY:{x:arrowHeadX,y:arrowHeadY},
+                    tailXY:{x:arrowTailX,y:arrowTailY},
+                    arrowColor: arrowColor
+                }
+            }
+            if(node.right) {
+                let arrowHeadX = node.right.getBoxXY().x;
+                let arrowHeadY = node.right.getBoxXY().y;
+                let arrowColor = node.getArrowColor("right");
+                config[node.getID()+"-"+"right"] = {
+                    headXY:{x:arrowHeadX,y:arrowHeadY},
+                    tailXY:{x:arrowTailX,y:arrowTailY},
+                    arrowColor: arrowColor
+                }
+            }
         }
-         */
-
+        return config;
 
     }
 
@@ -536,6 +660,9 @@ export default class Draw {
         }
         return config;
     }
+
+
+
 
 }
 /*
