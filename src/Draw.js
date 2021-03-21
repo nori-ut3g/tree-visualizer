@@ -466,6 +466,9 @@ export default class Draw {
         //add
         for(let ID in nextBoxConfig) {
             if (!prevBoxConfig[ID]){
+                if(document.getElementById("id") != null
+                )
+
                 let newBoxDiv = nodes[ID].createBoxDiv();
                 newBoxDiv.style.opacity = 0;
                 newBoxDiv.style.top = this.boxYOffset + "px";
