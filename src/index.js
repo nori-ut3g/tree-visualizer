@@ -2,7 +2,7 @@ import Draw from "./Draw.js";
 import BinaryTreeController from "./BinaryTree";
 
 //
-class Pruner {
+export default class Pruner {
     constructor(settings) {
         this.drawSettings = {
             target : settings.target || 0,//表示させるDivID
