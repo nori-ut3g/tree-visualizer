@@ -116,7 +116,35 @@ export default class BinaryTreeController {
         else return 1
     }
 
+    deserialize(data) {
+        if(data === "[]" || data === "") return null;
+        data = data.slice(1)
+        data = data.slice(0,-1)
+        let arr = data.split(",").map((val)=>{return val === "null" ? null : Number(val)})
+        if(arr.length === 0) return null;
+        let root = new BinaryTreeNode(arr[0]);
+        let queue = [root];
+        let l = arr.length - 1;
+        let i = 0;
 
+        while(queue.length > 0){
+            let curr = queue.shift();
+            if(curr === null) continue;
+            console.log(i,arr[i+1])
+            if(l >= ++i && arr[i] !== null){
+                curr.left = new BinaryTreeNode(arr[i],arr[i]);
+                queue.push(curr.left);
+            }
+            console.log(i,arr[i+1])
+            if(l >= ++i && arr[i] !== null){
+                curr.right = new BinaryTreeNode(arr[i],arr[i]);
+                queue.push(curr.right);
+            }
+        }
+
+        return root;
+
+    }
 }
 
 class BinaryTreeNode {
