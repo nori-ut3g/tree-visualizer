@@ -1,5 +1,5 @@
 import Tools from "./Tools.js";
-import anime from "../../animeJS/anime.es.js";
+import anime from "../animeJS/anime.es.js";
 
 /*
     一度描写されたBox、Arrowは削除せずにOpacityで操作する。

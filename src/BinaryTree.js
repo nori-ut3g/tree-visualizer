@@ -1,5 +1,5 @@
 import Arrow from "./Arrow.js";
-import Tools from "./Tools";
+import Tools from "./Tools.js";
 
 export default class BinaryTreeController {
     constructor(inputData, drawingSettings) {

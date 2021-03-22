@@ -1,11 +1,21 @@
+// document.write('<script type="module" src="../src/Draw.js"></script>');
+// document.write('<script type="module" src="../src/BinaryTree.js"></script>');
+// document.write('<script type="module" src="../src/Draw.js"></script>');
+// document.write('<script type="module" src="../src/Tools.js"></script>');
+
+
 import Draw from "./Draw.js";
-import BinaryTreeController from "./BinaryTree";
+import BinaryTreeController from "./BinaryTree.js";
+
+
+
+
 
 //
 export default class Pruner {
     constructor(settings) {
         this.drawSettings = {
-            target : settings.target || 0,//表示させるDivID
+            target : settings.target || "target",//表示させるDivID
             boxColor : settings.boxColor || 'rgb(255,0,0)',//ボックスのいろ
             textColor : settings.textColor || 'rgb(0,0,0)',//テキストの色
             bgColor : settings.bgColor || 'rgb(255,255,255)',
