@@ -1,5 +1,5 @@
 import Tools from "./Tools.js";
-import anime from "../../animeJS/lib/anime.es.js";
+import anime from "../../animeJS/anime.es.js";
 
 /*
     一度描写されたBox、Arrowは削除せずにOpacityで操作する。
@@ -33,24 +33,21 @@ export default class Draw {
             });
         }
         // this.initBoxes(boxesData);
-        // if(info) this.initInfoBox(info);
+        if(info) this.initInfoBox(info);
     }
     initData(dataConstructor,info) {
         if(this.needsInfo)this.refreshInfobox(info);
         this.dataConstructor = dataConstructor;
 
     }
-    refreshBoxes() {
 
-    }
-    refreshArrows() {
-
-    }
 
     refresh(dataConstructor,info) {
         this.refreshInfobox(info);
         this.dataConstructor = dataConstructor;
-
+        this.setCurrentLog();
+        this.refreshBox();
+        this.refreshArrow();
     }
 
     initInfoBox(info) {
@@ -68,6 +65,7 @@ export default class Draw {
             infoDiv.innerHTML = info;
         }
     }
+
     refreshInfobox(info) {
         let infoDiv = document.getElementById("info")
         this.tl.add({
@@ -76,331 +74,6 @@ export default class Draw {
             update: function (){infoDiv.innerHTML = info}
         },`${(this.animationSteps+1) * this.animationSteps+this.delay}`);
     }
-    initBoxes(boxesData) {
-        let currentConfig = this.setXYPosition(boxesData)
-        let boxes = boxesData.boxes;
-        for(let ID in boxes) {
-            let boxDiv = boxes[ID].createBoxDiv();
-            boxDiv.style.backgroundColor = currentConfig[ID].boxColor;
-            boxDiv.style.top = this.boxYOffset + "px";
-            boxDiv.style.top = this.boxYOffset + "px";
-            this.targetDiv.append(boxDiv);
-            this.tl.add({
-                targets: boxDiv,
-                easing: 'easeInOutQuad',
-                translateX: currentConfig[ID].x,
-                translateY: currentConfig[ID].y,
-                opacity: 1
-            }, `${(this.animationStep+1) * this.animationTime+this.delay}`)
-
-            let arrows = boxes[ID].getArrows();
-            for(let direction in arrows) {
-                let arrow = arrows[direction];
-                let arrowDiv = arrow.createArrowDiv();
-                this.targetDiv.append(arrowDiv);
-                arrowDiv.style.top = this.boxYOffset + "px";
-                if(boxes[ID].getHasArrow()[direction]){
-                    let x1 = currentConfig[ID].arrowTail.x;
-                    let x2 = currentConfig[ID][direction+"ArrowHead"].x;
-                    let y1 = currentConfig[ID].arrowTail.y;
-                    let y2 = currentConfig[ID][direction+"ArrowHead"].y;
-                    let lineDiv = document.getElementById("arrowLine-"  + ID + "-" + direction);
-                    let length = MathTools.calcArrowLength(x1, x2, y1, y2);
-                    lineDiv.style.width = 100*(2**0.5)-5 + "%" ;
-                    arrowDiv.style.transformOrigin = "top left";
-
-                    this.tl.add({
-                        targets:arrowDiv,
-                        width: length * Math.sqrt(2) / 2 + "px",
-                        height: length * Math.sqrt(2) / 2 + "px",
-                        easing: 'easeInOutQuad',
-                        opacity: 1,
-                        translateX: currentConfig[ID].arrowTail.x,
-                        translateY: currentConfig[ID].arrowTail.y,
-                        rotate:`${-45 + MathTools.calcArrowDeg(x1, x2, y1, y2)*180/Math.PI}deg`,
-                    },`${(this.animationStep+1) * this.animationTime+this.delay}`);
-                }
-            }
-        }
-        this.log.push(currentConfig);
-        this.animationStep ++;
-    }
-
-
-    notrefreshBoxes(boxesData,info) {
-        this.refreshInfobox(info)
-        let previousConfig = this.log[this.animationStep-1];
-        let currentConfig = this.setXYPosition(boxesData);
-        let boxes = boxesData.boxes;
-
-        //add
-        let addList = this.filterAddBox(previousConfig, currentConfig);
-        for(let ID of addList) {
-            let boxDiv = boxes[ID].createBoxDiv();
-            boxDiv.style.backgroundColor = currentConfig[ID].boxColor;
-            boxDiv.style.color = currentConfig[ID].textColor;
-            boxDiv.style.opacity = 0;
-            boxDiv.style.top = this.boxYOffset + "px";
-            this.targetDiv.append(boxDiv);
-            this.tl.add({
-                easing: 'easeInOutQuad',
-                targets: boxDiv,
-                translateX: currentConfig[ID].x,
-                translateY: currentConfig[ID].y,
-                opacity: 1,
-                duration:this.animationTime,
-            },`${(this.animationStep+1) * this.animationTime+this.delay}`)
-
-            //Boxと同時にArrowもopacity0で挿入する。
-            //もしかしたらオブジェクトはいらないかも
-            let arrows = boxes[ID].getArrows();
-            for(let direction in arrows) {
-                let arrow = arrows[direction];
-                let arrowDiv = arrow.createArrowDiv();
-                this.targetDiv.append(arrowDiv);
-
-                let x1 = currentConfig[ID].arrowTail.x;
-                let x2 = currentConfig[ID][direction+"ArrowHead"] === null ? 0 :currentConfig[ID][direction+"ArrowHead"].x;
-                let y1 = currentConfig[ID].arrowTail.y;
-                let y2 = currentConfig[ID][direction+"ArrowHead"]=== null ? this.boxYOffset :currentConfig[ID][direction+"ArrowHead"].y;
-
-                let lineDiv = document.getElementById("arrowLine-"  + ID + "-" + direction);
-                let length = MathTools.calcArrowLength(x1, x2, y1, y2);
-                lineDiv.style.width = 100*(2**0.6)+"%";
-                arrowDiv.style.transformOrigin = "top left";
-                arrowDiv.style.opacity = 0;
-                arrowDiv.style.top = this.boxYOffset + "px";
-                if(boxes[ID].getHasArrow()[direction]){
-                    this.tl.add({
-                        targets:arrowDiv,
-                        width: length * Math.sqrt(2) / 2+ "px",
-                        height: length * Math.sqrt(2) / 2+ "px",
-                        easing: 'easeInOutQuad',
-                        // direction: 'alternate',
-                        opacity: 1,
-                        translateX: currentConfig[ID].arrowTail.x,
-                        translateY: currentConfig[ID].arrowTail.y,
-                        rotate:`${-45 + MathTools.calcArrowDeg(x1, x2, y1, y2)*180/Math.PI}deg`,
-                    },`${(this.animationStep+1) * this.animationTime+this.delay}`);
-                }
-            }
-        }
-
-
-        //change
-        let changeList = this.filterChangeBox(previousConfig, currentConfig);
-        let changeArrowList = this.filterChangeArrow(previousConfig, currentConfig);
-        for(let ID of changeArrowList){
-            let arrows = boxes[ID].getArrows();
-            for(let direction in arrows) {
-                let arrow = arrows[direction];
-                let arrowDiv = document.getElementById("arrow-"  + ID + "-" + direction)
-
-                if(!boxes[ID].getHasArrow()[direction]){
-                    this.tl.add({
-                        targets:arrowDiv,
-                        opacity:0
-                    },`${(this.animationStep+1) * this.animationTime+this.delay}`);
-                }else{
-                    let x1 = currentConfig[ID].arrowTail.x
-                    let x2 = currentConfig[ID][direction+"ArrowHead"].x
-                    let y1 = currentConfig[ID].arrowTail.y
-                    let y2 = currentConfig[ID][direction+"ArrowHead"].y
-                    let lineDiv = document.getElementById("arrowLine-"  + ID + "-" + direction)
-                    let length = MathTools.calcArrowLength(x1, x2, y1, y2)
-                    lineDiv.style.width = 100*(2**0.5)-5+"%"//length - thickness+ "px";
-                    arrowDiv.style.transformOrigin = "top left";
-                    // arrowDiv.style.opacity = 0;
-                    this.tl.add({
-                        targets:arrowDiv,
-                        width: length * Math.sqrt(2) / 2+ "px",
-                        height: length * Math.sqrt(2) / 2+ "px",
-                        easing: 'easeInOutQuad',
-                        // direction: 'alternate',
-                        opacity: 1,
-                        translateX: currentConfig[ID].arrowTail.x,
-                        translateY: currentConfig[ID].arrowTail.y,
-                        rotate:`${-45 + MathTools.calcArrowDeg(x1, x2, y1, y2)*180/Math.PI}deg`,
-                    },`${(this.animationStep+1) * this.animationTime+this.delay}`);
-                }
-            }
-        }
-
-        for(let ID of changeList) {
-            let boxDiv = document.getElementById("box-" + ID);
-            // console.log(boxDiv)
-            this.tl.add({
-                targets: boxDiv,
-                easing: 'easeInOutQuad',
-                translateX: currentConfig[ID].x,
-                translateY: currentConfig[ID].y,
-                backgroundColor:currentConfig[ID].boxColor,
-                duration:this.animationTime
-            },`${(this.animationStep+1) * this.animationTime+this.delay}`)
-        }
-
-        //delete 実際には消していない、opacityを０にする
-        let deleteList = this.filterDeleteBox(previousConfig, currentConfig);
-        let deleteArrowList = this.filterDeleteArrow(previousConfig, currentConfig)
-        for(let ID of deleteList) {
-            let boxDiv = document.getElementById("box-" + ID);
-
-            this.tl.add({
-                targets: boxDiv,
-                opacity: 0,
-                duration:this.animationTime,
-            },`${(this.animationStep+1) * this.animationTime+this.delay}`)
-
-            let directions = ["left", "right"]
-            //親のBoxを探して削除する必要がある…
-            for(let direction of directions) {
-                let arrowDiv = document.getElementById("arrow-"  + ID + "-" + direction);
-                this.tl.add({
-                    targets:arrowDiv,
-                    easing: 'easeInOutQuad',
-                    // direction: 'alternate',arrow-37-
-                    opacity: 0,
-                },`${(this.animationStep+1) * this.animationTime+this.delay}`);
-            }
-        }
-
-        for(let config of deleteArrowList){
-            // let config = {"ID":ID,"isDeleteLeft":true,"isDeleteRight":true}
-            let ID = config["ID"];
-            if(config.isDeleteLeft){
-                let arrowDiv = document.getElementById("arrow-"  + ID + "-" + "left" )
-                this.tl.add({
-                    targets: arrowDiv,
-                    opacity:0,
-                    easing: 'easeInOutQuad',
-
-                    duration:this.animationTime
-                },`${(this.animationStep+1) * this.animationTime+this.delay}`)
-            }
-            if(config.isDeleteRight){
-                let arrowDiv = document.getElementById("arrow-"  + ID + "-" + "right" )
-                this.tl.add({
-                    targets: arrowDiv,
-                    opacity:0,
-                    duration:this.animationTime
-                },`${(this.animationStep+1) * this.animationTime+this.delay}`)
-            }
-        }
-
-
-
-        this.log.push(currentConfig);
-        this.animationStep ++;
-
-    }
-    //削除するBox
-
-    filterDeleteBox(previousConfig, currentConfig) {
-        let deleteIDList = [];
-        for(let ID in previousConfig) {
-            if(!currentConfig[ID]) deleteIDList.push(ID)
-        }
-        return deleteIDList;
-    }
-    filterDeleteArrow(previousConfig, currentConfig) {
-        let deleteIDList = [];
-        for(let ID in previousConfig){
-            if(!currentConfig[ID]){
-                let config = {"ID":ID,"isDeleteLeft":true,"isDeleteRight":true}
-                deleteIDList.push(config)
-
-            }else{
-                let config = {"ID":ID,"isDeleteLeft":false,"isDeleteRight":false};
-                if(!currentConfig[ID]["leftArrowHead"]){
-                    config["isDeleteLeft"] = true;
-                }
-                if(!currentConfig[ID]["rightArrowHead"]){
-                    config["isDeleteRight"] = true;
-                }
-            }
-        }
-        return deleteIDList;
-    }
-
-
-    //追加するbox
-
-    filterAddBox(previousConfig, currentConfig) {
-        let addIDList = [];
-        for(let ID in currentConfig) {
-            if (!previousConfig[ID]) addIDList.push(ID)
-        }
-        return addIDList;
-    }
-
-    //
-    filterAddArrow(previousConfig, currentConfig){
-        let addIDList = [];
-        for(let ID in currentConfig) {
-            if (!previousConfig[ID]) addIDList.push(ID)
-        }
-        return addIDList;
-    }
-    //変化させるbox
-    filterChangeBox(previousConfig, currentConfig) {
-        let changeIDList = [];
-        for(let ID in currentConfig) {
-            if(currentConfig[ID]){
-                if(!previousConfig[ID]){
-                    changeIDList.push(ID);
-                    continue;
-                }
-
-                for(let element in currentConfig[ID]) {
-                    if(currentConfig[ID]["x"] !== previousConfig[ID]["x"]){
-                        changeIDList.push(ID);
-                        break;
-                    }
-                    if(currentConfig[ID]["y"] !== previousConfig[ID]["y"]){
-                        changeIDList.push(ID);
-                        break;
-                    }
-                    if(currentConfig[ID]["boxColor"] !== previousConfig[ID]["boxColor"]){
-                        changeIDList.push(ID);
-                        break;
-                    }
-                    if(currentConfig[ID]["textColor"] !== previousConfig[ID]["textColor"]){
-                        changeIDList.push(ID);
-                        break;
-                    }
-
-                }
-            }
-        }
-        return changeIDList;
-    }
-    filterChangeArrow(previousConfig, currentConfig) {
-        let changeIDList = [];
-
-        for(let ID in currentConfig) {
-            if(currentConfig[ID]) {
-                if(!previousConfig[ID]) continue;
-
-                for (let element in currentConfig[ID]) {
-
-                    if (currentConfig[ID]["arrowTail"] !== previousConfig[ID]["arrowTail"]) {
-                        changeIDList.push(ID);
-                        break;
-                    }
-                    if (currentConfig[ID]["leftArrowHead"] !== previousConfig[ID]["leftArrowHead"]) {
-                        changeIDList.push(ID);
-                        break;
-                    }
-                    if (currentConfig[ID]["rightArrowHead"] !== previousConfig[ID]["rightArrowHead"]) {
-                        changeIDList.push(ID);
-                        break;
-                    }
-                }
-            }
-        }
-        return changeIDList;
-    }
-
 
 
     setRootsPosition(){
@@ -421,42 +94,9 @@ export default class Draw {
                 "y":rootYPosition
             }
         }
-
-        // let boxes = boxesData.boxes;
-        // let rootIDList = boxesData.rootID;
-        // let maxDepthList = boxesData.maxDepth;
-        //
-        // let rootsPositionList = {};
-        // let tmpRootYPosition = 0;
-        // for(let i = 0; i < rootIDList.length; i++ ) {
-        //     let rootID = rootIDList[i];
-        //     let maxDepth = maxDepthList[i];
-        //     let drawingAreaWidth = this.boxXMargin * (2 ** (maxDepth-1) + 1);
-        //     let drawingAreaHeight = this.boxYMargin * (maxDepth-1);
-        //     let rootYPosition = tmpRootYPosition;
-        //     tmpRootYPosition += drawingAreaHeight;
-        //
-        //     let rootXPosition = Number(drawingAreaWidth) / 2;
-        //
-        //     rootsPositionList[rootID] = {
-        //         "x":rootXPosition,
-        //         "y":rootYPosition
-        //     }
-        // }
         return rootsPositionList;
     }
 
-    //log
-    /*
-    ID:{
-    rootID
-    x,y:
-    boxColor:
-    textColor:
-    }
-     */
-
-    //refresh
     refreshBox() {
         //change
         let prevBoxConfig = this.log[this.log.length-2].box;
@@ -465,14 +105,16 @@ export default class Draw {
 
         //add
         for(let ID in nextBoxConfig) {
+            let newBoxDiv;
             if (!prevBoxConfig[ID]){
-                if(document.getElementById("id") != null
-                )
-
-                let newBoxDiv = nodes[ID].createBoxDiv();
-                newBoxDiv.style.opacity = 0;
-                newBoxDiv.style.top = this.boxYOffset + "px";
-                this.targetDiv.append(newBoxDiv);
+                if(document.getElementById(ID)){
+                    newBoxDiv = document.getElementById(ID);
+                }else{
+                    newBoxDiv = nodes[ID].createBoxDiv();
+                    newBoxDiv.style.opacity = 0;
+                    newBoxDiv.style.top = this.boxYOffset + "px";
+                    this.targetDiv.append(newBoxDiv);
+                }
                 this.tl.add({
                     easing: 'easeInOutQuad',
                     targets: newBoxDiv,
@@ -482,9 +124,10 @@ export default class Draw {
                     duration:this.animationInterval,
                 }`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
             }
+
             //change
             else{
-                let boxDiv = document.getElementById("box-" + ID);
+                let boxDiv = document.getElementById(ID);
                 this.tl.add({
                     targets: boxDiv,
                     easing: 'easeInOutQuad',
@@ -499,7 +142,7 @@ export default class Draw {
         //delete
         for(let ID in prevBoxConfig) {
             if (!nextBoxConfig[ID]){
-                let boxDiv = document.getElementById("box-" + ID);
+                let boxDiv = document.getElementById(ID);
                 this.tl.add({
                     targets: boxDiv,
                     opacity: 0,
@@ -507,9 +150,8 @@ export default class Draw {
                 },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
             }
         }
-
-
     }
+
     refreshArrow() {
         //change
         let prevArrowConfig = this.log[this.log.length-2].arrow;
@@ -523,52 +165,50 @@ export default class Draw {
                     id:ID,
                     color:nextArrowConfig.arrowColor
                 }
-                let newArrowDiv = Tools.createBoxDiv();
-                newBoxDiv.style.opacity = 0;
-                newBoxDiv.style.top = this.boxYOffset + "px";
-                this.targetDiv.append(newBoxDiv);
+                let newArrow;
+                if(document.getElementById(ID)) {
+                    newArrow = document.getElementById(ID);
+                }else{
+                    newArrow = Tools.createArrowDiv(setting);
+                    newArrow.style.opacity = 0;
+                    newArrow.style.top = this.boxYOffset + "px";
+                    this.targetDiv.append(newArrow);
+                }
                 this.tl.add({
                     easing: 'easeInOutQuad',
-                    targets: newBoxDiv,
-                    translateX: nextBoxConfig[ID].boxXY.x,
-                    translateY: nextBoxConfig[ID].boxXY.y,
+                    targets: newArrow,
+                    translateX: nextArrowConfig[ID].boxXY.x,
+                    translateY: nextArrowConfig[ID].boxXY.y,
                     opacity: 1,
                     duration:this.animationInterval,
                 }`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
             }
             //change
             else{
-                let boxDiv = document.getElementById("box-" + ID);
+                let arrowDiv = document.getElementById(ID);
                 this.tl.add({
-                    targets: boxDiv,
+                    targets: arrowDiv,
                     easing: 'easeInOutQuad',
-                    translateX: nextBoxConfig[ID].boxXY.x,
-                    translateY: nextBoxConfig[ID].boxXY.y,
-                    backgroundColor:nextBoxConfig[ID].boxColor,
+                    translateX: nextArrowConfig[ID].boxXY.x,
+                    translateY: nextArrowConfig[ID].boxXY.y,
+                    backgroundColor:nextArrowConfig[ID].boxColor,
                     duration:this.animationInterval
                 },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
             }
         }
 
         //delete
-        for(let ID in deleteBoxList) {
-            if (!nextPositions[ID]){
-                let boxDiv = document.getElementById("box-" + ID);
+        for(let ID in prevArrowConfig) {
+            if (!nextArrowConfig[ID]){
+                let arrowDiv = document.getElementById(ID);
                 this.tl.add({
-                    targets: boxDiv,
+                    targets: arrowDiv,
                     opacity: 0,
                     duration:this.animationInterval,
                 },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
             }
         }
-
-
     }
-    //前のlogとの違いを検索
-    //delete
-
-
-
 
 
     setCurrentLog() {
@@ -577,6 +217,7 @@ export default class Draw {
         this.log[this.log.length-1].box = this.setArrowXYConfig();
 
     }
+
     setBoxXYConfig() {
         let config = {};
         let nodes = this.dataConstructor.getNodes();
@@ -624,45 +265,8 @@ export default class Draw {
             }
         }
         return config;
-
     }
 
-    notsetXYPosition(boxesData) {
-
-
-        let rootPositionList = this.setRootsPosition(boxesData);
-        let xyPositions = {
-
-        };
-        let boxes = boxesData.boxes;
-        let config = {}
-        for(let ID in boxes) {
-            let box = boxes[ID];
-            let boxSize = box.getBoxSize();
-            let rootID = box.getRootID();
-            let boxX = (Tools.binToInt(box.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(box.getPosition().length+1));
-            let boxY = box.getPosition().length * this.boxYMargin + rootPositionList[rootID].y;
-            let arrowTail = {"x":boxX,"y":boxY+boxSize.width};
-            let leftArrowHead = null;
-            if(box.getHasArrow()["left"] ){
-                leftArrowHead = {"x":(MathTools.binToInt(box.getPosition().concat([0]))*2+1) * (rootPositionList[rootID].x * 2)/(2**(box.getPosition().length+2)) ,"y":arrowTail.y+this.boxYMargin-box.size.height};
-            }
-            let rightArrowHead = null;
-            if(box.getHasArrow()["right"]){
-                rightArrowHead = {"x":(MathTools.binToInt(box.getPosition().concat([1]))*2+1) * (rootPositionList[rootID].x * 2)/(2**(box.getPosition().length+2)),"y":arrowTail.y+this.boxYMargin-box.size.height};
-            }
-            config[ID] = {
-                "x":(MathTools.binToInt(box.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(box.getPosition().length+1)) - box.size.width/2,
-                "y":box.getPosition().length * this.boxYMargin + rootPositionList[rootID].y,
-                "boxColor":box.getBoxColor(),
-                "textColor":box.getTextColor(),
-                "arrowTail":arrowTail,
-                "leftArrowHead":leftArrowHead,
-                "rightArrowHead":rightArrowHead
-            }
-        }
-        return config;
-    }
 
 
 

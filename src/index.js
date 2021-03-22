@@ -38,7 +38,10 @@ class Pruner {
         this.draw.initData(this.nodeController, info)
     }
     nextStep(inputData) {
-
+        let info = inputData.info;
+        let nodeData = inputData.nodeData;
+        this.nodeController.refreshNodes(nodeData);
+        this.draw.refresh(this.nodeController, info);
     }
     // nextStep(data) {
     //     this.dataConstructor.refreshNodes();
