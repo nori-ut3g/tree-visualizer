@@ -160,11 +160,17 @@ export default class Draw {
 
         //add
         for(let ID in nextArrowConfig) {
+            let setting = {
+                id:ID,
+                color:nextArrowConfig.arrowColor
+            }
+            let headX = nextArrowConfig[ID].headXY.x;
+            let headY = nextArrowConfig[ID].headXY.y;
+            let tailX = nextArrowConfig[ID].tailXY.x;
+            let tailY = nextArrowConfig[ID].tailXY.y;
+            let lineLength = Tools.calcArrowLength(headX,tailX,headY,tailY);
+            let lineDeg = -45 + Tools.calcArrowDeg(headX,tailX,headY,tailY)*180/Math.PI;
             if (!prevArrowConfig[ID]){
-                let setting = {
-                    id:ID,
-                    color:nextArrowConfig.arrowColor
-                }
                 let newArrow;
                 if(document.getElementById(ID)) {
                     newArrow = document.getElementById(ID);
@@ -177,8 +183,11 @@ export default class Draw {
                 this.tl.add({
                     easing: 'easeInOutQuad',
                     targets: newArrow,
-                    translateX: nextArrowConfig[ID].boxXY.x,
-                    translateY: nextArrowConfig[ID].boxXY.y,
+                    width: lineLength * Math.sqrt(2) / 2+ "px",
+                    height: lineLength * Math.sqrt(2) / 2+ "px",
+                    rotate:`${lineDeg}deg`,
+                    translateX: tailX,
+                    translateY: tailY,
                     opacity: 1,
                     duration:this.animationInterval,
                 }`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
@@ -186,12 +195,15 @@ export default class Draw {
             //change
             else{
                 let arrowDiv = document.getElementById(ID);
+
                 this.tl.add({
-                    targets: arrowDiv,
                     easing: 'easeInOutQuad',
-                    translateX: nextArrowConfig[ID].boxXY.x,
-                    translateY: nextArrowConfig[ID].boxXY.y,
-                    backgroundColor:nextArrowConfig[ID].boxColor,
+                    targets: arrowDiv,
+                    width: lineLength * Math.sqrt(2) / 2+ "px",
+                    height: lineLength * Math.sqrt(2) / 2+ "px",
+                    rotate:`${lineDeg}deg`,
+                    translateX: tailX,
+                    translateY: tailY,
                     duration:this.animationInterval
                 },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
             }
