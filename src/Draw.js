@@ -12,7 +12,7 @@ export default class Draw {
         this.needsAnimation = drawSettings.animation;
         this.animationInterval = drawSettings.interval;
         this.animationSteps = 0;
-        this.delay = 10000;
+        this.delay = 1000;
 
         //info
         this.needsInfo = drawSettings.needsInfo;
@@ -21,7 +21,7 @@ export default class Draw {
         this.log = [{box:{},arrow:{}}];
 
         //position
-        this.boxXMargin = 35;
+        this.boxXMargin = 40;
         this.boxYMargin = 75;
         //
         this.boxXOffset = 0;
@@ -77,10 +77,12 @@ export default class Draw {
 
 
     setRootsPosition(){
-        let roots = this.dataConstructor.getRootIDs();
+        let roots = this.dataConstructor.getRootID();
         let tmpRootYPosition = 0;
         let rootsPositionList = {};
-        for(let root of roots){
+
+        for(let rootID of roots){
+            let root = this.dataConstructor.getNodes()[rootID];
             let maxDepth = this.dataConstructor.getMaxDepth(root);
             let drawingAreaWidth = this.boxXMargin * (2 ** (maxDepth-1) + 1);
             let drawingAreaHeight = this.boxYMargin * (maxDepth-1);
@@ -89,7 +91,7 @@ export default class Draw {
 
             let rootXPosition = Number(drawingAreaWidth) / 2;
 
-            rootsPositionList[root.getID()] = {
+            rootsPositionList[rootID] = {
                 "x":rootXPosition,
                 "y":rootYPosition
             }
@@ -102,7 +104,6 @@ export default class Draw {
         let prevBoxConfig = this.log[this.log.length-2].box;
         let nextBoxConfig = this.log[this.log.length-1].box;
         let nodes = this.dataConstructor.getNodes();
-
         //add
         for(let ID in nextBoxConfig) {
             let newBoxDiv;
@@ -113,6 +114,7 @@ export default class Draw {
                     newBoxDiv = nodes[ID].createBoxDiv();
                     newBoxDiv.style.opacity = 0;
                     newBoxDiv.style.top = this.boxYOffset + "px";
+                    newBoxDiv.style.background = "rgb(100,100,100)"
                     this.targetDiv.append(newBoxDiv);
                 }
                 this.tl.add({
@@ -121,8 +123,9 @@ export default class Draw {
                     translateX: nextBoxConfig[ID].boxXY.x,
                     translateY: nextBoxConfig[ID].boxXY.y,
                     opacity: 1,
+                    backgroundColor:nextBoxConfig[ID].boxColor,
                     duration:this.animationInterval,
-                }`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+                },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
             }
 
             //change
@@ -157,40 +160,50 @@ export default class Draw {
         let prevArrowConfig = this.log[this.log.length-2].arrow;
         let nextArrowConfig = this.log[this.log.length-1].arrow;
         let nodes = this.dataConstructor.getNodes();
-
         //add
+        console.log(nextArrowConfig)
         for(let ID in nextArrowConfig) {
             let setting = {
                 id:ID,
-                color:nextArrowConfig.arrowColor
+                color:nextArrowConfig[ID].arrowColor
             }
             let headX = nextArrowConfig[ID].headXY.x;
             let headY = nextArrowConfig[ID].headXY.y;
             let tailX = nextArrowConfig[ID].tailXY.x;
             let tailY = nextArrowConfig[ID].tailXY.y;
-            let lineLength = Tools.calcArrowLength(headX,tailX,headY,tailY);
-            let lineDeg = -45 + Tools.calcArrowDeg(headX,tailX,headY,tailY)*180/Math.PI;
+
             if (!prevArrowConfig[ID]){
                 let newArrow;
                 if(document.getElementById(ID)) {
                     newArrow = document.getElementById(ID);
                 }else{
                     newArrow = Tools.createArrowDiv(setting);
-                    newArrow.style.opacity = 0;
+                    newArrow.style.opacity = 1;
                     newArrow.style.top = this.boxYOffset + "px";
+
                     this.targetDiv.append(newArrow);
                 }
+                let lineDiv = document.getElementById(ID + "-line");
+                lineDiv.style.width = 100*(2**0.5)+"%";
+                let lineLength = Tools.calcArrowLength(tailX,headX,tailY,headY);
+                let lineDeg = -45 + Tools.calcArrowDeg(tailX,headX,tailY,headY)*180/Math.PI;
+                console.log(lineDeg)
+                newArrow.style.transformOrigin = "top left";
+
                 this.tl.add({
                     easing: 'easeInOutQuad',
                     targets: newArrow,
                     width: lineLength * Math.sqrt(2) / 2+ "px",
                     height: lineLength * Math.sqrt(2) / 2+ "px",
-                    rotate:`${lineDeg}deg`,
-                    translateX: tailX,
-                    translateY: tailY,
+                    // rotate:`${lineDeg}deg`,
+                    translateX: tailX+"px",
+                    translateY: tailY+"px",
+                    rotate:lineDeg+`deg`,
+
                     opacity: 1,
+                    // backgroundColor:"rgb(0,0,0)",
                     duration:this.animationInterval,
-                }`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+                },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
             }
             //change
             else{
@@ -201,7 +214,8 @@ export default class Draw {
                     targets: arrowDiv,
                     width: lineLength * Math.sqrt(2) / 2+ "px",
                     height: lineLength * Math.sqrt(2) / 2+ "px",
-                    rotate:`${lineDeg}deg`,
+                    // rotate:`${lineDeg}deg`,
+                    rotate:`0deg`,
                     translateX: tailX,
                     translateY: tailY,
                     duration:this.animationInterval
@@ -226,7 +240,7 @@ export default class Draw {
     setCurrentLog() {
         this.log.push({box:{},arrow:{}});
         this.log[this.log.length-1].box = this.setBoxXYConfig();
-        this.log[this.log.length-1].box = this.setArrowXYConfig();
+        this.log[this.log.length-1].arrow = this.setArrowXYConfig();
 
     }
 
@@ -234,10 +248,10 @@ export default class Draw {
         let config = {};
         let nodes = this.dataConstructor.getNodes();
         let rootPositionList = this.setRootsPosition();
-        for(let node of nodes) {
+        for(let node of Object.values(nodes)) {
             let boxSize = node.getBoxSize();
             let rootID = node.getMyRootID();
-            let boxX = (Tools.binToInt(node.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(node.getPosition().length+1)) - boxSize.width/2;
+            let boxX = (Tools.binToInt(node.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(node.getPosition().length+1)) - boxSize/2;
             let boxY = node.getPosition().length * this.boxYMargin + rootPositionList[rootID].y;
             node.setBoxXY(boxX, boxY);
             config[node.getID()] = {
@@ -252,13 +266,14 @@ export default class Draw {
         let config = {};
         let nodes = this.dataConstructor.getNodes();
 
-        for(let node of nodes) {
-            let arrowTailX = node.getBoxXY().x;
+        for(let node of Object.values(nodes)) {
+            let arrowTailX = node.getBoxXY().x + node.getBoxSize() / 2;
             let arrowTailY = node.getBoxXY().y + node.getBoxSize();
             if(node.left) {
-                let arrowHeadX = node.left.getBoxXY().x;
+                let arrowHeadX = node.left.getBoxXY().x + node.getBoxSize() / 2;
                 let arrowHeadY = node.left.getBoxXY().y;
-                let arrowColor = node.getArrowColor("left");
+                // console.log()
+                let arrowColor = "rgb(0,0,0)"//node.getArrowColor("left");
                 config[node.getID()+"-"+"left"] = {
                     headXY:{x:arrowHeadX,y:arrowHeadY},
                     tailXY:{x:arrowTailX,y:arrowTailY},
@@ -266,9 +281,10 @@ export default class Draw {
                 }
             }
             if(node.right) {
-                let arrowHeadX = node.right.getBoxXY().x;
+                let arrowHeadX = node.right.getBoxXY().x + node.getBoxSize() / 2;
                 let arrowHeadY = node.right.getBoxXY().y;
-                let arrowColor = node.getArrowColor("right");
+                let arrowColor = "rgb(0,0,0)"//node.getArrowColor("left");
+
                 config[node.getID()+"-"+"right"] = {
                     headXY:{x:arrowHeadX,y:arrowHeadY},
                     tailXY:{x:arrowTailX,y:arrowTailY},

@@ -41,8 +41,8 @@ export default class BinaryTreeController {
     }
     setBoxPositionHelper(node, rootID) {
         if (node != null){
-            this.setBoxPosition(node.setLeftBoxPosition(rootID), rootID)
-            this.setBoxPosition(node.setRightBoxPosition(rootID), rootID)
+            this.setBoxPositionHelper(node.setLeftBoxPosition(rootID), rootID)
+            this.setBoxPositionHelper(node.setRightBoxPosition(rootID), rootID)
         }
     }
 
@@ -52,15 +52,16 @@ export default class BinaryTreeController {
         for(let nodeList of nodes) {
             let newNodeList = {
                 data: Tools.convertStringToArray(nodeList.data),
-                ID: Tools.convertStringToArray(nodeList.ID) || Tools.convertStringToArray(nodeList.node),
-                boxColor:Tools.convertStringToArray(nodeList.boxColor)  || Array(nodeList.node.length),
-                textColor:Tools.convertStringToArray( nodeList.textColor) || Array(nodeList.node.length)
+                ID: Tools.convertStringToArray(nodeList.ID) || Tools.convertStringToArray(nodeList.data),
+                boxColor:Tools.convertStringToArray(nodeList.boxColor)  || Array(nodeList.data.length),
+                textColor:Tools.convertStringToArray( nodeList.textColor) || Array(nodeList.data.length)
             }
             this.deserialize(newNodeList.ID, newNodeList.data);
             this.setAllBoxConfig(newNodeList.ID, newNodeList.boxColor, newNodeList.textColor)
+
         }
 
-
+        this.setBoxPosition()
         // for(let ID in inputData.nodes){
         //     this.nodes[ID] = new BinaryTreeNode(ID, inputData.nodes[ID].data);
         //     this.setArrowConfig(inputData);
@@ -72,8 +73,8 @@ export default class BinaryTreeController {
         //
         // this.connectNodes(inputData)
     }
-    getRoots() {
-        return this.roots;
+    getRootID() {
+        return this.rootID;
     }
     getNodes(){
         return this.nodes;
@@ -117,7 +118,7 @@ export default class BinaryTreeController {
 
     deserialize(nodeIDList,nodeDataList) {
         if(nodeDataList.length === 0) return null;
-        let root = new BinaryTreeNode(nodeDataList[0],nodeIDList[0], nodeIDList[0]);
+        let root = new BinaryTreeNode(nodeIDList[0],nodeDataList[0], nodeIDList[0]);
         this.nodes[nodeIDList[0]] = root;
         this.rootID.push(nodeIDList[0]);
         let queue = [root];
@@ -127,17 +128,16 @@ export default class BinaryTreeController {
             let curr = queue.shift();
             if(curr === null) continue;
             if(l >= ++i && nodeDataList[i] !== null){
-                curr.left = new BinaryTreeNode(nodeDataList[i],nodeIDList[i],nodeIDList[0]);
+                curr.left = new BinaryTreeNode(nodeIDList[i],nodeDataList[i], nodeIDList[0]);
                 this.nodes[nodeIDList[i]] = curr.left;
                 queue.push(curr.left);
             }
             if(l >= ++i && nodeDataList[i] !== null){
-                curr.right = new BinaryTreeNode(nodeDataList[i],nodeIDList[i],nodeIDList[0]);
+                curr.right = new BinaryTreeNode(nodeIDList[i],nodeDataList[i],nodeIDList[0]);
                 this.nodes[nodeIDList[i]] = curr.right;
                 queue.push(curr.right);
             }
         }
-        console.log(root)
     }
 }
 
@@ -157,7 +157,7 @@ class BinaryTreeNode {
         return this.ID;
     }
     getMyRootID() {
-        return this.rootID();
+        return this.rootID;
     }
     getBoxSize() {
         return this.boxConfig.boxSize;
@@ -199,16 +199,16 @@ class BinaryTreeNode {
         let boxDiv = document.createElement("div");
         boxDiv.setAttribute("id", `box-${this.ID}`);
         boxDiv.innerHTML = `<div>${this.data}</div>`;
-        boxDiv.style.width = this.boxConfig.boxWidth + "px";
-        boxDiv.style.height = this.boxConfig.boxHeight + "px";
+        boxDiv.style.width = this.boxConfig.boxSize + "px";
+        boxDiv.style.height = this.boxConfig.boxSize + "px";
         boxDiv.style.position = "absolute";
         boxDiv.style.display = "flex"
         boxDiv.style.flexDirection = "column";
         boxDiv.style.justifyContent = "center";
         boxDiv.style.alignItems = "center";
-        if(this.boxConfig.boxShape === "round"){
+        // if(this.boxConfig.boxShape === "round"){
             boxDiv.style.borderRadius = 100 + "%";
-        }
+        // }
         return boxDiv;
     }
 

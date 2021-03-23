@@ -3,7 +3,8 @@ export default class Tools {
 
     }
     static convertStringToArray(string) {
-        if(string === "[]" || string === "") return null;
+        console.log(string)
+        if(string === "[]" || string === "" || string === undefined) return null;
         string = string.slice(1)
         string = string.slice(0,-1)
 
@@ -19,11 +20,15 @@ export default class Tools {
 
         let arrowDiv = document.createElement("div");
         arrowDiv.setAttribute("id", id);
+
         let lineDiv = document.createElement("div");
+        lineDiv.setAttribute("id", id + "-line");
         let arrowHeadDiv = document.createElement("div");
 
         arrowDiv.style.position = 'absolute';
         arrowDiv.style.content = "";
+        arrowDiv.style.opacity = 0;
+
 
         lineDiv.style.position = "absolute";
         lineDiv.style.top = - thickness/2  + "px";
@@ -37,14 +42,16 @@ export default class Tools {
         // arrowHeadDiv.style.top = - thickness / 2 + "px";
         arrowHeadDiv.style.width = headSize + "px";
         arrowHeadDiv.style.height = headSize + "px";
-        arrowHeadDiv.style.borderRight = thickness + "px solid" + color;
-        arrowHeadDiv.style.borderBottom = thickness + "px solid" + color;
+        arrowHeadDiv.style.borderRight = thickness + "px solid";
+        arrowHeadDiv.style.borderBottom = thickness + "px solid";
+        arrowHeadDiv.style.borderRightColor = color;
+        arrowHeadDiv.style.borderBottomColor = color;
         arrowHeadDiv.style.position = "absolute"
         arrowHeadDiv.style.bottom = 0 + "px";
         arrowHeadDiv.style.right = 0 + "px";
 
         // arrowHeadDiv.style.position = "absolute";
-        // arrowHeadDiv.style.content = "";
+        arrowHeadDiv.style.content = "";
         //
         arrowDiv.append(arrowHeadDiv);
         arrowDiv.append(lineDiv);
