@@ -2,34 +2,34 @@ import Arrow from "./Arrow.js";
 import Tools from "./Tools.js";
 
 export default class BinaryTreeController {
-    constructor(inputData, drawingSettings) {
+    constructor(nodes, drawingSettings) {
         this.defaultSettings = drawingSettings;
-        this.refreshNodes(inputData)
+        this.refreshNodes(nodes)
     }
 
-    setAllArrowConfig(inputData) {
-        for(let ID in inputData.nodes) {
-            let arrowConfig = {
-                leftArrowColor: inputData.arrowColor.left || this.defaultSettings.arrowColor,
-                rightArrowColor: inputData.arrowColor.right || this.defaultSettings.arrowColor,
-                leftArrowHeadSize: inputData.arrowHeadSize.left || this.defaultSettings.arrowHeadSize,
-                rightArrowHeadSize: inputData.arrowHeadSize.right || this.defaultSettings.arrowHeadSize,
-                leftArrowThickness: inputData.arrowThickness.left || this.defaultSettings.arrowThickness,
-                rightArrowThickness: inputData.arrowThickness.right || this.defaultSettings.arrowThickness,
-            }
-            this.nodes[ID].setArrowConfig(arrowConfig);
-        }
-    }
-    setAllBoxConfig(inputData) {
-        for(let ID in inputData.nodes) {
+    // setAllArrowConfig() {
+    //     for(let node of this.nodes) {
+    //         let arrowConfig = {
+    //             leftArrowColor: inputData.arrowColor.left || this.defaultSettings.arrowColor,
+    //             rightArrowColor: inputData.arrowColor.right || this.defaultSettings.arrowColor,
+    //             leftArrowHeadSize: inputData.arrowHeadSize.left || this.defaultSettings.arrowHeadSize,
+    //             rightArrowHeadSize: inputData.arrowHeadSize.right || this.defaultSettings.arrowHeadSize,
+    //             leftArrowThickness: inputData.arrowThickness.left || this.defaultSettings.arrowThickness,
+    //             rightArrowThickness: inputData.arrowThickness.right || this.defaultSettings.arrowThickness,
+    //         }
+    //         this.nodes[ID].setArrowConfig(arrowConfig);
+    //     }
+    // }
+    setAllBoxConfig(nodeIDList, boxColorList, textColorList) {
+        for(let i=0 ;i < boxColorList.length; i++) {
+            let ID = nodeIDList[i];
+            if(!this.nodes[ID]) continue;
             let boxConfig = {
-                boxColor: inputData.boxColor || this.defaultSettings.boxColor,
-                textColor: inputData.textColor || this.defaultSettings.textColor,
-                leftArrowColor: inputData.arrowColor.left || this.defaultSettings.arrowColor,
-                boxShape: inputData.shape || this.defaultSettings.boxShape,
-                boxWidth: inputData.boxSize.width || this.defaultSettings.boxSize,
-                boxHeight: inputData.boxSize.height || this.defaultSettings.boxSize
+                boxColor: boxColorList[i] || this.defaultSettings.boxColor,
+                textColor: textColorList[i] || this.defaultSettings.textColor,
+                boxSize: this.defaultSettings.boxSize
             }
+            console.log(this.nodes)
             this.nodes[ID].setBoxConfig(boxConfig);
         }
     }
@@ -46,32 +46,31 @@ export default class BinaryTreeController {
         }
     }
 
-    connectNodes(inputData) {
-        for(let ID in inputData.nodes){
-            let leftNode = inputData.nodes[ID].leftID || this.nodes[inputData.nodes[ID].leftID];
-            let rightNode = inputData.nodes[ID].rightID || this.nodes[inputData.nodes[ID].leftID];
-            this.nodes[ID].setChildNode(leftNode, rightNode);
-        }
-    }
-
-
-    refreshNodes(inputData) {
+    refreshNodes(nodes) {
+        this.nodes = {};
         this.rootID = [];
-        this.nodes = {};
-
-        this.roots = [];
-
-        this.nodes = {};
-        for(let ID in inputData.nodes){
-            this.nodes[ID] = new BinaryTreeNode(ID, inputData.nodes[ID].data);
-            this.setArrowConfig(inputData);
-            this.setBoxConfig(inputData);
-        }
-        for(let i in inputData.rootID){
-            this.roots.push(this.nodes[inputData.rootID[i]]);
+        for(let nodeList of nodes) {
+            let newNodeList = {
+                data: Tools.convertStringToArray(nodeList.data),
+                ID: Tools.convertStringToArray(nodeList.ID) || Tools.convertStringToArray(nodeList.node),
+                boxColor:Tools.convertStringToArray(nodeList.boxColor)  || Array(nodeList.node.length),
+                textColor:Tools.convertStringToArray( nodeList.textColor) || Array(nodeList.node.length)
+            }
+            this.deserialize(newNodeList.ID, newNodeList.data);
+            this.setAllBoxConfig(newNodeList.ID, newNodeList.boxColor, newNodeList.textColor)
         }
 
-        this.connectNodes(inputData)
+
+        // for(let ID in inputData.nodes){
+        //     this.nodes[ID] = new BinaryTreeNode(ID, inputData.nodes[ID].data);
+        //     this.setArrowConfig(inputData);
+        //     this.setBoxConfig(inputData);
+        // }
+        // for(let i in inputData.rootID){
+        //     this.roots.push(this.nodes[inputData.rootID[i]]);
+        // }
+        //
+        // this.connectNodes(inputData)
     }
     getRoots() {
         return this.roots;
@@ -116,45 +115,40 @@ export default class BinaryTreeController {
         else return 1
     }
 
-    deserialize(data) {
-        if(data === "[]" || data === "") return null;
-        data = data.slice(1)
-        data = data.slice(0,-1)
-        let arr = data.split(",").map((val)=>{return val === "null" ? null : Number(val)})
-        if(arr.length === 0) return null;
-        let root = new BinaryTreeNode(arr[0]);
+    deserialize(nodeIDList,nodeDataList) {
+        if(nodeDataList.length === 0) return null;
+        let root = new BinaryTreeNode(nodeDataList[0],nodeIDList[0], nodeIDList[0]);
+        this.nodes[nodeIDList[0]] = root;
+        this.rootID.push(nodeIDList[0]);
         let queue = [root];
-        let l = arr.length - 1;
+        let l = nodeDataList.length - 1;
         let i = 0;
-
         while(queue.length > 0){
             let curr = queue.shift();
             if(curr === null) continue;
-            console.log(i,arr[i+1])
-            if(l >= ++i && arr[i] !== null){
-                curr.left = new BinaryTreeNode(arr[i],arr[i]);
+            if(l >= ++i && nodeDataList[i] !== null){
+                curr.left = new BinaryTreeNode(nodeDataList[i],nodeIDList[i],nodeIDList[0]);
+                this.nodes[nodeIDList[i]] = curr.left;
                 queue.push(curr.left);
             }
-            console.log(i,arr[i+1])
-            if(l >= ++i && arr[i] !== null){
-                curr.right = new BinaryTreeNode(arr[i],arr[i]);
+            if(l >= ++i && nodeDataList[i] !== null){
+                curr.right = new BinaryTreeNode(nodeDataList[i],nodeIDList[i],nodeIDList[0]);
+                this.nodes[nodeIDList[i]] = curr.right;
                 queue.push(curr.right);
             }
         }
-
-        return root;
-
+        console.log(root)
     }
 }
 
 class BinaryTreeNode {
-    constructor(ID, stringData) {
+    constructor(ID, stringData, rootID) {
         this.data = stringData;
         this.left = null;
         this.right = null;
         this.position = [];
         this.ID = ID;
-        this.rootID = ID;
+        this.rootID = rootID;
         this.data = stringData;
         this.arrowXY = {left:{x:0,y:0}, right:{x:0,y:0}}
         this.boxXY = {x:0,y:0};

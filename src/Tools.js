@@ -2,6 +2,14 @@ export default class Tools {
     static createBoxDiv(setting) {
 
     }
+    static convertStringToArray(string) {
+        if(string === "[]" || string === "") return null;
+        string = string.slice(1)
+        string = string.slice(0,-1)
+
+        return string.split(",").map((val)=>{return val === "null" ? null : Number(val)})
+
+    }
     static createArrowDiv(settings) {
         let id = settings.id
         let thickness = settings.thickness || 2;

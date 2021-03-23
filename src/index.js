@@ -8,11 +8,13 @@ import Draw from "./Draw.js";
 import BinaryTreeController from "./BinaryTree.js";
 
 
-
+export default function pruner(settings) {
+    return new MainPruner(settings);
+}
 
 
 //
-export default class Pruner {
+export class MainPruner{
     constructor(settings) {
         this.drawSettings = {
             target : settings.target || "target",//表示させるDivID
@@ -35,17 +37,15 @@ export default class Pruner {
         this.draw = new Draw(this.drawSettings);
     }
 
-    createBoxController(inputData) {
+    createBoxController(nodes) {
         switch (this.drawSettings.dataType) {
             case "BinaryTree":
-                this.nodeController = new BinaryTreeController(inputData);
+                this.nodeController = new BinaryTreeController(nodes, this.drawSettings);
         }
     }
-    drawData(inputData) {
-        let info = inputData.info;
-        let nodeData = inputData.nodeData;
-        this.createBoxController(nodeData);
-        this.draw.initData(this.nodeController, info)
+    drawData(nodes, info) {
+        this.createBoxController(nodes);
+        this.draw.initData(this.nodeController, info);
     }
     nextStep(inputData) {
         let info = inputData.info;

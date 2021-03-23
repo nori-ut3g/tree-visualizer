@@ -33,7 +33,7 @@ export default class Draw {
             });
         }
         // this.initBoxes(boxesData);
-        if(info) this.initInfoBox(info);
+        this.initInfoBox()
     }
     initData(dataConstructor,info) {
         if(this.needsInfo)this.refreshInfobox(info);
