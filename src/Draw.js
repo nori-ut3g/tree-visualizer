@@ -10,7 +10,7 @@ export default class Draw {
         this.targetDiv = document.getElementById(drawSettings.target);
         //animation
         this.needsAnimation = drawSettings.animation;
-        this.animationInterval = drawSettings.interval;
+        this.animationInterval = 1000//drawSettings.interval;
         this.animationSteps = 0;
         this.delay = 1000;
 
@@ -48,6 +48,7 @@ export default class Draw {
         this.setCurrentLog();
         this.refreshBox();
         this.refreshArrow();
+        this.animationSteps++;
     }
 
     initInfoBox(info) {
@@ -105,6 +106,7 @@ export default class Draw {
         let nextBoxConfig = this.log[this.log.length-1].box;
         let nodes = this.dataConstructor.getNodes();
         //add
+        console.log(nextBoxConfig)
         for(let ID in nextBoxConfig) {
             let newBoxDiv;
             if (!prevBoxConfig[ID]){
@@ -130,12 +132,15 @@ export default class Draw {
 
             //change
             else{
-                let boxDiv = document.getElementById(ID);
+                console.log(ID,nextBoxConfig[ID].boxXY.x,prevBoxConfig[ID].boxXY.x)
+                let boxDiv = document.getElementById("box-"+ID);
+                console.log(boxDiv)
                 this.tl.add({
                     targets: boxDiv,
                     easing: 'easeInOutQuad',
                     translateX: nextBoxConfig[ID].boxXY.x,
                     translateY: nextBoxConfig[ID].boxXY.y,
+                    opacity: 1,
                     backgroundColor:nextBoxConfig[ID].boxColor,
                     duration:this.animationInterval
                 },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
@@ -161,7 +166,6 @@ export default class Draw {
         let nextArrowConfig = this.log[this.log.length-1].arrow;
         let nodes = this.dataConstructor.getNodes();
         //add
-        console.log(nextArrowConfig)
         for(let ID in nextArrowConfig) {
             let setting = {
                 id:ID,
@@ -187,7 +191,6 @@ export default class Draw {
                 lineDiv.style.width = 100*(2**0.5)+"%";
                 let lineLength = Tools.calcArrowLength(tailX,headX,tailY,headY);
                 let lineDeg = -45 + Tools.calcArrowDeg(tailX,headX,tailY,headY)*180/Math.PI;
-                console.log(lineDeg)
                 newArrow.style.transformOrigin = "top left";
 
                 this.tl.add({
@@ -208,16 +211,17 @@ export default class Draw {
             //change
             else{
                 let arrowDiv = document.getElementById(ID);
-
+                let lineLength = Tools.calcArrowLength(tailX,headX,tailY,headY);
+                let lineDeg = -45 + Tools.calcArrowDeg(tailX,headX,tailY,headY)*180/Math.PI;
                 this.tl.add({
                     easing: 'easeInOutQuad',
                     targets: arrowDiv,
                     width: lineLength * Math.sqrt(2) / 2+ "px",
                     height: lineLength * Math.sqrt(2) / 2+ "px",
                     // rotate:`${lineDeg}deg`,
-                    rotate:`0deg`,
-                    translateX: tailX,
-                    translateY: tailY,
+                    translateX: tailX+"px",
+                    translateY: tailY+"px",
+                    rotate:lineDeg+`deg`,
                     duration:this.animationInterval
                 },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
             }

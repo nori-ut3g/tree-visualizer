@@ -29,7 +29,6 @@ export default class BinaryTreeController {
                 textColor: textColorList[i] || this.defaultSettings.textColor,
                 boxSize: this.defaultSettings.boxSize
             }
-            console.log(this.nodes)
             this.nodes[ID].setBoxConfig(boxConfig);
         }
     }
