@@ -11,22 +11,19 @@ export default class Tools {
     static createArrowDiv(settings) {
         let id = settings.id
         let thickness = 2;
-        let color = settings.color || "rgb(0,0,0)";
+        let color = settings.arrowColor || "rgb(0,0,0)";
         let headSize = 7;
-
 
         let arrowDiv = document.createElement("div");
         arrowDiv.setAttribute("id", id);
 
         let lineDiv = document.createElement("div");
         lineDiv.setAttribute("id", id + "-line");
-        console.log(id)
         let arrowHeadDiv = document.createElement("div");
 
         arrowDiv.style.position = 'absolute';
         arrowDiv.style.content = "";
         // arrowDiv.style.opacity = 0;
-
 
         lineDiv.style.position = "absolute";
         lineDiv.style.top = - thickness/2  + "px";

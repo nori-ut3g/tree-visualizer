@@ -104,12 +104,13 @@
         3. Setting
         <div>
             <div id = "target3" ></div>
-            <div><label for="target3-setting-boxColor"></label><input type="text" id="target3-setting-boxColor" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
-            <div><label for="target3-setting-textColor"></label><input type="text" id="target3-setting-textColor" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
-            <div><label for="target3-setting-interval"></label><input type="text" id="target3-setting-interval" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
-            <div><label for="target3-setting-boxSize"></label><input type="text" id="target3-setting-boxSize" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
-            <div><label for="target3-setting-boxXMargin"></label><input type="text" id="target3-setting-boxXMargin" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
-            <div><label for="target3-setting-boxYMargin"></label><input type="text" id="target3-setting-boxYMargin" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div>boxColor<label for="target3-setting-boxColor"></label><input type="text" id="target3-setting-boxColor" name="data" value="rgb(255,0,0)" size="40"></div>
+            <div>textColor<label for="target3-setting-textColor"></label><input type="text" id="target3-setting-textColor" name="data" value="rgb(0,0,0)" size="40"></div>
+            <div>arrowColor<label for="target3-setting-arrowColor"></label><input type="text" id="target3-setting-arrowColor" name="data" value="rgb(0,0,0)" size="40"></div>
+            <div>animationInterval<label for="target3-setting-interval"></label><input type="text" id="target3-setting-interval" name="data" value="1000" size="40"></div>
+            <div>boxSize<label for="target3-setting-boxSize"></label><input type="text" id="target3-setting-boxSize" name="data" value="30" size="40"></div>
+            <div>boxXMargin<label for="target3-setting-boxXMargin"></label><input type="text" id="target3-setting-boxXMargin" name="data" value="30" size="40"></div>
+            <div>boxYMargin<label for="target3-setting-boxYMargin"></label><input type="text" id="target3-setting-boxYMargin" name="data" value="45" size="40"></div>
             <div><label for="target3-data1"></label><input type="text" id="target3-data1" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
             <div><label for="target3-data2"></label><input type="text" id="target3-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
             <div><label for="target3-data3"></label><input type="text" id="target3-data3" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
@@ -125,10 +126,21 @@
                 targetDiv.style.width = 700 + "px";
                 targetDiv.style.overflow = "scroll";
                 targetDiv.style.background = "rgb(150,150,150)"
-                let example2 = pruner(
-                    {target:"target3"}
-                );
+                console.log(document.getElementById("target3-setting-boxSize").value)
                 document.getElementById("example3-drawBtn").onclick = () => {
+                    let example2 = pruner(
+                        {   target:"target3",
+                            boxColor : document.getElementById("target3-setting-boxColor").value,//ボックスのいろ
+                            textColor :  document.getElementById("target3-setting-textColor").value,//テキストの色
+                            arrowColor : document.getElementById("target3-setting-arrowColor").value,
+                            interval : document.getElementById("target3-setting-interval").value,//アニメーションの間隔
+                            boxSize : document.getElementById("target3-setting-boxSize").value,//ボックスのサイズ
+                            boxXMargin: document.getElementById("target3-setting-boxXMargin").value,
+                            boxYMargin: document.getElementById("target3-setting-boxYMargin").value,
+
+                        }
+                    );
+
                     if(document.getElementById("target3-data1").value){
                         example2.drawData(
                             [{
@@ -170,7 +182,10 @@
 <!--        <div>-->
 <!--            5stepで実行-->
 <!--        </div>-->
-<!--        4. Option-->
+        4. Option
+        同じ値が存在する場合は、IDを加える。
+        色を変えることもできる。
+
 <!--        examples-->
 <!--        前順操作（色）-->
 <!--        同じDataの場合、ID入れる-->

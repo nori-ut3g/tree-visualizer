@@ -9,6 +9,7 @@ export default class BinaryTreeController {
         for(let i=0 ;i < boxColorList.length; i++) {
             let ID = nodeIDList[i];
             if(!this.nodes[ID]) continue;
+            console.log(boxColorList[i],this.defaultSettings.boxColor)
             let boxConfig = {
                 boxColor: boxColorList[i] || this.defaultSettings.boxColor,
                 textColor: textColorList[i] || this.defaultSettings.textColor,
@@ -136,7 +137,6 @@ class BinaryTreeNode {
     createBoxDiv(parentDivID) {
         let boxDiv = document.createElement("div");
         boxDiv.setAttribute("id", parentDivID + "-" + `${this.ID}`);
-        console.log(parentDivID + "-" + `box-${this.ID}`)
         boxDiv.innerHTML = `<div>${this.data}</div>`;
         boxDiv.style.width = this.boxConfig.boxSize + "px";
         boxDiv.style.height = this.boxConfig.boxSize + "px";
@@ -145,9 +145,7 @@ class BinaryTreeNode {
         boxDiv.style.flexDirection = "column";
         boxDiv.style.justifyContent = "center";
         boxDiv.style.alignItems = "center";
-        // if(this.boxConfig.boxShape === "round"){
-            boxDiv.style.borderRadius = 100 + "%";
-        // }
+        boxDiv.style.borderRadius = 100 + "%";
         return boxDiv;
     }
 

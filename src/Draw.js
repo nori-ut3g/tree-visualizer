@@ -96,7 +96,6 @@ export default class Draw {
                     newBoxDiv = nodes[ID].createBoxDiv(this.drawSettings.target);
                     newBoxDiv.style.opacity = 0;
                     newBoxDiv.style.top = this.boxYOffset + "px";
-                    newBoxDiv.style.background = "rgb(100,100,100)"
                     this.targetDiv.append(newBoxDiv);
                 }
                 this.tl.add({
@@ -105,6 +104,7 @@ export default class Draw {
                     translateX: nextBoxConfig[ID].boxXY.x,
                     translateY: nextBoxConfig[ID].boxXY.y,
                     opacity: 1,
+                    color:nextBoxConfig[ID].textColor,
                     backgroundColor:nextBoxConfig[ID].boxColor,
                     duration: this.animationSteps === 0 ? 0 : this.animationInterval,
                 },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
@@ -146,12 +146,12 @@ export default class Draw {
         for(let ID in nextArrowConfig) {
             let setting = {
                 id:this.drawSettings.target  + "-" + ID,
+                arrowColor: this.drawSettings.arrowColor
             }
             let headX = nextArrowConfig[ID].headXY.x;
             let headY = nextArrowConfig[ID].headXY.y;
             let tailX = nextArrowConfig[ID].tailXY.x;
             let tailY = nextArrowConfig[ID].tailXY.y;
-
             if (!prevArrowConfig[ID]){
                 let newArrow;
                 if(document.getElementById(this.drawSettings.target  + "-" +ID)) {

@@ -14,17 +14,18 @@ export default function pruner(settings) {
 
 
 //
-export class MainPruner{
+class MainPruner{
     constructor(settings) {
         this.drawSettings = {
             target : settings.target || "target",//表示させるDivID
-            boxColor : settings.boxColor || 'rgb(255,255,0)',//ボックスのいろ
-            textColor : settings.textColor || 'rgb(255,0,0)',//テキストの色
+            boxColor : settings.boxColor || 'rgb(0,255,0)',//ボックスのいろ
+            textColor : settings.textColor || 'rgb(0,0,0)',//テキストの色
+            arrowColor : settings.arrowColor || "rgb(0,0,0)",
             dataType : settings.dataType || "BinaryTree",//データの種類
-            interval : settings.interval || 1000,//アニメーションの間隔
-            boxSize : settings.boxSize || 30,//ボックスのサイズ
-            boxXMargin: settings.boxXMargin || 30,
-            boxYMargin: settings.boxYMargin || 45,
+            interval :Number(settings.interval )|| 1000,//アニメーションの間隔
+            boxSize : Number(settings.boxSize) || 30,//ボックスのサイズ
+            boxXMargin: Number(settings.boxXMargin) || 30,
+            boxYMargin: Number(settings.boxYMargin) || 45,
             animation : settings.animation || true
         }
         this.createDrawingArea();
