@@ -51,12 +51,6 @@ export class MainPruner{
         this.nodeController.refreshNodes(nodes);
         this.draw.refresh(this.nodeController, info);
     }
-    // nextStep(data) {
-    //     this.dataConstructor.refreshNodes();
-    //     let boxesData = this.dataConstructor.getNodeBoxes();
-    //     this.draw.refreshBoxes()
-    // }
-
 }
 
 

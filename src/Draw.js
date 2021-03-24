@@ -1,46 +1,9 @@
 import Tools from "./Tools.js";
 import anime from "../animeJS/anime.es.js";
 
-/*
-    一度描写されたBox、Arrowは削除せずにOpacityで操作する。
-    既にあるDivと新しいDivの差分でアニメーション
- */
 export default class Draw {
     constructor(drawSettings) {
         this.drawSettings = drawSettings;
-        // this.initDraw();
-        //
-        // this.parentDiv = document.getElementById(drawSettings.target);
-        // this.targetDiv = document.createElement("div")
-        // this.parentDiv.append(this.targetDiv)
-        // this.targetDiv.style.position = "relative"
-        // //animation
-        // this.needsAnimation = drawSettings.animation;
-        // this.animationInterval = drawSettings.interval;
-        // this.animationSteps = 0;
-        // this.delay = 2000;
-        //
-        // //info
-        // this.needsInfo = drawSettings.needsInfo;
-        //
-        // //log
-        // this.log = [{box:{},arrow:{}}];
-        //
-        // //position
-        // console.log(drawSettings)
-        // this.boxXMargin = drawSettings.boxXMargin;
-        // this.boxYMargin = drawSettings.boxYMargin;
-        // //
-        // this.boxXOffset = 0;
-        // this.boxYOffset = 0;
-        // if(this.needsAnimation){
-        //     this.tl = anime.timeline({
-        //         easing: 'easeOutExpo',
-        //         duration: this.animationInterval
-        //     });
-        // }
-        // // this.initBoxes(boxesData);
-        // this.initInfoBox()
     }
     initDraw(info) {
         this.parentDiv = document.getElementById(this.drawSettings.target);
@@ -72,15 +35,12 @@ export default class Draw {
                 duration: this.animationInterval
             });
         }
-        // this.initBoxes(boxesData);
         let infoDiv = document.createElement("div");
         infoDiv.setAttribute("id", this.drawSettings.target + "-" +`info`);
-        // infoDiv.style.position = "absolute";
         this.targetDiv.append(infoDiv)
         infoDiv.innerHTML = info
     }
     refresh(dataConstructor,info) {
-
         this.dataConstructor = dataConstructor;
         this.setCurrentLog();
         this.refreshBox();
@@ -92,15 +52,11 @@ export default class Draw {
 
     refreshInfobox(info) {
         let infoDiv = document.getElementById(this.drawSettings.target + "-" + "info")
-
         this.tl.add({
-            // targets:infoDiv,
-            // easing: 'easeInOutQuad',
             update: function (){infoDiv.innerHTML = info},
             duration: this.animationSteps === 0 ? 0 : this.animationInterval,
         },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
     }
-
 
     setRootsPosition(){
         let roots = this.dataConstructor.getRootID();
@@ -108,7 +64,6 @@ export default class Draw {
         let rootsPositionList = {};
 
         for(let rootID of roots){
-
             let root = this.dataConstructor.getNodes()[rootID];
             let maxDepth = this.dataConstructor.getMaxDepth(root);
             let drawingAreaWidth = this.boxXMargin * (2 ** (maxDepth-1) + 1);
@@ -199,8 +154,8 @@ export default class Draw {
 
             if (!prevArrowConfig[ID]){
                 let newArrow;
-                if(document.getElementById(ID)) {
-                    newArrow = document.getElementById(ID);
+                if(document.getElementById(this.drawSettings.target  + "-" +ID)) {
+                    newArrow = document.getElementById(this.drawSettings.target  + "-" + ID);
                 }else{
                     newArrow = Tools.createArrowDiv(setting);
 
@@ -209,7 +164,6 @@ export default class Draw {
                 newArrow.style.opacity = 0;
                 newArrow.style.top = this.boxYOffset + "px";
                 let lineDiv = document.getElementById(this.drawSettings.target + "-" +ID + "-line");
-                console.log(this.drawSettings.target, ID)
                 lineDiv.style.width = 100*(2**0.5)+"%";
                 let lineLength = Tools.calcArrowLength(tailX,headX,tailY,headY);
                 let lineDeg = -45 + Tools.calcArrowDeg(tailX,headX,tailY,headY)*180/Math.PI;
@@ -299,7 +253,6 @@ export default class Draw {
             if(node.left) {
                 let arrowHeadX = node.left.getBoxXY().x + node.getBoxSize() / 2;
                 let arrowHeadY = node.left.getBoxXY().y;
-                // console.log()
                 config[node.getID()+"-"+"left"] = {
                     headXY:{x:arrowHeadX,y:arrowHeadY},
                     tailXY:{x:arrowTailX,y:arrowTailY},
@@ -317,23 +270,4 @@ export default class Draw {
         }
         return config;
     }
-
-
-
-
-
 }
-/*
-arrowを動かす案
-１，ボックスが移動してからすっと現れる
-opacity0から１へ
-すでに矢印があるときはボックスと共に平行移動
-
-基本ボックスと同じように移動させる
-ただ、ボックス間の間隔が変わったときは、角度とか色々変化させないといけない
-
-
-２，左上からそのまましゅっと移動
-
-
- */

@@ -1,4 +1,3 @@
-import Arrow from "./Arrow.js";
 import Tools from "./Tools.js";
 
 export default class BinaryTreeController {
@@ -136,7 +135,8 @@ class BinaryTreeNode {
 
     createBoxDiv(parentDivID) {
         let boxDiv = document.createElement("div");
-        boxDiv.setAttribute("id", parentDivID + "-" + `box-${this.ID}`);
+        boxDiv.setAttribute("id", parentDivID + "-" + `${this.ID}`);
+        console.log(parentDivID + "-" + `box-${this.ID}`)
         boxDiv.innerHTML = `<div>${this.data}</div>`;
         boxDiv.style.width = this.boxConfig.boxSize + "px";
         boxDiv.style.height = this.boxConfig.boxSize + "px";
@@ -194,92 +194,3 @@ class BinaryTreeNode {
     }
 
 }
-
-
-// class BinaryTreeBox{
-//     constructor(ID, stringData, boxColor, textColor) {
-//         this.size = {"width":30, "height":30};
-//         this.shape = "round"
-//         this.position = [];
-//         this.ID = ID;
-//         this.color = boxColor;
-//         this.textColor = textColor;
-//         this.rootID = ID;
-//         this.arrows = {"left":new Arrow(this.ID+"-left"), "right": new Arrow(this.ID+"-right")}
-//         this.data = stringData;
-//
-//     }
-//     setBoxConfig(boxConfig) {
-//         this.boxConfig = boxConfig;
-//         //            let boxConfig = {
-//         //                 boxColor: inputData.boxColor || this.defaultSettings.boxColor,
-//         //                 textColor: inputData.textColor || this.defaultSettings.textColor,
-//         //                 leftArrowColor: inputData.arrowColor.left || this.defaultSettings.arrowColor,
-//         //                 rightArrowColor: inputData.arrowColor.right || this.defaultSettings.arrowColor,
-//         //                 leftArrowHeadSize: inputData.arrowHeadSize.left || this.defaultSettings.arrowHeadSize,
-//         //                 rightArrowHeadSize: inputData.arrowHeadSize.right || this.defaultSettings.arrowHeadSize,
-//         //                 leftArrowThickness: inputData.arrowThickness.left || this.defaultSettings.arrowThickness,
-//         //                 rightArrowThickness: inputData.arrowThickness.right || this.defaultSettings.arrowThickness,
-//         //                 boxShape: inputData.shape || this.defaultSettings.boxShape,
-//         //                 boxWidth: inputData.boxSize.width || this.defaultSettings.boxSize,
-//         //                 boxHeight: inputData.boxSize.height || this.defaultSettings.boxSize,
-//         //
-//         //             }
-//         //             this.setBoxConfig(boxConfig);
-//         //         }
-//     }
-//     getArrows() {
-//         return this.arrows;
-//     }
-//     getSize() {
-//         return this.size;
-//     }
-//     getBoxColor() {
-//         return this.color;
-//     }
-//     getTextColor() {
-//         return this.textColor;
-//     }
-//     setLeftArrow() {
-//         this.hasArrow.left = true;
-//     }
-//     setRightArrow() {
-//         this.hasArrow.right = true;
-//     }
-//     getHasArrow() {
-//         return this.hasArrow;
-//     }
-//     getPosition() {
-//         return this.position;
-//     }
-//     setRootID(ID) {
-//         this.rootID = ID;
-//     }
-//     getRootID() {
-//         return this.rootID;
-//     }
-//     setLeftPosition(parentPosition) {
-//         this.position = parentPosition.concat([0]);
-//     }
-//     setRightPosition(parentPosition) {
-//         this.position = parentPosition.concat([1]);
-//     }
-//     createBoxDiv() {
-//         let boxDiv = document.createElement("div");
-//         boxDiv.setAttribute("id", `box-${this.ID}`);
-//         boxDiv.innerHTML = `<div>${this.data}</div>`;
-//         boxDiv.style.width = this.size.width + "px";
-//         boxDiv.style.height = this.size.height + "px";
-//         boxDiv.style.position = "absolute";
-//         boxDiv.style.display = "flex"
-//         boxDiv.style.flexDirection = "column";
-//         boxDiv.style.justifyContent = "center";
-//         boxDiv.style.alignItems = "center";
-//         if(this.shape === "round"){
-//             boxDiv.style.borderRadius = 100 + "%";
-//         }
-//         return boxDiv;
-//     }
-//
-//
-// }

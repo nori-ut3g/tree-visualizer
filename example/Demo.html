@@ -42,7 +42,11 @@
         2. Animation
         <div>
             <div id = "target2" ></div>
-            <div><label for="target2-data"></label><input type="text" id="target2-data" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div><label for="target2-data1"></label><input type="text" id="target2-data1" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div><label for="target2-data2"></label><input type="text" id="target2-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
+            <div><label for="target2-data3"></label><input type="text" id="target2-data3" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div><label for="target2-data4"></label><input type="text" id="target2-data4" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
+            <div><label for="target2-data5"></label><input type="text" id="target2-data5" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
             <input id = "example2-drawBtn" type="button" value="Draw">
 
             <script type="module">
@@ -53,21 +57,115 @@
                 targetDiv.style.width = 700 + "px";
                 targetDiv.style.overflow = "scroll";
                 targetDiv.style.background = "rgb(150,150,150)"
-                let example1 = pruner(
+                let example2 = pruner(
                     {target:"target2"}
                 );
                 document.getElementById("example2-drawBtn").onclick = () => {
-                    example1.drawData(
-                        [{
-                            data:document.getElementById("target2-data").value
-                        }],document.getElementById("target2-data").value
-                    )
+                    if(document.getElementById("target2-data1").value){
+                        example2.drawData(
+                            [{
+                                data:document.getElementById("target2-data1").value
+                            }],document.getElementById("target2-data1").value
+                        )
+                    }
+                    if(document.getElementById("target2-data2").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target2-data2").value
+                            }],document.getElementById("target2-data2").value
+                        )
+                    }
+                    if(document.getElementById("target2-data3").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target2-data3").value
+                            }],document.getElementById("target2-data3").value
+                        )
+                    }
+                    if(document.getElementById("target2-data4").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target2-data4").value
+                            }],document.getElementById("target2-data4").value
+                        )
+                    }
+                    if(document.getElementById("target2-data5").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target2-data5").value
+                            }],document.getElementById("target2-data5").value
+                        )
+                    }
                 }
             </script>
-
         </div>
 <!--        </div>-->
-<!--        3. AnimationのSetting-->
+        3. Setting
+        <div>
+            <div id = "target3" ></div>
+            <div><label for="target3-setting-boxColor"></label><input type="text" id="target3-setting-boxColor" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div><label for="target3-setting-textColor"></label><input type="text" id="target3-setting-textColor" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div><label for="target3-setting-interval"></label><input type="text" id="target3-setting-interval" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div><label for="target3-setting-boxSize"></label><input type="text" id="target3-setting-boxSize" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div><label for="target3-setting-boxXMargin"></label><input type="text" id="target3-setting-boxXMargin" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div><label for="target3-setting-boxYMargin"></label><input type="text" id="target3-setting-boxYMargin" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div><label for="target3-data1"></label><input type="text" id="target3-data1" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div><label for="target3-data2"></label><input type="text" id="target3-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
+            <div><label for="target3-data3"></label><input type="text" id="target3-data3" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div><label for="target3-data4"></label><input type="text" id="target3-data4" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
+            <div><label for="target3-data5"></label><input type="text" id="target3-data5" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <input id = "example3-drawBtn" type="button" value="Draw">
+
+            <script type="module">
+                import pruner from "../src";
+
+                let targetDiv = document.getElementById("target3");
+                targetDiv.style.height = 500 + "px";
+                targetDiv.style.width = 700 + "px";
+                targetDiv.style.overflow = "scroll";
+                targetDiv.style.background = "rgb(150,150,150)"
+                let example2 = pruner(
+                    {target:"target3"}
+                );
+                document.getElementById("example3-drawBtn").onclick = () => {
+                    if(document.getElementById("target3-data1").value){
+                        example2.drawData(
+                            [{
+                                data:document.getElementById("target3-data1").value
+                            }],document.getElementById("target3-data1").value
+                        )
+                    }
+                    if(document.getElementById("target3-data2").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target3-data2").value
+                            }],document.getElementById("target3-data2").value
+                        )
+                    }
+                    if(document.getElementById("target3-data3").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target3-data3").value
+                            }],document.getElementById("target3-data3").value
+                        )
+                    }
+                    if(document.getElementById("target3-data4").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target3-data4").value
+                            }],document.getElementById("target3-data4").value
+                        )
+                    }
+                    if(document.getElementById("target3-data5").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target3-data5").value
+                            }],document.getElementById("target3-data5").value
+                        )
+                    }
+                }
+            </script>
+        </div>
 <!--        <div>-->
 <!--            5stepで実行-->
 <!--        </div>-->
