@@ -6,20 +6,6 @@ export default class BinaryTreeController {
         this.defaultSettings = drawingSettings;
         this.refreshNodes(nodes)
     }
-
-    // setAllArrowConfig() {
-    //     for(let node of this.nodes) {
-    //         let arrowConfig = {
-    //             leftArrowColor: inputData.arrowColor.left || this.defaultSettings.arrowColor,
-    //             rightArrowColor: inputData.arrowColor.right || this.defaultSettings.arrowColor,
-    //             leftArrowHeadSize: inputData.arrowHeadSize.left || this.defaultSettings.arrowHeadSize,
-    //             rightArrowHeadSize: inputData.arrowHeadSize.right || this.defaultSettings.arrowHeadSize,
-    //             leftArrowThickness: inputData.arrowThickness.left || this.defaultSettings.arrowThickness,
-    //             rightArrowThickness: inputData.arrowThickness.right || this.defaultSettings.arrowThickness,
-    //         }
-    //         this.nodes[ID].setArrowConfig(arrowConfig);
-    //     }
-    // }
     setAllBoxConfig(nodeIDList, boxColorList, textColorList) {
         for(let i=0 ;i < boxColorList.length; i++) {
             let ID = nodeIDList[i];
@@ -61,42 +47,12 @@ export default class BinaryTreeController {
         }
 
         this.setBoxPosition()
-        // for(let ID in inputData.nodes){
-        //     this.nodes[ID] = new BinaryTreeNode(ID, inputData.nodes[ID].data);
-        //     this.setArrowConfig(inputData);
-        //     this.setBoxConfig(inputData);
-        // }
-        // for(let i in inputData.rootID){
-        //     this.roots.push(this.nodes[inputData.rootID[i]]);
-        // }
-        //
-        // this.connectNodes(inputData)
     }
     getRootID() {
         return this.rootID;
     }
     getNodes(){
         return this.nodes;
-    }
-    // getMaxDepth() {
-    //     return this.rootID.map(ID=>this.maxDepth(this.nodes[ID]));
-    // }
-    getNodeBoxes() {
-        // let boxes={};
-        // for(let ID in this.nodes) {
-        //     boxes[ID] = this.nodes[ID].getBox()
-        // }
-        // return {
-        //     "boxes":boxes,
-        //     "rootID":this.rootID,
-        //     "maxDepth":this.rootID.map(ID=>this.maxDepth(this.nodes[ID]))
-        // }
-    }
-
-    setArrow() {
-        for(let ID in this.nodes) {
-            this.nodes[ID].setArrow();
-        }
     }
 
     getMaxDepth(root) {
@@ -149,7 +105,6 @@ class BinaryTreeNode {
         this.ID = ID;
         this.rootID = rootID;
         this.data = stringData;
-        this.arrowXY = {left:{x:0,y:0}, right:{x:0,y:0}}
         this.boxXY = {x:0,y:0};
     }
     getID (){
@@ -171,27 +126,12 @@ class BinaryTreeNode {
     getBoxXY() {
         return this.boxXY;
     }
-    setArrowXY(direction, x, y) {
-        this.arrowXY[direction].x = x;
-        this.arrowXY[direction].y = y;
-    }
     setBoxXY(x,y) {
         this.boxXY.x = x;
         this.boxXY.y = y;
     }
     setBoxConfig(boxConfig) {
         this.boxConfig = boxConfig;
-    }
-    setArrowConfig(arrowConfig) {
-        this.arrowConfig = arrowConfig;
-    }
-    getArrowColor(direction) {
-        switch (direction) {
-            case "left":
-                return this.arrowConfig.leftArrowColor;
-            case "right":
-                return this.arrowConfig.rightArrowColor;
-        }
     }
 
     createBoxDiv() {

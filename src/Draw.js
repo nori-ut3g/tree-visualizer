@@ -10,9 +10,9 @@ export default class Draw {
         this.targetDiv = document.getElementById(drawSettings.target);
         //animation
         this.needsAnimation = drawSettings.animation;
-        this.animationInterval = 1000//drawSettings.interval;
+        this.animationInterval = drawSettings.interval;
         this.animationSteps = 0;
-        this.delay = 1000;
+        this.delay = 0;
 
         //info
         this.needsInfo = drawSettings.needsInfo;
@@ -21,8 +21,9 @@ export default class Draw {
         this.log = [{box:{},arrow:{}}];
 
         //position
-        this.boxXMargin = 40;
-        this.boxYMargin = 75;
+        console.log(drawSettings)
+        this.boxXMargin = drawSettings.boxXMargin;
+        this.boxYMargin = drawSettings.boxYMargin;
         //
         this.boxXOffset = 0;
         this.boxYOffset = 50;
@@ -35,11 +36,6 @@ export default class Draw {
         // this.initBoxes(boxesData);
         this.initInfoBox()
     }
-    initData(dataConstructor,info) {
-        if(this.needsInfo)this.refreshInfobox(info);
-        this.dataConstructor = dataConstructor;
-
-    }
 
 
     refresh(dataConstructor,info) {
@@ -51,7 +47,7 @@ export default class Draw {
         this.animationSteps++;
     }
 
-    initInfoBox(info) {
+    initInfoBox() {
         let infoDiv = document.createElement("div");
         infoDiv.setAttribute("id", `info`);
         infoDiv.style.position = "absolute";
@@ -60,10 +56,10 @@ export default class Draw {
             this.tl.add({
                 targets:infoDiv,
                 duration:this.animationInterval,
-                update: function (){infoDiv.innerHTML = info}
+                // update: function (){infoDiv.innerHTML = info}
             },`${(this.animationSteps+1) * this.animationInterval+this.delay}`);
         }else{
-            infoDiv.innerHTML = info;
+            // infoDiv.innerHTML = info;
         }
     }
 
@@ -72,8 +68,9 @@ export default class Draw {
         this.tl.add({
             targets:infoDiv,
             duration:this.animationInterval,
+            easing: 'easeInOutQuad',
             update: function (){infoDiv.innerHTML = info}
-        },`${(this.animationSteps+1) * this.animationSteps+this.delay}`);
+        },`${(this.animationSteps+1) * this.animationInterval+this.delay}`);
     }
 
 
@@ -86,8 +83,8 @@ export default class Draw {
             let root = this.dataConstructor.getNodes()[rootID];
             let maxDepth = this.dataConstructor.getMaxDepth(root);
             let drawingAreaWidth = this.boxXMargin * (2 ** (maxDepth-1) + 1);
-            let drawingAreaHeight = this.boxYMargin * (maxDepth-1);
-            let rootYPosition = tmpRootYPosition;
+            let drawingAreaHeight = this.boxYMargin * (maxDepth);
+            let rootYPosition = tmpRootYPosition + this.boxYMargin;
             tmpRootYPosition += drawingAreaHeight;
 
             let rootXPosition = Number(drawingAreaWidth) / 2;
@@ -106,7 +103,6 @@ export default class Draw {
         let nextBoxConfig = this.log[this.log.length-1].box;
         let nodes = this.dataConstructor.getNodes();
         //add
-        console.log(nextBoxConfig)
         for(let ID in nextBoxConfig) {
             let newBoxDiv;
             if (!prevBoxConfig[ID]){
@@ -132,9 +128,7 @@ export default class Draw {
 
             //change
             else{
-                console.log(ID,nextBoxConfig[ID].boxXY.x,prevBoxConfig[ID].boxXY.x)
                 let boxDiv = document.getElementById("box-"+ID);
-                console.log(boxDiv)
                 this.tl.add({
                     targets: boxDiv,
                     easing: 'easeInOutQuad',
@@ -164,12 +158,10 @@ export default class Draw {
         //change
         let prevArrowConfig = this.log[this.log.length-2].arrow;
         let nextArrowConfig = this.log[this.log.length-1].arrow;
-        let nodes = this.dataConstructor.getNodes();
         //add
         for(let ID in nextArrowConfig) {
             let setting = {
                 id:ID,
-                color:nextArrowConfig[ID].arrowColor
             }
             let headX = nextArrowConfig[ID].headXY.x;
             let headY = nextArrowConfig[ID].headXY.y;
@@ -182,17 +174,18 @@ export default class Draw {
                     newArrow = document.getElementById(ID);
                 }else{
                     newArrow = Tools.createArrowDiv(setting);
-                    newArrow.style.opacity = 1;
-                    newArrow.style.top = this.boxYOffset + "px";
 
                     this.targetDiv.append(newArrow);
                 }
+                newArrow.style.opacity = 0;
+                newArrow.style.top = this.boxYOffset + "px";
+
                 let lineDiv = document.getElementById(ID + "-line");
                 lineDiv.style.width = 100*(2**0.5)+"%";
                 let lineLength = Tools.calcArrowLength(tailX,headX,tailY,headY);
                 let lineDeg = -45 + Tools.calcArrowDeg(tailX,headX,tailY,headY)*180/Math.PI;
                 newArrow.style.transformOrigin = "top left";
-
+                lineDiv.style.opacity = 1;
                 this.tl.add({
                     easing: 'easeInOutQuad',
                     targets: newArrow,
@@ -277,22 +270,18 @@ export default class Draw {
                 let arrowHeadX = node.left.getBoxXY().x + node.getBoxSize() / 2;
                 let arrowHeadY = node.left.getBoxXY().y;
                 // console.log()
-                let arrowColor = "rgb(0,0,0)"//node.getArrowColor("left");
                 config[node.getID()+"-"+"left"] = {
                     headXY:{x:arrowHeadX,y:arrowHeadY},
                     tailXY:{x:arrowTailX,y:arrowTailY},
-                    arrowColor: arrowColor
                 }
             }
             if(node.right) {
                 let arrowHeadX = node.right.getBoxXY().x + node.getBoxSize() / 2;
                 let arrowHeadY = node.right.getBoxXY().y;
-                let arrowColor = "rgb(0,0,0)"//node.getArrowColor("left");
 
                 config[node.getID()+"-"+"right"] = {
                     headXY:{x:arrowHeadX,y:arrowHeadY},
                     tailXY:{x:arrowTailX,y:arrowTailY},
-                    arrowColor: arrowColor
                 }
             }
         }

@@ -31,8 +31,10 @@ export default class Arrow {
         // arrowHeadDiv.style.top = - thickness / 2 + "px";
         this.arrowHeadDiv.style.width = 7 + "px";
         this.arrowHeadDiv.style.height = 7 + "px";
-        this.arrowHeadDiv.style.borderRight = thickness + "px solid #000";
-        this.arrowHeadDiv.style.borderBottom = thickness + "px solid #000";
+        this.arrowHeadDiv.style.borderRight = thickness + "px solid";
+        this.arrowHeadDiv.style.borderBottom = thickness + "px solid";
+        this.arrowHeadDiv.style.borderRightColor = "rgb(0,0,0)"
+        this.arrowHeadDiv.style.borderBottomColor = "rgb(0,0,0)"
         this.arrowHeadDiv.style.position = "absolute"
         this.arrowHeadDiv.style.bottom =  0 + "px";
         this.arrowHeadDiv.style.right =  0 + "px";

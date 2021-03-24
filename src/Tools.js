@@ -14,7 +14,7 @@ export default class Tools {
     static createArrowDiv(settings) {
         let id = settings.id
         let thickness = settings.thickness || 2;
-        let color = settings.color;
+        let color = settings.color || "rgb(0,0,0)";
         let headSize = settings.headSize || 7;
 
 
@@ -27,7 +27,7 @@ export default class Tools {
 
         arrowDiv.style.position = 'absolute';
         arrowDiv.style.content = "";
-        arrowDiv.style.opacity = 0;
+        // arrowDiv.style.opacity = 0;
 
 
         lineDiv.style.position = "absolute";
