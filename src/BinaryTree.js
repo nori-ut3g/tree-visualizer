@@ -134,9 +134,9 @@ class BinaryTreeNode {
         this.boxConfig = boxConfig;
     }
 
-    createBoxDiv() {
+    createBoxDiv(parentDivID) {
         let boxDiv = document.createElement("div");
-        boxDiv.setAttribute("id", `box-${this.ID}`);
+        boxDiv.setAttribute("id", parentDivID + "-" + `box-${this.ID}`);
         boxDiv.innerHTML = `<div>${this.data}</div>`;
         boxDiv.style.width = this.boxConfig.boxSize + "px";
         boxDiv.style.height = this.boxConfig.boxSize + "px";

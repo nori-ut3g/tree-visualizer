@@ -22,9 +22,9 @@ export class MainPruner{
             textColor : settings.textColor || 'rgb(0,0,0)',//テキストの色
             dataType : settings.dataType || "BinaryTree",//データの種類
             interval : settings.interval || 1000,//アニメーションの間隔
-            boxSize : settings.boxSize || 50,//ボックスのサイズ
-            boxXMargin: settings.boxXMargin || 75,
-            boxYMargin: settings.boxYMargin || 75,
+            boxSize : settings.boxSize || 30,//ボックスのサイズ
+            boxXMargin: settings.boxXMargin || 30,
+            boxYMargin: settings.boxYMargin || 45,
             animation : settings.animation || true
         }
         this.createDrawingArea();
@@ -40,6 +40,7 @@ export class MainPruner{
         }
     }
     drawData(nodes, info) {
+        this.draw.initDraw(info);
         this.createBoxController(nodes);
         // this.draw.initData(this.nodeController, info);
         this.draw.refresh(this.nodeController, info);

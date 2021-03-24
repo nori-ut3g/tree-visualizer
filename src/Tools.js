@@ -1,9 +1,6 @@
 export default class Tools {
-    static createBoxDiv(setting) {
 
-    }
     static convertStringToArray(string) {
-        console.log(string)
         if(string === "[]" || string === "" || string === undefined) return null;
         string = string.slice(1)
         string = string.slice(0,-1)
@@ -23,6 +20,7 @@ export default class Tools {
 
         let lineDiv = document.createElement("div");
         lineDiv.setAttribute("id", id + "-line");
+        console.log(id)
         let arrowHeadDiv = document.createElement("div");
 
         arrowDiv.style.position = 'absolute';

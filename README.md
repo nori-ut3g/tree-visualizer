@@ -1,10 +1,12 @@
 # Pruner
 
-## Description
+## 特徴
 
-DescriptionDescriptionDescription
-DescriptionDescriptionDescription
-DescriptionDescriptionDescription
+木構造の可視化ができます。
+・使い方は([0,-10,5,null,-3,null,9])のように、階層順に記入するだけです。
+・差分はアニメーションで動かすことができる
+
+
 
 ***DEMO:***
 

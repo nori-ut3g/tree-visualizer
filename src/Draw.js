@@ -7,26 +7,65 @@ import anime from "../animeJS/anime.es.js";
  */
 export default class Draw {
     constructor(drawSettings) {
-        this.targetDiv = document.getElementById(drawSettings.target);
+        this.drawSettings = drawSettings;
+        // this.initDraw();
+        //
+        // this.parentDiv = document.getElementById(drawSettings.target);
+        // this.targetDiv = document.createElement("div")
+        // this.parentDiv.append(this.targetDiv)
+        // this.targetDiv.style.position = "relative"
+        // //animation
+        // this.needsAnimation = drawSettings.animation;
+        // this.animationInterval = drawSettings.interval;
+        // this.animationSteps = 0;
+        // this.delay = 2000;
+        //
+        // //info
+        // this.needsInfo = drawSettings.needsInfo;
+        //
+        // //log
+        // this.log = [{box:{},arrow:{}}];
+        //
+        // //position
+        // console.log(drawSettings)
+        // this.boxXMargin = drawSettings.boxXMargin;
+        // this.boxYMargin = drawSettings.boxYMargin;
+        // //
+        // this.boxXOffset = 0;
+        // this.boxYOffset = 0;
+        // if(this.needsAnimation){
+        //     this.tl = anime.timeline({
+        //         easing: 'easeOutExpo',
+        //         duration: this.animationInterval
+        //     });
+        // }
+        // // this.initBoxes(boxesData);
+        // this.initInfoBox()
+    }
+    initDraw(info) {
+        this.parentDiv = document.getElementById(this.drawSettings.target);
+        this.parentDiv.innerHTML = "";
+        this.targetDiv = document.createElement("div")
+        this.parentDiv.append(this.targetDiv)
+        this.targetDiv.style.position = "relative"
         //animation
-        this.needsAnimation = drawSettings.animation;
-        this.animationInterval = drawSettings.interval;
+        this.needsAnimation = this.drawSettings.animation;
+        this.animationInterval = this.drawSettings.interval;
         this.animationSteps = 0;
         this.delay = 0;
 
         //info
-        this.needsInfo = drawSettings.needsInfo;
+        this.needsInfo = this.drawSettings.needsInfo;
 
         //log
         this.log = [{box:{},arrow:{}}];
 
         //position
-        console.log(drawSettings)
-        this.boxXMargin = drawSettings.boxXMargin;
-        this.boxYMargin = drawSettings.boxYMargin;
+        this.boxXMargin = this.drawSettings.boxXMargin;
+        this.boxYMargin = this.drawSettings.boxYMargin;
         //
         this.boxXOffset = 0;
-        this.boxYOffset = 50;
+        this.boxYOffset = 0;
         if(this.needsAnimation){
             this.tl = anime.timeline({
                 easing: 'easeOutExpo',
@@ -34,43 +73,32 @@ export default class Draw {
             });
         }
         // this.initBoxes(boxesData);
-        this.initInfoBox()
+        let infoDiv = document.createElement("div");
+        infoDiv.setAttribute("id", this.drawSettings.target + "-" +`info`);
+        // infoDiv.style.position = "absolute";
+        this.targetDiv.append(infoDiv)
+        infoDiv.innerHTML = info
     }
-
-
     refresh(dataConstructor,info) {
-        this.refreshInfobox(info);
+
         this.dataConstructor = dataConstructor;
         this.setCurrentLog();
         this.refreshBox();
         this.refreshArrow();
+        this.refreshInfobox(info);
         this.animationSteps++;
     }
 
-    initInfoBox() {
-        let infoDiv = document.createElement("div");
-        infoDiv.setAttribute("id", `info`);
-        infoDiv.style.position = "absolute";
-        this.targetDiv.append(infoDiv)
-        if(this.needsAnimation){
-            this.tl.add({
-                targets:infoDiv,
-                duration:this.animationInterval,
-                // update: function (){infoDiv.innerHTML = info}
-            },`${(this.animationSteps+1) * this.animationInterval+this.delay}`);
-        }else{
-            // infoDiv.innerHTML = info;
-        }
-    }
 
     refreshInfobox(info) {
-        let infoDiv = document.getElementById("info")
+        let infoDiv = document.getElementById(this.drawSettings.target + "-" + "info")
+
         this.tl.add({
-            targets:infoDiv,
-            duration:this.animationInterval,
-            easing: 'easeInOutQuad',
-            update: function (){infoDiv.innerHTML = info}
-        },`${(this.animationSteps+1) * this.animationInterval+this.delay}`);
+            // targets:infoDiv,
+            // easing: 'easeInOutQuad',
+            update: function (){infoDiv.innerHTML = info},
+            duration: this.animationSteps === 0 ? 0 : this.animationInterval,
+        },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
     }
 
 
@@ -80,6 +108,7 @@ export default class Draw {
         let rootsPositionList = {};
 
         for(let rootID of roots){
+
             let root = this.dataConstructor.getNodes()[rootID];
             let maxDepth = this.dataConstructor.getMaxDepth(root);
             let drawingAreaWidth = this.boxXMargin * (2 ** (maxDepth-1) + 1);
@@ -106,10 +135,10 @@ export default class Draw {
         for(let ID in nextBoxConfig) {
             let newBoxDiv;
             if (!prevBoxConfig[ID]){
-                if(document.getElementById(ID)){
-                    newBoxDiv = document.getElementById(ID);
+                if(document.getElementById(this.drawSettings.target + "-" + ID)){
+                    newBoxDiv = document.getElementById(this.drawSettings.target + "-" + ID);
                 }else{
-                    newBoxDiv = nodes[ID].createBoxDiv();
+                    newBoxDiv = nodes[ID].createBoxDiv(this.drawSettings.target);
                     newBoxDiv.style.opacity = 0;
                     newBoxDiv.style.top = this.boxYOffset + "px";
                     newBoxDiv.style.background = "rgb(100,100,100)"
@@ -122,13 +151,13 @@ export default class Draw {
                     translateY: nextBoxConfig[ID].boxXY.y,
                     opacity: 1,
                     backgroundColor:nextBoxConfig[ID].boxColor,
-                    duration:this.animationInterval,
+                    duration: this.animationSteps === 0 ? 0 : this.animationInterval,
                 },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
             }
 
             //change
             else{
-                let boxDiv = document.getElementById("box-"+ID);
+                let boxDiv = document.getElementById(this.drawSettings.target + "-" + ID);
                 this.tl.add({
                     targets: boxDiv,
                     easing: 'easeInOutQuad',
@@ -144,7 +173,7 @@ export default class Draw {
         //delete
         for(let ID in prevBoxConfig) {
             if (!nextBoxConfig[ID]){
-                let boxDiv = document.getElementById(ID);
+                let boxDiv = document.getElementById(this.drawSettings.target + "-" + ID);
                 this.tl.add({
                     targets: boxDiv,
                     opacity: 0,
@@ -161,7 +190,7 @@ export default class Draw {
         //add
         for(let ID in nextArrowConfig) {
             let setting = {
-                id:ID,
+                id:this.drawSettings.target  + "-" + ID,
             }
             let headX = nextArrowConfig[ID].headXY.x;
             let headY = nextArrowConfig[ID].headXY.y;
@@ -179,8 +208,8 @@ export default class Draw {
                 }
                 newArrow.style.opacity = 0;
                 newArrow.style.top = this.boxYOffset + "px";
-
-                let lineDiv = document.getElementById(ID + "-line");
+                let lineDiv = document.getElementById(this.drawSettings.target + "-" +ID + "-line");
+                console.log(this.drawSettings.target, ID)
                 lineDiv.style.width = 100*(2**0.5)+"%";
                 let lineLength = Tools.calcArrowLength(tailX,headX,tailY,headY);
                 let lineDeg = -45 + Tools.calcArrowDeg(tailX,headX,tailY,headY)*180/Math.PI;
@@ -198,12 +227,12 @@ export default class Draw {
 
                     opacity: 1,
                     // backgroundColor:"rgb(0,0,0)",
-                    duration:this.animationInterval,
+                    duration:this.animationSteps === 0 ? 0 : this.animationInterval,
                 },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
             }
             //change
             else{
-                let arrowDiv = document.getElementById(ID);
+                let arrowDiv = document.getElementById(this.drawSettings.target + "-" + ID);
                 let lineLength = Tools.calcArrowLength(tailX,headX,tailY,headY);
                 let lineDeg = -45 + Tools.calcArrowDeg(tailX,headX,tailY,headY)*180/Math.PI;
                 this.tl.add({
@@ -223,7 +252,7 @@ export default class Draw {
         //delete
         for(let ID in prevArrowConfig) {
             if (!nextArrowConfig[ID]){
-                let arrowDiv = document.getElementById(ID);
+                let arrowDiv = document.getElementById(this.drawSettings.target + "-" + ID);
                 this.tl.add({
                     targets: arrowDiv,
                     opacity: 0,
@@ -249,6 +278,7 @@ export default class Draw {
             let boxSize = node.getBoxSize();
             let rootID = node.getMyRootID();
             let boxX = (Tools.binToInt(node.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(node.getPosition().length+1)) - boxSize/2;
+            boxX += this.targetDiv.clientWidth/2 - rootPositionList[rootID].x//真ん中へ移動
             let boxY = node.getPosition().length * this.boxYMargin + rootPositionList[rootID].y;
             node.setBoxXY(boxX, boxY);
             config[node.getID()] = {
