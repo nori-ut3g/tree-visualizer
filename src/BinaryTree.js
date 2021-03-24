@@ -151,24 +151,9 @@ class BinaryTreeNode {
         return boxDiv;
     }
 
-    createArrowDiv(direction) {
-        let setting = {
-            id : this.ID + direction,
-            color: direction === "left" ? this.arrowConfig.leftArrowColor : this.arrowConfig.rightArrowColor,
-            headSize: direction === "left" ? this.arrowConfig.leftArrowHeadSize: this.arrowConfig.rightArrowHeadSize,
-            thickness: direction === "left" ? this.arrowConfig.leftArrowThickness: this.arrowConfig.rightArrowThickness
-        }
-        return Tools.createArrowDiv(setting);
-    }
-
     setRootID(ID) {
         this.rootID = ID;
     }
-    setChildNode(left, right) {
-        this.left = left;
-        this.right = right;
-    }
-
     setLeftPosition(parentPosition) {
         this.position = parentPosition.concat([0]);
     }

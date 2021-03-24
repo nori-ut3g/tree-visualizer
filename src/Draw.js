@@ -27,7 +27,7 @@ export default class Draw {
         this.boxXMargin = this.drawSettings.boxXMargin;
         this.boxYMargin = this.drawSettings.boxYMargin;
         //
-        this.boxXOffset = 0;
+        // this.boxXOffset = 0;
         this.boxYOffset = 0;
         if(this.needsAnimation){
             this.tl = anime.timeline({
@@ -158,7 +158,6 @@ export default class Draw {
                     newArrow = document.getElementById(this.drawSettings.target  + "-" + ID);
                 }else{
                     newArrow = Tools.createArrowDiv(setting);
-
                     this.targetDiv.append(newArrow);
                 }
                 newArrow.style.opacity = 0;
@@ -174,13 +173,10 @@ export default class Draw {
                     targets: newArrow,
                     width: lineLength * Math.sqrt(2) / 2+ "px",
                     height: lineLength * Math.sqrt(2) / 2+ "px",
-                    // rotate:`${lineDeg}deg`,
                     translateX: tailX+"px",
                     translateY: tailY+"px",
                     rotate:lineDeg+`deg`,
-
                     opacity: 1,
-                    // backgroundColor:"rgb(0,0,0)",
                     duration:this.animationSteps === 0 ? 0 : this.animationInterval,
                 },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
             }
@@ -194,7 +190,6 @@ export default class Draw {
                     targets: arrowDiv,
                     width: lineLength * Math.sqrt(2) / 2+ "px",
                     height: lineLength * Math.sqrt(2) / 2+ "px",
-                    // rotate:`${lineDeg}deg`,
                     translateX: tailX+"px",
                     translateY: tailY+"px",
                     rotate:lineDeg+`deg`,
