@@ -1,19 +1,10 @@
-// document.write('<script type="module" src="../src/Draw.js"></script>');
-// document.write('<script type="module" src="../src/BinaryTree.js"></script>');
-// document.write('<script type="module" src="../src/Draw.js"></script>');
-// document.write('<script type="module" src="../src/Tools.js"></script>');
-
-
 import Draw from "./Draw.js";
 import BinaryTreeController from "./BinaryTree.js";
-
 
 export default function pruner(settings) {
     return new MainPruner(settings);
 }
 
-
-//
 class MainPruner{
     constructor(settings) {
         this.drawSettings = {
@@ -30,10 +21,15 @@ class MainPruner{
         }
         this.createDrawingArea();
     }
+
     createDrawingArea() {
         this.draw = new Draw(this.drawSettings);
     }
 
+    /*
+    nodes
+
+     */
     createBoxController(nodes) {
         switch (this.drawSettings.dataType) {
             case "BinaryTree":
@@ -43,12 +39,9 @@ class MainPruner{
     drawData(nodes, info) {
         this.draw.initDraw(info);
         this.createBoxController(nodes);
-        // this.draw.initData(this.nodeController, info);
         this.draw.refresh(this.nodeController, info);
     }
     nextStep(nodes, info) {
-        // let info = inputData.info;
-        // let nodeData = inputData.nodeData;
         this.nodeController.refreshNodes(nodes);
         this.draw.refresh(this.nodeController, info);
     }

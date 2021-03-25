@@ -6,10 +6,8 @@ export default class Draw {
         this.drawSettings = drawSettings;
     }
     initDraw(info) {
-        this.parentDiv = document.getElementById(this.drawSettings.target);
-        this.parentDiv.innerHTML = "";
-        this.targetDiv = document.createElement("div")
-        this.parentDiv.append(this.targetDiv)
+        this.targetDiv = document.getElementById(this.drawSettings.target);
+        this.targetDiv.innerHTML = "";
         this.targetDiv.style.position = "relative"
         //animation
         this.needsAnimation = this.drawSettings.animation;
@@ -39,9 +37,17 @@ export default class Draw {
         infoDiv.setAttribute("id", this.drawSettings.target + "-" +`info`);
         this.targetDiv.append(infoDiv)
         infoDiv.innerHTML = info
+
+        this.parentDiv = document.createElement("div")
+        this.parentDiv.setAttribute("id", this.drawSettings.target+"-parent");
+        this.parentDiv.style.marginLeft = "auto";
+        this.parentDiv.style.marginRight = "auto";
+        this.targetDiv.append(this.parentDiv)
+
     }
     refresh(dataConstructor,info) {
         this.dataConstructor = dataConstructor;
+        this.setParentSize();
         this.setCurrentLog();
         this.refreshBox();
         this.refreshArrow();
@@ -57,12 +63,25 @@ export default class Draw {
             duration: this.animationSteps === 0 ? 0 : this.animationInterval,
         },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
     }
-
+    setParentSize() {
+        let roots = this.dataConstructor.getRootID();
+        let height = 0;
+        let width = 0;
+        for(let rootID of roots) {
+            let root = this.dataConstructor.getNodes()[rootID];
+            let maxDepth = this.dataConstructor.getMaxDepth(root);
+            let rootMaxHeight = this.boxYMargin * (maxDepth);
+            let rootMaxWidth = this.boxXMargin * (2 ** (maxDepth - 1) + 1);
+            height += rootMaxHeight;
+            width = rootMaxWidth > width ? rootMaxWidth : width;
+        }
+        this.parentDiv.style.height = height + "px";
+        this.parentDiv.style.width = width + "px";
+    }
     setRootsPosition(){
         let roots = this.dataConstructor.getRootID();
         let tmpRootYPosition = 0;
         let rootsPositionList = {};
-
         for(let rootID of roots){
             let root = this.dataConstructor.getNodes()[rootID];
             let maxDepth = this.dataConstructor.getMaxDepth(root);
@@ -72,7 +91,6 @@ export default class Draw {
             tmpRootYPosition += drawingAreaHeight;
 
             let rootXPosition = Number(drawingAreaWidth) / 2;
-
             rootsPositionList[rootID] = {
                 "x":rootXPosition,
                 "y":rootYPosition
@@ -96,7 +114,7 @@ export default class Draw {
                     newBoxDiv = nodes[ID].createBoxDiv(this.drawSettings.target);
                     newBoxDiv.style.opacity = 0;
                     newBoxDiv.style.top = this.boxYOffset + "px";
-                    this.targetDiv.append(newBoxDiv);
+                    this.parentDiv.append(newBoxDiv);
                 }
                 this.tl.add({
                     easing: 'easeInOutQuad',
@@ -158,7 +176,7 @@ export default class Draw {
                     newArrow = document.getElementById(this.drawSettings.target  + "-" + ID);
                 }else{
                     newArrow = Tools.createArrowDiv(setting);
-                    this.targetDiv.append(newArrow);
+                    this.parentDiv.append(newArrow);
                 }
                 newArrow.style.opacity = 0;
                 newArrow.style.top = this.boxYOffset + "px";
@@ -227,7 +245,8 @@ export default class Draw {
             let boxSize = node.getBoxSize();
             let rootID = node.getMyRootID();
             let boxX = (Tools.binToInt(node.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(node.getPosition().length+1)) - boxSize/2;
-            boxX += this.targetDiv.clientWidth/2 - rootPositionList[rootID].x//真ん中へ移動
+            boxX += this.parentDiv.clientWidth/2 - rootPositionList[rootID].x//真ん中へ移動
+            console.log(this.parentDiv.clientWidth)
             let boxY = node.getPosition().length * this.boxYMargin + rootPositionList[rootID].y;
             node.setBoxXY(boxX, boxY);
             config[node.getID()] = {
