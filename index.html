@@ -14,12 +14,14 @@
         <p>階層表示された文字列から二分木を可視化します。</p>
         <p>同じ値が存在する場合は、ノードごとにIDを設定する必要があります。</p>
 <!--        <p>4.Optionを確認してください。</p>-->
-        <p>例1 : [0,-10,5,null,-3,null,9]</p>
-        <p>例2 : [50,17,76,9,23,54,null,null,14,19,null,null,72]</p>
+        <p>例1 : data:[0,-10,5,null,-3,null,9] ID:無くてもOK</p>
+        <p>例2 : data:[50,17,76,9,23,54,null,null,14,19,null,null,72]ID:無くてもOK</p>
+        <p>例3 : data:[1,1,1,1,1,1,1] ID:[0,1,2,3,4,5,6]</p>
         <div>
 <!--            buttonで実行-->
             <div id = "target1" ></div>
-            <div><label for="target1-data"></label><input type="text" id="target1-data" name="data" value="[0,-10,5,null,-3,null,9]" size="40"></div>
+            <div>data<label for="target1-data"></label><input type="text" id="target1-data" name="data" value="[0,-10,5,null,-3,null,9]" size="40"></div>
+            <div>ID<label for="target1-id"></label><input type="text" id="target1-id" name="data" value="[0,1,2,3,4,5,6]" size="40"></div>
             <input id = "example1-drawBtn" type="button" value="Draw">
 
             <script type="module">
@@ -35,7 +37,8 @@
                 document.getElementById("example1-drawBtn").onclick = () => {
                     example1.drawData(
                         [{
-                            data:document.getElementById("target1-data").value
+                            data:document.getElementById("target1-data").value,
+                            ID:document.getElementById("target1-id").value,
                         }],document.getElementById("target1-data").value
                     )
                 }
