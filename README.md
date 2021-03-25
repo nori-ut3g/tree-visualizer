@@ -14,11 +14,7 @@
 
 ## Features
 
-- Awesome function
-- Awesome UI
-- ...
-
-For more information, see `awesome-tool --help`.
+ライブラリーをインポートして、
 
 ## Requirement
 

@@ -5,6 +5,16 @@ export default function pruner(settings) {
     return new MainPruner(settings);
 }
 
+/*
+アルゴリズム
+入力をPruner独自のデータ構造に変換する。
+変換後、ノードの位置関係を計算する。
+ノードの位置が前の段階と異なっていたら、その差分をanimejsで動かす。
+ */
+
+
+
+
 class MainPruner{
     constructor(settings) {
         this.drawSettings = {
@@ -19,16 +29,15 @@ class MainPruner{
             boxYMargin: Number(settings.boxYMargin) || 45,
             animation : settings.animation || true
         }
-        this.createDrawingArea();
-    }
-
-    createDrawingArea() {
         this.draw = new Draw(this.drawSettings);
     }
 
     /*
     nodes
-
+        data: Tools.convertStringToArray(nodeList.data),
+        ID: Tools.convertStringToArray(nodeList.ID) || Tools.convertStringToArray(nodeList.data),
+        boxColor:Tools.convertStringToArray(nodeList.boxColor)  || Array(nodeList.data.length),
+        textColor:Tools.convertStringToArray( nodeList.textColor) || Array(nodeList.data.length)
      */
     createBoxController(nodes) {
         switch (this.drawSettings.dataType) {
@@ -36,11 +45,14 @@ class MainPruner{
                 this.nodeController = new BinaryTreeController(nodes, this.drawSettings);
         }
     }
+
+    //Animationなしで描写
     drawData(nodes, info) {
         this.draw.initDraw(info);
         this.createBoxController(nodes);
         this.draw.refresh(this.nodeController, info);
     }
+    //drawDataした後、差分をAnimation
     nextStep(nodes, info) {
         this.nodeController.refreshNodes(nodes);
         this.draw.refresh(this.nodeController, info);

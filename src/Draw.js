@@ -27,22 +27,27 @@ export default class Draw {
         //
         // this.boxXOffset = 0;
         this.boxYOffset = 0;
-        if(this.needsAnimation){
-            this.tl = anime.timeline({
-                easing: 'easeOutExpo',
-                duration: this.animationInterval
-            });
-        }
+        // if(this.needsAnimation){
+        this.tl = anime.timeline({
+            easing: 'easeOutExpo',
+            // duration: this.animationInterval
+        });
+        // }
         let infoDiv = document.createElement("div");
         infoDiv.setAttribute("id", this.drawSettings.target + "-" +`info`);
         this.targetDiv.append(infoDiv)
         infoDiv.innerHTML = info
 
+
         this.parentDiv = document.createElement("div")
         this.parentDiv.setAttribute("id", this.drawSettings.target+"-parent");
         this.parentDiv.style.marginLeft = "auto";
         this.parentDiv.style.marginRight = "auto";
+
+
         this.targetDiv.append(this.parentDiv)
+
+
 
     }
     refresh(dataConstructor,info) {
@@ -60,8 +65,8 @@ export default class Draw {
         let infoDiv = document.getElementById(this.drawSettings.target + "-" + "info")
         this.tl.add({
             update: function (){infoDiv.innerHTML = info},
-            duration: this.animationSteps === 0 ? 0 : this.animationInterval,
-        },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+            duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
+        },`${(this.animationSteps) * this.animationInterval+this.delay}`)
     }
     setParentSize() {
         let roots = this.dataConstructor.getRootID();
@@ -108,7 +113,9 @@ export default class Draw {
         for(let ID in nextBoxConfig) {
             let newBoxDiv;
             if (!prevBoxConfig[ID]){
+
                 if(document.getElementById(this.drawSettings.target + "-" + ID)){
+                    console.log("test")
                     newBoxDiv = document.getElementById(this.drawSettings.target + "-" + ID);
                 }else{
                     newBoxDiv = nodes[ID].createBoxDiv(this.drawSettings.target);
@@ -116,30 +123,35 @@ export default class Draw {
                     newBoxDiv.style.top = this.boxYOffset + "px";
                     this.parentDiv.append(newBoxDiv);
                 }
+                // newBoxDiv.style.opacity = 1;
+                console.log("test",newBoxDiv)
                 this.tl.add({
                     easing: 'easeInOutQuad',
                     targets: newBoxDiv,
                     translateX: nextBoxConfig[ID].boxXY.x,
                     translateY: nextBoxConfig[ID].boxXY.y,
-                    opacity: 1,
                     color:nextBoxConfig[ID].textColor,
                     backgroundColor:nextBoxConfig[ID].boxColor,
-                    duration: this.animationSteps === 0 ? 0 : this.animationInterval,
-                },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+
+                    opacity: 1,
+                    duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
+                },`${(this.animationSteps) * this.animationInterval+this.delay}`)
             }
 
             //change
             else{
                 let boxDiv = document.getElementById(this.drawSettings.target + "-" + ID);
+
                 this.tl.add({
                     targets: boxDiv,
                     easing: 'easeInOutQuad',
                     translateX: nextBoxConfig[ID].boxXY.x,
                     translateY: nextBoxConfig[ID].boxXY.y,
-                    opacity: 1,
+                    // opacity: 1,
+
                     backgroundColor:nextBoxConfig[ID].boxColor,
-                    duration:this.animationInterval
-                },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+                    duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
+                },`${(this.animationSteps) * this.animationInterval+this.delay}`)
             }
         }
 
@@ -150,8 +162,8 @@ export default class Draw {
                 this.tl.add({
                     targets: boxDiv,
                     opacity: 0,
-                    duration:this.animationInterval,
-                },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+                    duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
+                },`${(this.animationSteps) * this.animationInterval+this.delay}`)
             }
         }
     }
@@ -195,8 +207,8 @@ export default class Draw {
                     translateY: tailY+"px",
                     rotate:lineDeg+`deg`,
                     opacity: 1,
-                    duration:this.animationSteps === 0 ? 0 : this.animationInterval,
-                },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+                    duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
+                },`${(this.animationSteps) * this.animationInterval+this.delay}`)
             }
             //change
             else{
@@ -211,8 +223,8 @@ export default class Draw {
                     translateX: tailX+"px",
                     translateY: tailY+"px",
                     rotate:lineDeg+`deg`,
-                    duration:this.animationInterval
-                },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+                    duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
+                },`${(this.animationSteps) * this.animationInterval+this.delay}`)
             }
         }
 
@@ -223,8 +235,8 @@ export default class Draw {
                 this.tl.add({
                     targets: arrowDiv,
                     opacity: 0,
-                    duration:this.animationInterval,
-                },`${(this.animationSteps+1) * this.animationInterval+this.delay}`)
+                    duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
+                },`${(this.animationSteps) * this.animationInterval+this.delay}`)
             }
         }
     }
@@ -246,7 +258,6 @@ export default class Draw {
             let rootID = node.getMyRootID();
             let boxX = (Tools.binToInt(node.getPosition())*2+1) * (rootPositionList[rootID].x * 2)/(2**(node.getPosition().length+1)) - boxSize/2;
             boxX += this.parentDiv.clientWidth/2 - rootPositionList[rootID].x//真ん中へ移動
-            console.log(this.parentDiv.clientWidth)
             let boxY = node.getPosition().length * this.boxYMargin + rootPositionList[rootID].y;
             node.setBoxXY(boxX, boxY);
             config[node.getID()] = {

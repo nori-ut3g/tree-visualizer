@@ -23,7 +23,6 @@
             <div>data<label for="target1-data"></label><input type="text" id="target1-data" name="data" value="[0,-10,5,null,-3,null,9]" size="40"></div>
             <div>ID<label for="target1-id"></label><input type="text" id="target1-id" name="data" value="[0,1,2,3,4,5,6]" size="40"></div>
             <input id = "example1-drawBtn" type="button" value="Draw">
-
             <script type="module">
                 import pruner from "./src/Index.js";
                 let targetDiv = document.getElementById("target1");
@@ -45,72 +44,72 @@
             </script>
         </div>
 
-<!--        <p>2. Animation</p>-->
-<!--        <p>階層表示された文字列を連続して入力すると、差分を自動で計算しAnimationを生成します。</p>-->
-<!--        <p>Animationの詳細の設定は3.setting</p>-->
-<!--        <p>AnimationはAnime.jsを使用しています。</p>-->
-<!--        <div>-->
-<!--            <div id = "target2" ></div>-->
-<!--            <div>step1<label for="target2-data1"></label><input type="text" id="target2-data1" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>-->
-<!--            <div>step2<label for="target2-data2"></label><input type="text" id="target2-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>-->
-<!--            <div>step3<label for="target2-data3"></label><input type="text" id="target2-data3" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>-->
-<!--            <div>step4<label for="target2-data4"></label><input type="text" id="target2-data4" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>-->
-<!--            <div>step5<label for="target2-data5"></label><input type="text" id="target2-data5" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>-->
-<!--            <input id = "example2-drawBtn" type="button" value="Draw">-->
+        <p>2. Animation</p>
+        <p>階層表示された文字列を連続して入力すると、差分を自動で計算しAnimationを生成します。</p>
+        <p>Animationの詳細の設定は3.setting</p>
+        <p>AnimationはAnime.jsを使用しています。</p>
+        <div>
+            <div id = "target2" ></div>
+            <div>step1<label for="target2-data1"></label><input type="text" id="target2-data1" name="data" value="[1,2,3,4,5,6,7,8]" size="40"></div>
+            <div>step2<label for="target2-data2"></label><input type="text" id="target2-data2" name="data" value="[1,2,3,4,5,6,7]" size="40"></div>
+            <div>step3<label for="target2-data3"></label><input type="text" id="target2-data3" name="data" value="[1,2,3,4,5,6]" size="40"></div>
+            <div>step4<label for="target2-data4"></label><input type="text" id="target2-data4" name="data" value="[1,2,3,4,5]" size="40"></div>
+            <div>step5<label for="target2-data5"></label><input type="text" id="target2-data5" name="data" value="[1,2,3,4]" size="40"></div>
+            <input id = "example2-drawBtn" type="button" value="Draw">
 
-<!--            <script type="module">-->
-<!--                import pruner from "./src/Index.js";-->
+            <script type="module">
+                import pruner from "./src/Index.js";
 
-<!--                let targetDiv = document.getElementById("target2");-->
-<!--                targetDiv.style.height = 500 + "px";-->
-<!--                targetDiv.style.width = 700 + "px";-->
-<!--                targetDiv.style.overflow = "scroll";-->
-<!--                targetDiv.style.background = "rgb(150,150,150)"-->
-<!--                let example2 = pruner(-->
-<!--                    {target:"target2"}-->
-<!--                );-->
-<!--                document.getElementById("example2-drawBtn").onclick = () => {-->
-<!--                    if(document.getElementById("target2-data1").value){-->
-<!--                        example2.drawData(-->
-<!--                            [{-->
-<!--                                data:document.getElementById("target2-data1").value-->
-<!--                            }],document.getElementById("target2-data1").value-->
-<!--                        )-->
-<!--                    }else{-->
-<!--                        return;-->
-<!--                    }-->
-<!--                    if(document.getElementById("target2-data2").value){-->
-<!--                        example2.nextStep(-->
-<!--                            [{-->
-<!--                                data:document.getElementById("target2-data2").value-->
-<!--                            }],document.getElementById("target2-data2").value-->
-<!--                        )-->
-<!--                    }-->
-<!--                    if(document.getElementById("target2-data3").value){-->
-<!--                        example2.nextStep(-->
-<!--                            [{-->
-<!--                                data:document.getElementById("target2-data3").value-->
-<!--                            }],document.getElementById("target2-data3").value-->
-<!--                        )-->
-<!--                    }-->
-<!--                    if(document.getElementById("target2-data4").value){-->
-<!--                        example2.nextStep(-->
-<!--                            [{-->
-<!--                                data:document.getElementById("target2-data4").value-->
-<!--                            }],document.getElementById("target2-data4").value-->
-<!--                        )-->
-<!--                    }-->
-<!--                    if(document.getElementById("target2-data5").value){-->
-<!--                        example2.nextStep(-->
-<!--                            [{-->
-<!--                                data:document.getElementById("target2-data5").value-->
-<!--                            }],document.getElementById("target2-data5").value-->
-<!--                        )-->
-<!--                    }-->
-<!--                }-->
-<!--            </script>-->
+                let targetDiv = document.getElementById("target2");
+                targetDiv.style.height = 500 + "px";
+                targetDiv.style.width = 700 + "px";
+                targetDiv.style.overflow = "scroll";
+                targetDiv.style.background = "rgb(150,150,150)"
+                let example2 = pruner(
+                    {target:"target2"}
+                );
+                document.getElementById("example2-drawBtn").onclick = () => {
+                    if(document.getElementById("target2-data1").value){
+                        example2.drawData(
+                            [{
+                                data:document.getElementById("target2-data1").value
+                            }],document.getElementById("target2-data1").value
+                        )
+                    }else{
+                        return;
+                    }
+                    if(document.getElementById("target2-data2").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target2-data2").value
+                            }],document.getElementById("target2-data2").value
+                        )
+                    }
+                    if(document.getElementById("target2-data3").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target2-data3").value
+                            }],document.getElementById("target2-data3").value
+                        )
+                    }
+                    if(document.getElementById("target2-data4").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target2-data4").value
+                            }],document.getElementById("target2-data4").value
+                        )
+                    }
+                    if(document.getElementById("target2-data5").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target2-data5").value
+                            }],document.getElementById("target2-data5").value
+                        )
+                    }
+                }
+            </script>
+        </div>
 <!--        </div>-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
 <!--        3. Setting-->
 
 <!--        <div>-->

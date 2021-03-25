@@ -9,7 +9,6 @@ export default class BinaryTreeController {
         for(let i=0 ;i < boxColorList.length; i++) {
             let ID = nodeIDList[i];
             if(!this.nodes[ID]) continue;
-            console.log(boxColorList[i],this.defaultSettings.boxColor)
             let boxConfig = {
                 boxColor: boxColorList[i] || this.defaultSettings.boxColor,
                 textColor: textColorList[i] || this.defaultSettings.textColor,
@@ -146,6 +145,7 @@ class BinaryTreeNode {
         boxDiv.style.justifyContent = "center";
         boxDiv.style.alignItems = "center";
         boxDiv.style.borderRadius = 100 + "%";
+        console.log(boxDiv)
         return boxDiv;
     }
 
