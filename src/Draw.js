@@ -43,7 +43,7 @@ export default class Draw {
         this.parentDiv.setAttribute("id", this.drawSettings.target+"-parent");
         this.parentDiv.style.marginLeft = "auto";
         this.parentDiv.style.marginRight = "auto";
-
+        this.parentDiv.style.background = "rgb(255,0,0)"
 
         this.targetDiv.append(this.parentDiv)
 
@@ -80,8 +80,14 @@ export default class Draw {
             height += rootMaxHeight;
             width = rootMaxWidth > width ? rootMaxWidth : width;
         }
-        this.parentDiv.style.height = height + "px";
-        this.parentDiv.style.width = width + "px";
+        this.tl.add({
+            target:this.parentDiv,
+            width:width + "px",
+            height: height + "px",
+            duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
+        },`${(this.animationSteps) * this.animationInterval+this.delay}`)
+        // this.parentDiv.style.height = height + "px";
+        // this.parentDiv.style.width = width + "px";
     }
     setRootsPosition(){
         let roots = this.dataConstructor.getRootID();
