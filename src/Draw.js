@@ -31,7 +31,6 @@ export default class Draw {
         // if(this.needsAnimation){
         this.tl = anime.timeline({
             easing: 'easeOutExpo',
-            // duration: this.animationInterval
         });
         // }
         let infoDiv = document.createElement("div");
@@ -42,14 +41,13 @@ export default class Draw {
 
         this.parentDiv = document.createElement("div")
         this.parentDiv.setAttribute("id", this.drawSettings.target+"-parent");
-        this.parentDiv.style.marginLeft = "auto";
-        this.parentDiv.style.marginRight = "auto";
         this.targetDiv.append(this.parentDiv)
     }
 
     refresh(dataConstructor,info) {
         this.dataConstructor = dataConstructor;
         this.setParentSize();
+
         this.setCurrentLog();
         this.refreshBox();
         this.refreshArrow();
@@ -77,12 +75,9 @@ export default class Draw {
             height += rootMaxHeight;
             width = rootMaxWidth > width ? rootMaxWidth : width;
         }
-        this.tl.add({
-            target:this.parentDiv,
-            width:width + "px",
-            height: height + "px",
-            duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
-        },`${(this.animationSteps) * this.animationInterval+this.delay}`)
+        let parentDiv = document.getElementById(this.drawSettings.target+"-parent");
+        if(Number(parentDiv.clientWidth) < width) parentDiv.style.width = width+"px";
+        if(Number(parentDiv.clientHeight) < height) parentDiv.style.height = height+"px";
     }
 
     setRootsPosition(){

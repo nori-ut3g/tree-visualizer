@@ -25,8 +25,8 @@
         <div>
 <!--            buttonで実行-->
             <div id = "target1" ></div>
-            <div>data<label for="target1-data"></label><input type="text" id="target1-data" name="data" value="[0,-10,5,null,-3,null,9]" size="40"></div>
-            <div>ID<label for="target1-id"></label><input type="text" id="target1-id" name="data" value="[0,1,2,3,4,5,6]" size="40"></div>
+            <div>data<label for="target1-data"></label><input type="text" id="target1-data" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]" size="40"></div>
+            <div>ID<label for="target1-id"></label><input type="text" id="target1-id" name="data" value="" size="40"></div>
             <input id = "example1-drawBtn" type="button" value="Draw">
             <script type="module">
                 import pruner from "./src/Index.js";
@@ -69,7 +69,7 @@
                 targetDiv.style.height = 500 + "px";
                 targetDiv.style.width = 700 + "px";
                 targetDiv.style.overflow = "scroll";
-                targetDiv.style.background = "rgb(150,150,150)"
+                targetDiv.style.background = "rgb(171,216,167)"
                 let example2 = pruner(
                     {target:"target2"}
                 );
@@ -140,7 +140,7 @@
                 targetDiv.style.height = 500 + "px";
                 targetDiv.style.width = 700 + "px";
                 targetDiv.style.overflow = "scroll";
-                targetDiv.style.background = "rgb(150,150,150)"
+                targetDiv.style.background = "rgb(171,216,167)"
                 console.log(document.getElementById("target3-setting-boxSize").value)
                 document.getElementById("example3-drawBtn").onclick = () => {
                     let example2 = pruner(
@@ -214,7 +214,7 @@
             targetDiv.style.height = 500 + "px";
             targetDiv.style.width = 700 + "px";
             targetDiv.style.overflow = "scroll";
-            targetDiv.style.background = "rgb(150,150,150)"
+            targetDiv.style.background = "rgb(171,216,167)"
             let findBST = pruner(
                 {target:"findBST"}
             );
