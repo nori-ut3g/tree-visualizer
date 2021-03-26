@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+
+    <title>Tree_Visualizer</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
 </head>
 <body bgcolor="#F7F7E4">
 <!--配色候補-->
@@ -12,27 +17,29 @@
 <!--#2C7873 rgb(44,120,115)-->
 <!--#6FB98D rgb(111,185,141)-->
 
-<div>
+<div class="container">
 <!--    Pruner-->
     <div>
-        <p>1. 二分木の表示</p>
-        <p>階層表示された文字列から二分木を可視化します。</p>
-        <p>同じ値が存在する場合は、ノードごとにIDを設定する必要があります。</p>
-<!--        <p>4.Optionを確認してください。</p>-->
-        <p>例1 : data:[0,-10,5,null,-3,null,9] ID:無くてもOK</p>
-        <p>例2 : data:[50,17,76,9,23,54,null,null,14,19,null,null,72]ID:無くてもOK</p>
-        <p>例3 : data:[1,1,1,1,1,1,1] ID:[0,1,2,3,4,5,6]</p>
-        <div>
-<!--            buttonで実行-->
-            <div id = "target1" ></div>
-            <div>data<label for="target1-data"></label><input type="text" id="target1-data" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]" size="40"></div>
-            <div>ID<label for="target1-id"></label><input type="text" id="target1-id" name="data" value="" size="40"></div>
-            <input id = "example1-drawBtn" type="button" value="Draw">
+        <div class="col-6 " style="background-color: #ABD8A7">
+            <h4>1. 二分木の表示</h4>
+            <p>階層表示された文字列から二分木を可視化します。</p>
+            <p>同じ値が存在する場合は、ノードごとにIDを設定する必要があります。</p>
+            <p>例1 : data:[0,-10,5,null,-3,null,9] ID:無くてもOK</p>
+            <p>例2 : data:[50,17,76,9,23,54,null,null,14,19,null,null,72]ID:無くてもOK</p>
+            <p>例3 : data:[1,1,1,1,1,1,1] ID:[0,1,2,3,4,5,6]</p>
+        </div>
+        <div class="col-12">
+            <div id="target1" class="col-12" style="height:350px"></div>
+            <div>
+                <div>data<label for="target1-data"></label><input type="text" id="target1-data" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]" size="40"></div>
+                <div>ID<label for="target1-id"></label><input type="text" id="target1-id" name="data" value="" size="40"></div>
+                <input id = "example1-drawBtn" type="button" value="Draw">
+            </div>
             <script type="module">
                 import pruner from "./src/Index.js";
                 let targetDiv = document.getElementById("target1");
-                targetDiv.style.height = 500 + "px";
-                targetDiv.style.width = 700 + "px";
+                // targetDiv.style.height = 500 + "px";
+                // targetDiv.style.width = 700 + "px";
                 targetDiv.style.overflow = "scroll";
                 targetDiv.style.background = "rgb(171,216,167)"
                 let example1 = pruner(
