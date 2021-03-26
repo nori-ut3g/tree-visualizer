@@ -23,9 +23,9 @@ class MainPruner{
     constructor(settings) {
         this.drawSettings = {
             target : settings.target || "target",//表示させるDivID
-            boxColor : settings.boxColor || 'rgb(0,255,0)',//ボックスのいろ
-            textColor : settings.textColor || 'rgb(0,0,0)',//テキストの色
-            arrowColor : settings.arrowColor || "rgb(0,0,0)",
+            boxColor : settings.boxColor || 'rgb(233,203,107)',//ボックスのいろ
+            textColor : settings.textColor || 'rgb(69,54,10)',//テキストの色
+            arrowColor : settings.arrowColor || "rgb(69,54,10)",
             dataType : settings.dataType || "BinaryTree",//データの種類
             interval :Number(settings.interval )|| 1000,//アニメーションの間隔
             boxSize : Number(settings.boxSize) || 30,//ボックスのサイズ

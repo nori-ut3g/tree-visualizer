@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
+<body bgcolor="#F7F7E4">
+<!--配色候補-->
+<!--75,37,26-->
+<!--#021C1E rgb(2,28,30)-->
+<!--#004445 rgb(0,68,69)-->
+<!--#2C7873 rgb(44,120,115)-->
+<!--#6FB98D rgb(111,185,141)-->
 
-<! header>
 <div>
 <!--    Pruner-->
     <div>
@@ -29,7 +34,7 @@
                 targetDiv.style.height = 500 + "px";
                 targetDiv.style.width = 700 + "px";
                 targetDiv.style.overflow = "scroll";
-                targetDiv.style.background = "rgb(150,150,150)"
+                targetDiv.style.background = "rgb(171,216,167)"
                 let example1 = pruner(
                     {target:"target1"}
                 );
@@ -217,22 +222,31 @@
                 findBST.drawData(
                     [{
                         data:"[6,4,9,2,5,null,null,null,3]",
-                        boxColor:"[rgb(255,0,0),null,null,null,null,null,null,null,null]"
-
-                    }],"find 3"
+                    }],"start"
                 )
                 findBST.nextStep(
                     [{
                         data:"[6,4,9,2,5,null,null,null,3]",
-                        boxColor:"[null,rgb(255,0,255),null,null,null,null,null,null,null]",
-                        textColor:"[null,rgb(0,255,0),null,null,null,null,null,null,null]"
+                        boxColor:"[rgb(232,108,46),null,null,null,null,null,null,null,null]"
+                    }],"6"
+                )
+                findBST.nextStep(
+                    [{
+                        data:"[6,4,9,2,5,null,null,null,3]",
+                        boxColor:"[rgb(235,21,21),rgb(232,108,46),null,null,null,null,null,null,null]",
                     }],"4"
                 )
                 findBST.nextStep(
                     [{
                         data:"[6,4,9,2,5,null,null,null,3]",
-                        boxColor:"[null,rgb(255,0,0),null,null,null,null,null,null,null]"
-                    }],"4"
+                        boxColor:"[rgb(235,21,21),rgb(235,21,21),null,rgb(232,108,46),null,null,null,null,null]"
+                    }],"2"
+                )
+                findBST.nextStep(
+                    [{
+                        data:"[6,4,9,2,5,null,null,null,3]",
+                        boxColor:"[rgb(235,21,21),rgb(235,21,21),null,rgb(235,21,21),null,null,null,null,rgb(232,108,46)]"
+                    }],"Found 3!"
                 )
 
 
