@@ -82,6 +82,68 @@
                 }
             </script>
         </div>
+        <div class="container border rounded  p-2 col-8">
+            <p>分離</p>
+            <div><input id = "separateBST-drawBtn" type="button" value="Draw"></div>
+            <div id = "separateBST" style="height:500px" ></div>
+            <script type="module">
+                import pruner from "./src/Index.js";
+                let targetDiv = document.getElementById("separateBST");
+                targetDiv.style.overflow = "scroll";
+                targetDiv.style.background = "rgb(171,216,167)"
+                let separateBST = pruner(
+                    {target:"separateBST"}
+                );
+                document.getElementById("separateBST-drawBtn").onclick = () => {
+                    separateBST.drawData(
+                        [{
+                            data:"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]",
+                        }],"start"
+                    )
+                    separateBST.nextStep(
+                        [{
+                            data:"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]",
+                            boxColor:"[rgb(232,108,46),rgb(0,97,59),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(232,108,46),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                            textColor:"[null,rgb(255,255,255),null,rgb(255,255,255),rgb(255,255,255),null,null,rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),null,null,null,null,rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+                        }],"Separate"
+                    )
+                    separateBST.nextStep(
+                        [{
+                            data:"[1,null,3,6,7,12,13,14,15]",
+                            boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
+                        },{
+                            data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
+                            boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                            textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+                        }],"Separate"
+                    )
+                    separateBST.nextStep(
+                        [{
+                            data:"[3,6,7,12,13,14,15]",
+                            boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
+                        },{
+                            data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
+                            boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                            textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+                        }],"Separate -> Delete 3"
+                    )
+                    separateBST.nextStep(
+                        [{
+                            data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
+                            boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                            textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+                        },{
+                            data:"[3,6,7,12,13,14,15]",
+                            boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
+                        }
+                        ],"Separate -> Delete 3 -> exchange"
+                    )
+
+                }
+            </script>
+        </div>
+
+
     </div>
     <hr>
     <div><!--1. 二分木の表示-->
@@ -218,7 +280,6 @@
                 targetDiv.style.width = 700 + "px";
                 targetDiv.style.overflow = "scroll";
                 targetDiv.style.background = "rgb(171,216,167)"
-                console.log(document.getElementById("target3-setting-boxSize").value)
                 document.getElementById("example3-drawBtn").onclick = () => {
                     let example2 = pruner(
                         {   target:"target3",
@@ -272,29 +333,9 @@
         </div>
     </div>
 
-    <div>
-        4.Option
-        複数の木の表示
-
-    </div>
-<!--&lt;!&ndash;        <div>&ndash;&gt;-->
-<!--&lt;!&ndash;            5stepで実行&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-<!--        4. Option-->
-<!--        同じ値が存在する場合は、IDを加える。-->
-<!--        色を変えることもできる。-->
-
-<!--        examples-->
-<!--        前順操作（色）-->
-<!--        同じDataの場合、ID入れる-->
 
 </div>
 
-
-<!--<div>Prunerテストです</div>-->
-<!--<div id="target"></div>-->
-<!--<script type="module" src="../src/Index.js"></script>-->
-<!--<script type="module" src="./BinaryTreeExample.js"></script>-->
 
 </body>
 </html>
