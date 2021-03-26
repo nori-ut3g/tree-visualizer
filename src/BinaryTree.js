@@ -5,6 +5,36 @@ export default class BinaryTreeController {
         this.defaultSettings = drawingSettings;
         this.refreshNodes(nodes)
     }
+    /*
+    inputData:{
+        data: string,
+        ID: string or null,
+        boxColor: string or null,
+        textColor: string or null
+    }
+     */
+    refreshNodes(inputData) {
+        this.nodes = {};
+        this.rootIDList = [];
+        for(let nodeList of inputData) {
+            let dataLength = Tools.convertStringToArray(nodeList.data).length;
+            let newNodeList = {
+                data: Tools.convertStringToArray(nodeList.data),
+                ID: Tools.convertStringToArray(nodeList.ID) || Tools.convertStringToArray(nodeList.data),
+                boxColor:Tools.convertStringToArray(nodeList.boxColor)  || Array(dataLength),
+                textColor:Tools.convertStringToArray(nodeList.textColor) || Array(dataLength)
+            }
+            this.deserialize(newNodeList.ID, newNodeList.data);
+            this.setAllBoxConfig(newNodeList.ID, newNodeList.boxColor, newNodeList.textColor);
+        }
+        this.setBoxPosition();
+    }
+
+    /*
+    nodeIDList: array
+    boxColorList: array
+    textColorList: array
+     */
     setAllBoxConfig(nodeIDList, boxColorList, textColorList) {
         for(let i=0 ;i < boxColorList.length; i++) {
             let ID = nodeIDList[i];
@@ -18,63 +48,27 @@ export default class BinaryTreeController {
         }
     }
     setBoxPosition() {
-        for(let i in this.rootID) {
-            let root = this.nodes[this.rootID[i]]
-            this.setBoxPositionHelper(root,this.rootID[i])
+        for(let i in this.rootIDList) {
+            let root = this.nodes[this.rootIDList[i]]
+            this.setBoxPositionHelper(root,this.rootIDList[i])
         }
     }
     setBoxPositionHelper(node, rootID) {
         if (node != null){
-            this.setBoxPositionHelper(node.setLeftBoxPosition(rootID), rootID)
-            this.setBoxPositionHelper(node.setRightBoxPosition(rootID), rootID)
+            this.setBoxPositionHelper(node.setLeftBoxPositionFromRoot(rootID), rootID)
+            this.setBoxPositionHelper(node.setRightBoxPositionFromRoot(rootID), rootID)
         }
     }
 
-    refreshNodes(nodes) {
-        this.nodes = {};
-        this.rootID = [];
-        for(let nodeList of nodes) {
-            let newNodeList = {
-                data: Tools.convertStringToArray(nodeList.data),
-                ID: Tools.convertStringToArray(nodeList.ID) || Tools.convertStringToArray(nodeList.data),
-                boxColor:Tools.convertStringToArray(nodeList.boxColor)  || Array(nodeList.data.length),
-                textColor:Tools.convertStringToArray( nodeList.textColor) || Array(nodeList.data.length)
-            }
-            this.deserialize(newNodeList.ID, newNodeList.data);
-            this.setAllBoxConfig(newNodeList.ID, newNodeList.boxColor, newNodeList.textColor)
-
-        }
-
-        this.setBoxPosition()
-    }
-    getRootID() {
-        return this.rootID;
-    }
-    getNodes(){
-        return this.nodes;
-    }
-
-    getMaxDepth(root) {
-        if(root === null) return 0
-        else return this.maxDepthHelper([root])
-    }
-    maxDepthHelper(children) {
-        let parents = children.slice();
-        children = [];
-        while(parents.length !== 0) {
-            let node = parents.pop();
-            if(node.left != null) children.push(node.left)
-            if(node.right != null) children.push(node.right)
-        }
-        if(children.length) return this.maxDepthHelper(children) + 1
-        else return 1
-    }
-
-    deserialize(nodeIDList,nodeDataList) {
+    /*
+    nodeIDList: array
+    nodeDataList: array
+     */
+    deserialize(nodeIDList, nodeDataList) {
         if(nodeDataList.length === 0) return null;
-        let root = new BinaryTreeNode(nodeIDList[0],nodeDataList[0], nodeIDList[0]);
+        let root = new BinaryTreeNode(nodeIDList[0], nodeDataList[0], nodeIDList[0]);
         this.nodes[nodeIDList[0]] = root;
-        this.rootID.push(nodeIDList[0]);
+        this.rootIDList.push(nodeIDList[0]);
         let queue = [root];
         let l = nodeDataList.length - 1;
         let i = 0;
@@ -93,6 +87,33 @@ export default class BinaryTreeController {
             }
         }
     }
+
+    // -> array
+    getRootIDList() {
+        return this.rootIDList;
+    }
+
+    // -> map
+    getNodes() {
+        return this.nodes;
+    }
+
+    // BinaryTreeNode -> int
+    getMaxDepth(root) {
+        if(root === null) return 0;
+        else return this.maxDepthHelper([root]);
+    }
+    maxDepthHelper(children) {
+        let parents = children.slice();
+        children = [];
+        while(parents.length !== 0) {
+            let node = parents.pop();
+            if(node.left != null) children.push(node.left);
+            if(node.right != null) children.push(node.right);
+        }
+        if(children.length) return this.maxDepthHelper(children) + 1;
+        else return 1;
+    }
 }
 
 class BinaryTreeNode {
@@ -106,33 +127,66 @@ class BinaryTreeNode {
         this.data = stringData;
         this.boxXY = {x:0,y:0};
     }
-    getID (){
+
+    // -> string or int
+    getID() {
         return this.ID;
     }
+
+    // -> string or int
     getMyRootID() {
         return this.rootID;
     }
+
+    // -> string or int
     getBoxSize() {
         return this.boxConfig.boxSize;
     }
+
+    // -> string or int
     getBoxColor() {
         return this.boxConfig.boxColor;
     }
+
+    // -> string
     getTextColor() {
         return this.boxConfig.textColor;
     }
 
+    /*
+    ->
+    {
+        x: int,
+        y: int
+    }
+     */
     getBoxXY() {
         return this.boxXY;
     }
+
+    /*
+    x: int
+    y: int
+     */
     setBoxXY(x,y) {
         this.boxXY.x = x;
         this.boxXY.y = y;
     }
+
+    /*
+    boxConfig {
+    boxColor: string
+    boxSize: int
+    textColor: string
+    }
+     */
     setBoxConfig(boxConfig) {
         this.boxConfig = boxConfig;
     }
 
+    /*
+    parentID -> string(html)
+     */
     createBoxDiv(parentDivID) {
         let boxDiv = document.createElement("div");
         boxDiv.setAttribute("id", parentDivID + "-" + `${this.ID}`);
@@ -145,12 +199,24 @@ class BinaryTreeNode {
         boxDiv.style.justifyContent = "center";
         boxDiv.style.alignItems = "center";
         boxDiv.style.borderRadius = 100 + "%";
-        console.log(boxDiv)
         return boxDiv;
     }
 
-    setRootID(ID) {
-        this.rootID = ID;
+    /*
+    this.positionはルートから自分までのleft(0), right(1)の軌跡
+    例：rootからleft,right,right の場合 [0,1,1]
+     */
+    setLeftBoxPositionFromRoot() {
+        if(this.left === null) return null;
+        this.left.setLeftPosition(this.getPosition());
+        this.left.rootID = this.rootID;
+        return this.left;
+    }
+    setRightBoxPositionFromRoot() {
+        if(this.right === null) return null;
+        this.right.setRightPosition(this.getPosition());
+        this.right.rootID = this.rootID;
+        return this.right;
     }
     setLeftPosition(parentPosition) {
         this.position = parentPosition.concat([0]);
@@ -159,19 +225,6 @@ class BinaryTreeNode {
         this.position = parentPosition.concat([1]);
     }
 
-
-    setLeftBoxPosition() {
-        if(this.left === null) return null;
-        this.left.setLeftPosition(this.getPosition());
-        this.left.setRootID(this.rootID);
-        return this.left;
-    }
-    setRightBoxPosition() {
-        if(this.right === null) return null;
-        this.right.setRightPosition(this.getPosition());
-        this.right.setRootID(this.rootID);
-        return this.right;
-    }
     getPosition() {
         return this.position;
     }

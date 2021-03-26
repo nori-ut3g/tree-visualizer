@@ -5,12 +5,13 @@ export default class Draw {
     constructor(drawSettings) {
         this.drawSettings = drawSettings;
     }
+
     initDraw(info) {
         this.targetDiv = document.getElementById(this.drawSettings.target);
         this.targetDiv.innerHTML = "";
         this.targetDiv.style.position = "relative"
+
         //animation
-        this.needsAnimation = this.drawSettings.animation;
         this.animationInterval = this.drawSettings.interval;
         this.animationSteps = 0;
         this.delay = 0;
@@ -25,7 +26,7 @@ export default class Draw {
         this.boxXMargin = this.drawSettings.boxXMargin;
         this.boxYMargin = this.drawSettings.boxYMargin;
         //
-        // this.boxXOffset = 0;
+        this.boxXOffset = 0;
         this.boxYOffset = 0;
         // if(this.needsAnimation){
         this.tl = anime.timeline({
@@ -35,21 +36,17 @@ export default class Draw {
         // }
         let infoDiv = document.createElement("div");
         infoDiv.setAttribute("id", this.drawSettings.target + "-" +`info`);
-        this.targetDiv.append(infoDiv)
-        infoDiv.innerHTML = info
+        this.targetDiv.append(infoDiv);
+        infoDiv.innerHTML = info || null;
 
 
         this.parentDiv = document.createElement("div")
         this.parentDiv.setAttribute("id", this.drawSettings.target+"-parent");
         this.parentDiv.style.marginLeft = "auto";
         this.parentDiv.style.marginRight = "auto";
-        this.parentDiv.style.background = "rgb(255,0,0)"
-
         this.targetDiv.append(this.parentDiv)
-
-
-
     }
+
     refresh(dataConstructor,info) {
         this.dataConstructor = dataConstructor;
         this.setParentSize();
@@ -60,16 +57,16 @@ export default class Draw {
         this.animationSteps++;
     }
 
-
     refreshInfobox(info) {
-        let infoDiv = document.getElementById(this.drawSettings.target + "-" + "info")
+        let infoDiv = document.getElementById(this.drawSettings.target + "-" + "info");
         this.tl.add({
             update: function (){infoDiv.innerHTML = info},
             duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
         },`${(this.animationSteps) * this.animationInterval+this.delay}`)
     }
+
     setParentSize() {
-        let roots = this.dataConstructor.getRootID();
+        let roots = this.dataConstructor.getRootIDList();
         let height = 0;
         let width = 0;
         for(let rootID of roots) {
@@ -86,11 +83,10 @@ export default class Draw {
             height: height + "px",
             duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
         },`${(this.animationSteps) * this.animationInterval+this.delay}`)
-        // this.parentDiv.style.height = height + "px";
-        // this.parentDiv.style.width = width + "px";
     }
+
     setRootsPosition(){
-        let roots = this.dataConstructor.getRootID();
+        let roots = this.dataConstructor.getRootIDList();
         let tmpRootYPosition = 0;
         let rootsPositionList = {};
         for(let rootID of roots){
@@ -100,7 +96,6 @@ export default class Draw {
             let drawingAreaHeight = this.boxYMargin * (maxDepth);
             let rootYPosition = tmpRootYPosition + this.boxYMargin;
             tmpRootYPosition += drawingAreaHeight;
-
             let rootXPosition = Number(drawingAreaWidth) / 2;
             rootsPositionList[rootID] = {
                 "x":rootXPosition,
@@ -121,7 +116,6 @@ export default class Draw {
             if (!prevBoxConfig[ID]){
 
                 if(document.getElementById(this.drawSettings.target + "-" + ID)){
-                    console.log("test")
                     newBoxDiv = document.getElementById(this.drawSettings.target + "-" + ID);
                 }else{
                     newBoxDiv = nodes[ID].createBoxDiv(this.drawSettings.target);
@@ -129,8 +123,6 @@ export default class Draw {
                     newBoxDiv.style.top = this.boxYOffset + "px";
                     this.parentDiv.append(newBoxDiv);
                 }
-                // newBoxDiv.style.opacity = 1;
-                console.log("test",newBoxDiv)
                 this.tl.add({
                     easing: 'easeInOutQuad',
                     targets: newBoxDiv,
@@ -138,29 +130,23 @@ export default class Draw {
                     translateY: nextBoxConfig[ID].boxXY.y,
                     color:nextBoxConfig[ID].textColor,
                     backgroundColor:nextBoxConfig[ID].boxColor,
-
                     opacity: 1,
                     duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
                 },`${(this.animationSteps) * this.animationInterval+this.delay}`)
             }
-
             //change
             else{
                 let boxDiv = document.getElementById(this.drawSettings.target + "-" + ID);
-
                 this.tl.add({
                     targets: boxDiv,
                     easing: 'easeInOutQuad',
                     translateX: nextBoxConfig[ID].boxXY.x,
                     translateY: nextBoxConfig[ID].boxXY.y,
-                    // opacity: 1,
-
                     backgroundColor:nextBoxConfig[ID].boxColor,
                     duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
                 },`${(this.animationSteps) * this.animationInterval+this.delay}`)
             }
         }
-
         //delete
         for(let ID in prevBoxConfig) {
             if (!nextBoxConfig[ID]){
@@ -233,7 +219,6 @@ export default class Draw {
                 },`${(this.animationSteps) * this.animationInterval+this.delay}`)
             }
         }
-
         //delete
         for(let ID in prevArrowConfig) {
             if (!nextArrowConfig[ID]){
@@ -246,7 +231,6 @@ export default class Draw {
             }
         }
     }
-
 
     setCurrentLog() {
         this.log.push({box:{},arrow:{}});
@@ -274,10 +258,10 @@ export default class Draw {
         }
         return config;
     }
+
     setArrowXYConfig() {
         let config = {};
         let nodes = this.dataConstructor.getNodes();
-
         for(let node of Object.values(nodes)) {
             let arrowTailX = node.getBoxXY().x + node.getBoxSize() / 2;
             let arrowTailY = node.getBoxXY().y + node.getBoxSize();
@@ -292,7 +276,6 @@ export default class Draw {
             if(node.right) {
                 let arrowHeadX = node.right.getBoxXY().x + node.getBoxSize() / 2;
                 let arrowHeadY = node.right.getBoxXY().y;
-
                 config[node.getID()+"-"+"right"] = {
                     headXY:{x:arrowHeadX,y:arrowHeadY},
                     tailXY:{x:arrowTailX,y:arrowTailY},
