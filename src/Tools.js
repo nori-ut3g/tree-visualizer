@@ -28,7 +28,6 @@ export default class Tools {
             }
 
         }
-        console.log(RGBArray)
         return RGBArray;
 
     }
@@ -36,7 +35,6 @@ export default class Tools {
         if(string === "[]" || string === "" || string === undefined) return null;
         string = string.slice(1)
         string = string.slice(0,-1)
-        console.log(string.split(",").map((val)=>{return val === "null" ? null : val}))
         return string.split(",").map((val)=>{return val === "null" ? null : val})
 
     }

@@ -142,6 +142,7 @@ export default class Draw {
                     easing: 'easeInOutQuad',
                     translateX: nextBoxConfig[ID].boxXY.x,
                     translateY: nextBoxConfig[ID].boxXY.y,
+                    color:nextBoxConfig[ID].textColor,
                     backgroundColor:nextBoxConfig[ID].boxColor,
                     duration: this.animationSteps === 0 ? 1 : this.animationInterval,//durationを0にすると、Styleの初期設定が変わるので1に設定する
                 },`${(this.animationSteps) * this.animationInterval+this.delay}`)
