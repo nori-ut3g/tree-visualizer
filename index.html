@@ -21,9 +21,10 @@
     <div>
         <ul>
             <li><a href="#0.">0.まずは実行</a></li>
-            <li><a href="#1.">1.</a></li>
-            <li><a href="#2.">2.</a></li>
-            <li><a href="#3.">3.</a></li>
+            <li><a href="#1.">1. Visualization</a></li>
+            <li><a href="#2.">2. Animation</a></li>
+            <li><a href="#3.">3. Setting</a></li>
+            <li><a href="#4.">4. Option</a></li>
         </ul>
     </div>
     <div>
@@ -82,11 +83,12 @@
                 }
             </script>
         </div>
+        <br>
         <div class="container border rounded  p-2 col-8">
             <p>分離</p>
             <p>"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]"この木構造を分離してみましょう</p>
             <div><input id = "separateBST-drawBtn" type="button" value="Draw"></div>
-            <div id = "separateBST" style="height:500px" ></div>
+            <div id = "separateBST" style="height:450px" ></div>
             <script type="module">
                 import pruner from "./src/Index.js";
                 let targetDiv = document.getElementById("separateBST");
@@ -146,9 +148,9 @@
 
     </div>
     <hr>
-    <div><!--1. 二分木の表示-->
+    <div><!--1. Visualization-->
         <div class="container p-4">
-            <h2><a name="1.">1. 二分木の表示</a></h2>
+            <h2><a name="1.">1. Visualization</a></h2>
             <p>階層表示された二分木がわからなくなったら、ここで実行してみてください。</p>
             <p>一点だけ注意。同じ値が存在する場合は、ノードごとにIDを設定する必要があります。</p>
             <p>例1 : data:[0,-10,5,null,-3,null,9] ID:[]</p>
@@ -182,8 +184,9 @@
             </script>
         </div>
     </div>
+
     <div><!--2. Animation-->
-        <div>
+        <div class="container p-4">
             <h2><a name="2.">2. Animation</a></h2>
             <p>階層表示された文字列を連続して入力すると、差分を自動で計算しAnimationを生成します。</p>
             <p>AnimationはAnime.jsを使用しています。</p>
@@ -250,8 +253,9 @@
             </script>
         </div>
     </div>
+
     <div><!--3. Setting-->
-        <div>
+        <div class="container p-4">
             <h2><a name="3.">3. Setting</a></h2>
             <p>階層表示された文字列を連続して入力すると、差分を自動で計算しAnimationを生成します。</p>
             <p>AnimationはAnime.jsを使用しています。</p>
@@ -328,6 +332,51 @@
                             }],document.getElementById("target3-data5").value
                         )
                     }
+                }
+            </script>
+        </div>
+    </div>
+
+    <div><!--4. Option-->
+        <div class="container p-4">
+            <h2><a name="4.">4. Option</a></h2>
+            <p>boxごとの色が変えられます</p>
+            <p>木構造の分離ができます。</p>
+            <p>これを全部１つ１つ設定するのは大変。。。</p>
+        </div>
+        <div class="container border rounded  p-2 col-8">
+            <p>まずはボックスごとに色を変える</p>
+            <div id = "target4-1" ></div>
+
+            <div>step1 data1<label for="target3-data1"></label><input type="text" id="target-data1" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div>step1 data2<label for="target3-data2"></label><input type="text" id="target4-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
+            <div>step1 box color<label for="target3-data2"></label><input type="text" id="target4-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
+            <div>step1 text color<label for="target3-data2"></label><input type="text" id="target3-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
+            <div>step2<label for="target3-data2"></label><input type="text" id="target3-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
+            <div>step3<label for="target3-data3"></label><input type="text" id="target3-data3" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <input id = "example4-drawBtn" type="button" value="Draw">
+
+            <script type="module">
+                import pruner from "./src/Index.js";
+
+                let targetDiv = document.getElementById("target3");
+                targetDiv.style.height = 500 + "px";
+                targetDiv.style.width = 700 + "px";
+                targetDiv.style.overflow = "scroll";
+                targetDiv.style.background = "rgb(171,216,167)"
+                document.getElementById("example3-drawBtn").onclick = () => {
+                    let example2 = pruner(
+                        {   target:"target3",
+                            boxColor : document.getElementById("target3-setting-boxColor").value,//ボックスのいろ
+                            textColor :  document.getElementById("target3-setting-textColor").value,//テキストの色
+                            arrowColor : document.getElementById("target3-setting-arrowColor").value,
+                            interval : document.getElementById("target3-setting-interval").value,//アニメーションの間隔
+                            boxSize : document.getElementById("target3-setting-boxSize").value,//ボックスのサイズ
+                            boxXMargin: document.getElementById("target3-setting-boxXMargin").value,
+                            boxYMargin: document.getElementById("target3-setting-boxYMargin").value,
+                        }
+                    );
+
                 }
             </script>
         </div>
