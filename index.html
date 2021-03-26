@@ -18,15 +18,22 @@
 <!--#6FB98D rgb(111,185,141)-->
 
 <div class="container" style="background-color: #F7F7E4">
-    <div >
+    <div>
+        <ul>
+            <li><a href="#0.">0.まずは実行</a></li>
+            <li><a href="#1.">1.</a></li>
+            <li><a href="#2.">2.</a></li>
+            <li><a href="#3.">3.</a></li>
+        </ul>
+    </div>
+    <div>
         <div class="container p-4">
-            <h2>0.まずは実行</h2>
+            <h2><a name="0."> 0.まずは実行</a></h2>
             <p>Treeを使うと、今までわかりにくかった木構造が可視化できます。</p>
             <p>まず例をみてみましょう。</p>
         </div>
-
-        <div class="container border rounded .border-secondary border-5 col-8" style="border-width: 5px ">
-            <p>[6,4,9,2,5,null,null,null]の順に並べられたBSTに、３を挿入し、３を検索してみましょう。</p>
+        <div class="container border rounded  p-2 col-8">
+            <p>[6,4,9,2,5,null,null,null]の順に並べられたBSTに、3を挿入し、3を検索してみましょう。</p>
             <div><input id = "findBST-drawBtn" type="button" value="Draw"></div>
             <div id = "findBST" style="height:250px" ></div>
             <script type="module">
@@ -76,18 +83,19 @@
             </script>
         </div>
     </div>
+    <hr>
     <div><!--1. 二分木の表示-->
-        <div class="col-6 " style="background-color: #F7F7E4">
-            <h1>1. 二分木の表示</h1>
+        <div class="container p-4">
+            <h2><a name="1.">1. 二分木の表示</a></h2>
             <p>階層表示された二分木がわからなくなったら、ここで実行してみてください。</p>
             <p>一点だけ注意。同じ値が存在する場合は、ノードごとにIDを設定する必要があります。</p>
             <p>例1 : data:[0,-10,5,null,-3,null,9] ID:[]</p>
             <p>例2 : data:[1,1,1,1,1,1,1] ID:[0,1,2,3,4,5,6]</p>
         </div>
-        <div class="col-12">
+        <div class="container border rounded  p-2 col-8">
             <div id="target1" style="height:350px"></div>
             <div>
-                <div>data<label for="target1-data"></label><input type="text" id="target1-data" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39]" size="40"></div>
+                <div>data<label for="target1-data"></label><input type="text" id="target1-data" name="data" value="[0,-10,5,null,-3,null,9]" size="40"></div>
                 <div>ID<label for="target1-id"></label><input type="text" id="target1-id" name="data" value="" size="40"></div>
                 <input id = "example1-drawBtn" type="button" value="Draw">
             </div>
@@ -113,10 +121,12 @@
         </div>
     </div>
     <div><!--2. Animation-->
-        <p>2. Animation</p>
-        <p>階層表示された文字列を連続して入力すると、差分を自動で計算しAnimationを生成します。</p>
-        <p>AnimationはAnime.jsを使用しています。</p>
         <div>
+            <h2><a name="2.">2. Animation</a></h2>
+            <p>階層表示された文字列を連続して入力すると、差分を自動で計算しAnimationを生成します。</p>
+            <p>AnimationはAnime.jsを使用しています。</p>
+        </div>
+        <div class="container border rounded  p-2 col-8">
             <div id = "target2" ></div>
             <div>step1<label for="target2-data1"></label><input type="text" id="target2-data1" name="data" value="[1,2,3,4,5,6,7,8]" size="40"></div>
             <div>step2<label for="target2-data2"></label><input type="text" id="target2-data2" name="data" value="[1,2,3,4,5,6,7]" size="40"></div>
@@ -179,11 +189,12 @@
         </div>
     </div>
     <div><!--3. Setting-->
-        3. Setting
-        葉の色
-        文字の色
-        アニメーションの間隔
         <div>
+            <h2><a name="3.">3. Setting</a></h2>
+            <p>階層表示された文字列を連続して入力すると、差分を自動で計算しAnimationを生成します。</p>
+            <p>AnimationはAnime.jsを使用しています。</p>
+        </div>
+        <div class="container border rounded  p-2 col-8">
             <div id = "target3" ></div>
             <div>葉の色<label for="target3-setting-boxColor"></label><input type="text" id="target3-setting-boxColor" name="data" value="rgb(255,0,0)" size="40"></div>
             <div>文字の色<label for="target3-setting-textColor"></label><input type="text" id="target3-setting-textColor" name="data" value="rgb(0,0,0)" size="40"></div>
@@ -260,8 +271,11 @@
             </script>
         </div>
     </div>
+
     <div>
         4.Option
+        複数の木の表示
+
     </div>
 <!--&lt;!&ndash;        <div>&ndash;&gt;-->
 <!--&lt;!&ndash;            5stepで実行&ndash;&gt;-->
