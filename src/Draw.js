@@ -250,6 +250,7 @@ export default class Draw {
             boxX += this.parentDiv.clientWidth/2 - rootPositionList[rootID].x//真ん中へ移動
             let boxY = node.getPosition().length * this.boxYMargin + rootPositionList[rootID].y;
             node.setBoxXY(boxX, boxY);
+
             config[node.getID()] = {
                 boxXY:{x:boxX, y:boxY},
                 boxColor: node.getBoxColor(),

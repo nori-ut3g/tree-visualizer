@@ -198,7 +198,39 @@
 <!--        examples-->
 <!--        前順操作（色）-->
 <!--        同じDataの場合、ID入れる-->
+    <div>
+        <!--            buttonで実行-->
+        <div id = "findBST" ></div>
+<!--        <div>data<label for="findBST-data"></label><input type="text" id="findBST-data" name="data" value="[6,4,9,2,5,null,null,null,3]" size="40"></div>-->
+        <input id = "findBST-drawBtn" type="button" value="Draw">
+        <script type="module">
+            import pruner from "./src/Index.js";
+            let targetDiv = document.getElementById("findBST");
+            targetDiv.style.height = 500 + "px";
+            targetDiv.style.width = 700 + "px";
+            targetDiv.style.overflow = "scroll";
+            targetDiv.style.background = "rgb(150,150,150)"
+            let findBST = pruner(
+                {target:"findBST"}
+            );
+            document.getElementById("findBST-drawBtn").onclick = () => {
+                findBST.drawData(
+                    [{
+                        data:"[6,4,9,2,5,null,null,null,3]",
+                        boxColor:"[rgb(255,0,0),null,null,null,null,null,null,null,null]"
+                    }],"find 3"
+                )
+                findBST.nextStep(
+                    [{
+                        data:"[6,4,9,2,5,null,null,null,3]",
+                        boxColor:"[null,rgb(255,0,0),null,null,null,null,null,null,null]"
+                    }],"4"
+                )
 
+
+            }
+        </script>
+    </div>
     </div>
 </div>
 

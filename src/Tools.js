@@ -1,11 +1,43 @@
 export default class Tools {
 
+    static convertStringToRGBArray(string) {
+        let tmpArray = Tools.convertStringToArray(string);
+
+        if(tmpArray === null) return null;
+        let flag = false;
+        let cache = [];
+        let RGBArray = [];
+
+        for(let str of tmpArray){
+            if(!flag && str !==  null && str.match(/^rgb\(.*$/) ){
+                flag = true;
+            }
+            if(flag  && str !==  null &&  str.match(/.*\)$/)) {
+                flag = false;
+                cache.push(str);
+                let rgb = cache.join(",")
+                RGBArray.push(rgb);
+                cache = [];
+                continue;
+            }
+
+            if(flag){
+                cache.push(str);
+            }else{
+                RGBArray.push(str);
+            }
+
+        }
+        console.log(RGBArray)
+        return RGBArray;
+
+    }
     static convertStringToArray(string) {
         if(string === "[]" || string === "" || string === undefined) return null;
         string = string.slice(1)
         string = string.slice(0,-1)
-
-        return string.split(",").map((val)=>{return val === "null" ? null : Number(val)})
+        console.log(string.split(",").map((val)=>{return val === "null" ? null : val}))
+        return string.split(",").map((val)=>{return val === "null" ? null : val})
 
     }
     static createArrowDiv(settings) {

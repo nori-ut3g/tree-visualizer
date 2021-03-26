@@ -21,8 +21,8 @@ export default class BinaryTreeController {
             let newNodeList = {
                 data: Tools.convertStringToArray(nodeList.data),
                 ID: Tools.convertStringToArray(nodeList.ID) || Tools.convertStringToArray(nodeList.data),
-                boxColor:Tools.convertStringToArray(nodeList.boxColor)  || Array(dataLength),
-                textColor:Tools.convertStringToArray(nodeList.textColor) || Array(dataLength)
+                boxColor:Tools.convertStringToRGBArray(nodeList.boxColor)  || Array(dataLength),
+                textColor:Tools.convertStringToRGBArray(nodeList.textColor) || Array(dataLength)
             }
             this.deserialize(newNodeList.ID, newNodeList.data);
             this.setAllBoxConfig(newNodeList.ID, newNodeList.boxColor, newNodeList.textColor);
