@@ -25,9 +25,9 @@ class MainPruner{
             target : settings.target || "target",//表示させるDivID
             boxColor : settings.boxColor || 'rgb(233,203,107)',//ボックスのいろ
             textColor : settings.textColor || 'rgb(69,54,10)',//テキストの色
-            arrowColor : settings.arrowColor || "rgb(69,54,10)",
+            arrowColor : settings.arrowColor || "rgb(153,103,49)",
             dataType : settings.dataType || "BinaryTree",//データの種類
-            interval :Number(settings.interval )|| 1000,//アニメーションの間隔
+            interval :Number(settings.interval )|| 2000,//アニメーションの間隔
             boxSize : Number(settings.boxSize) || 30,//ボックスのサイズ
             boxXMargin: Number(settings.boxXMargin) || 30,
             boxYMargin: Number(settings.boxYMargin) || 45,
