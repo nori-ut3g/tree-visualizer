@@ -9,6 +9,203 @@
     <div>
         <p>Purnerの実行</p>
     </div>
+
+
+    <div><!--2. Animation-->
+        <div class="container p-4">
+            <h2><a name="2.">2. Animation</a></h2>
+            <p>階層表示された文字列を連続して入力すると、差分を自動で計算しAnimationを生成します。</p>
+            <p>AnimationはAnime.jsを使用しています。</p>
+        </div>
+        <div class="container border rounded  p-2 col-8">
+            <div id = "target2" ></div>
+            <div>step1<label for="target2-data1"></label><input type="text" id="target2-data1" name="data" value="[1,2,3,4,5,6,7,8]" size="40"></div>
+            <div>step2<label for="target2-data2"></label><input type="text" id="target2-data2" name="data" value="[1,2,3,4,5,6,7]" size="40"></div>
+            <div>step3<label for="target2-data3"></label><input type="text" id="target2-data3" name="data" value="[1,2,3,4,5,6]" size="40"></div>
+            <div>step4<label for="target2-data4"></label><input type="text" id="target2-data4" name="data" value="[1,2,3,4,5]" size="40"></div>
+            <div>step5<label for="target2-data5"></label><input type="text" id="target2-data5" name="data" value="[1,2,3,4]" size="40"></div>
+            <input id = "example2-drawBtn" type="button" value="Draw">
+
+            <script type="module">
+                import pruner from "./src/Index.js";
+
+                let targetDiv = document.getElementById("target2");
+                targetDiv.style.height = 500 + "px";
+                targetDiv.style.width = 700 + "px";
+                targetDiv.style.overflow = "scroll";
+                targetDiv.style.background = "rgb(171,216,167)"
+                let example2 = pruner(
+                    {target:"target2"}
+                );
+                document.getElementById("example2-drawBtn").onclick = () => {
+                    if(document.getElementById("target2-data1").value){
+                        example2.drawData(
+                            [{
+                                data:document.getElementById("target2-data1").value
+                            }],document.getElementById("target2-data1").value
+                        )
+                    }else{
+                        return;
+                    }
+                    if(document.getElementById("target2-data2").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target2-data2").value
+                            }],document.getElementById("target2-data2").value
+                        )
+                    }
+                    if(document.getElementById("target2-data3").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target2-data3").value
+                            }],document.getElementById("target2-data3").value
+                        )
+                    }
+                    if(document.getElementById("target2-data4").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target2-data4").value
+                            }],document.getElementById("target2-data4").value
+                        )
+                    }
+                    if(document.getElementById("target2-data5").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target2-data5").value
+                            }],document.getElementById("target2-data5").value
+                        )
+                    }
+                }
+            </script>
+        </div>
+    </div>
+
+    <div><!--3. Setting-->
+        <div class="container p-4">
+            <h2><a name="3.">3. Setting</a></h2>
+            <p>Settingでは、ノード全体の葉のいろ、文字の色、矢印の色、アニメーションの間隔、ボックスのサイズ、X方向のマージン、Y方向のマージンを変えられます。</p>
+            <p></p>
+            <p>AnimationはAnime.jsを使用しています。</p>
+        </div>
+        <div class="container border rounded  p-2 col-8">
+            <div id = "target3" ></div>
+            <div>葉の色<label for="target3-setting-boxColor"></label><input type="text" id="target3-setting-boxColor" name="data" value="rgb(255,0,0)" size="40"></div>
+            <div>文字の色<label for="target3-setting-textColor"></label><input type="text" id="target3-setting-textColor" name="data" value="rgb(0,0,0)" size="40"></div>
+            <div>矢印の色<label for="target3-setting-arrowColor"></label><input type="text" id="target3-setting-arrowColor" name="data" value="rgb(0,0,0)" size="40"></div>
+            <div>アニメーション速度<label for="target3-setting-interval"></label><input type="text" id="target3-setting-interval" name="data" value="1000" size="40"></div>
+            <div>ボックスのサイズ<label for="target3-setting-boxSize"></label><input type="text" id="target3-setting-boxSize" name="data" value="30" size="40"></div>
+            <div>ボックスのX方向マージン<label for="target3-setting-boxXMargin"></label><input type="text" id="target3-setting-boxXMargin" name="data" value="30" size="40"></div>
+            <div>ボックスのY方向マージン<label for="target3-setting-boxYMargin"></label><input type="text" id="target3-setting-boxYMargin" name="data" value="45" size="40"></div>
+            <div>step1<label for="target3-data1"></label><input type="text" id="target3-data1" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+
+            <input id = "example3-drawBtn" type="button" value="Draw">
+
+            <script type="module">
+                import pruner from "./src/Index.js";
+
+                let targetDiv = document.getElementById("target3");
+                targetDiv.style.height = 500 + "px";
+                targetDiv.style.width = 700 + "px";
+                targetDiv.style.overflow = "scroll";
+                targetDiv.style.background = "rgb(171,216,167)"
+                document.getElementById("example3-drawBtn").onclick = () => {
+                    let example2 = pruner(
+                        {   target:"target3",
+                            boxColor : document.getElementById("target3-setting-boxColor").value,//ボックスのいろ
+                            textColor :  document.getElementById("target3-setting-textColor").value,//テキストの色
+                            arrowColor : document.getElementById("target3-setting-arrowColor").value,
+                            interval : document.getElementById("target3-setting-interval").value,//アニメーションの間隔
+                            boxSize : document.getElementById("target3-setting-boxSize").value,//ボックスのサイズ
+                            boxXMargin: document.getElementById("target3-setting-boxXMargin").value,
+                            boxYMargin: document.getElementById("target3-setting-boxYMargin").value,
+                        }
+                    );
+
+                    if(document.getElementById("target3-data1").value){
+                        example2.drawData(
+                            [{
+                                data:document.getElementById("target3-data1").value
+                            }],document.getElementById("target3-data1").value
+                        )
+                    }
+                    if(document.getElementById("target3-data2").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target3-data2").value
+                            }],document.getElementById("target3-data2").value
+                        )
+                    }
+                    if(document.getElementById("target3-data3").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target3-data3").value
+                            }],document.getElementById("target3-data3").value
+                        )
+                    }
+                    if(document.getElementById("target3-data4").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target3-data4").value
+                            }],document.getElementById("target3-data4").value
+                        )
+                    }
+                    if(document.getElementById("target3-data5").value){
+                        example2.nextStep(
+                            [{
+                                data:document.getElementById("target3-data5").value
+                            }],document.getElementById("target3-data5").value
+                        )
+                    }
+                }
+            </script>
+        </div>
+    </div>
+
+    <div><!--4. Option-->
+        <div class="container p-4">
+            <h2><a name="4.">4. Option</a></h2>
+            <p>boxごとの色が変えられます</p>
+            <p>木構造の分離ができます。</p>
+            <p></p>
+        </div>
+        <div class="container border rounded  p-2 col-8">
+            <p>まずはボックスごとに色を変える</p>
+            <div id = "target4-1" ></div>
+
+            <div>data1<label for="target4-data1"></label><input type="text" id="target4-data1" name="data" value="[1,2,3,4,5,6]" size="40"></div>
+            <div>data1 box color<label for="target4-data1-boxColor"></label><input type="text" id="target4-data1-boxColor" name="data" value="[1,2,3,4,5,6]" size="40"></div>
+            <div>data1 text color<label for="target4-data1-textColor"></label><input type="text" id="target4-data1-textColor" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
+            <div>data2<label for="target4-data2"></label><input type="text" id="target4-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div>data2 box color<label for="target4-data2-boxColor"></label><input type="text" id="target4-data2-boxColor" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
+            <div>data2 text color<label for="target4-data2-textColor"></label><input type="text" id="target4-data2-textColor" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
+            <input id = "example4-drawBtn" type="button" value="Draw">
+
+            <script type="module">
+                import pruner from "./src/Index.js";
+
+                let targetDiv = document.getElementById("target3");
+                targetDiv.style.height = 500 + "px";
+                targetDiv.style.width = 700 + "px";
+                targetDiv.style.overflow = "scroll";
+                targetDiv.style.background = "rgb(171,216,167)"
+                document.getElementById("example3-drawBtn").onclick = () => {
+                    let example2 = pruner(
+                        {   target:"target3",
+                            boxColor : document.getElementById("target3-setting-boxColor").value,//ボックスのいろ
+                            textColor :  document.getElementById("target3-setting-textColor").value,//テキストの色
+                            arrowColor : document.getElementById("target3-setting-arrowColor").value,
+                            interval : document.getElementById("target3-setting-interval").value,//アニメーションの間隔
+                            boxSize : document.getElementById("target3-setting-boxSize").value,//ボックスのサイズ
+                            boxXMargin: document.getElementById("target3-setting-boxXMargin").value,
+                            boxYMargin: document.getElementById("target3-setting-boxYMargin").value,
+                        }
+                    );
+
+                }
+            </script>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

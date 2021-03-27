@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Tree_Visualizer.iml" filepath="$PROJECT_DIR$/.idea/Tree_Visualizer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Pruner.iml" filepath="$PROJECT_DIR$/.idea/Pruner.iml" />
     </modules>
   </component>
 </project>

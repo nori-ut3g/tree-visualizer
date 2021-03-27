@@ -2,10 +2,12 @@
 
 ## 特徴
 
-木構造の可視化ができます。
-・使い方は([0,-10,5,null,-3,null,9])のように、階層順に記入するだけです。
-・差分はアニメーションで動かすことができる
+Prunerはその名の通り、木の剪定、つまり木構造（二分木）の挿入や削除を可視化することができます。
 
+木構造の表示は階層順にならべた配列を入力するだけです。
+
+![demo](https://u3g.github.io/Pruner/)
+でチェックしてください。
 
 
 ***DEMO:***
@@ -13,8 +15,8 @@
 ![Demo](https://image-url.gif)
 
 ## Features
+- 階層表示された
 
-ライブラリーをインポートして、
 
 ## Requirement
 
@@ -24,17 +26,16 @@
 
 ## Usage
 
-1. Usage
+1. npm経由でインストール
+   
 2. Usage
 3. Usage
 
 ## Installation
 
 ```
-$ git clone https://github.com/TomoakiTANAKA/awesome-tool
-$ cd awesome-tool
-$ sh setup.sh
-$ ~do anything~
+$ git clone https://github.com/u3g/Pruner
+
 ```
 
 ## Test
@@ -61,5 +62,3 @@ AnythingAnythingAnything
 mail to: xxxx@mail.com
 
 ## License
-
-[MIT](http://TomoakiTANAKA.mit-license.org)</blockquote>
