@@ -14,16 +14,28 @@
 <div class="container" style="background-color: #F7F7E4">
     <div>
         <div>
-            目次
+            <h3>背景</h3>
+            <p>Prunerはその名の通り、木の剪定、つまり木構造を切ったり挿入したりを可視化することができます。</p>
+            <p>コンピューターサイエンスを学習していて、どうしても木構造のイメージが沸かない。。。</p>
+            <p>試しに前順走査などを実行しようとしたが、ちゃんと前順走査になっているかパット見わからない。。。</p>
+            <p>可視化することで、学習の手助けをします。</p>
+            <p></p>
+            <h3>特徴</h3>
+            <p>可視化する上で、どうしても必要な操作があります。</p>
+            <p>木構造（二分木）を表現するにはどうしても、階層順で配列にして入力する必要があります。</p>
+            <p>とはいえ、例を準備したのでまずは<a href="#0.">実行</a>してみてください。</p>
+            <p>便利ですよね？</p>
+            <p><a href="Documentation.html">test</a></p>
+            <ul>
+                <li><a href="#1.">1. Visualization</a></li>
+                <li><a href="#2.">2. Animation</a></li>
+                <li><a href="#3.">3. Setting</a></li>
+                <li><a href="#4.">4. Option</a></li>
+            </ul>
+
         </div>
-        <ul>
-            <li><a href="#0.">0.まずは実行</a></li>
-            <li><a href="#1.">1. Visualization</a></li>
-            <li><a href="#2.">2. Animation</a></li>
-            <li><a href="#3.">3. Setting</a></li>
-            <li><a href="#4.">4. Option</a></li>
-        </ul>
     </div>
+
     <div>
         <div class="container p-4">
             <h2><a name="0."> 0.まずは実行</a></h2>
@@ -163,8 +175,6 @@
             <script type="module">
                 import pruner from "./src/Index.js";
                 let targetDiv = document.getElementById("target1");
-                // targetDiv.style.height = 500 + "px";
-                // targetDiv.style.width = 700 + "px";
                 targetDiv.style.overflow = "scroll";
                 targetDiv.style.background = "rgb(171,216,167)"
                 let example1 = pruner(
