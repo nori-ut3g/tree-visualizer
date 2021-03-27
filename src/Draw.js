@@ -1,6 +1,21 @@
 import Tools from "./Tools.js";
 import anime from "../animeJS/anime.es.js";
 
+/*
+<div>  targetDiv
+    <div> infoDiv
+    </div>
+    <div> parentDiv
+        <div> boxDiv </div>
+        <div> arrowDiv
+            <div> arrowHead </div>
+            <div> arrowLine </div>
+        </div>
+     </div>
+</div>
+
+
+ */
 export default class Draw {
     constructor(drawSettings) {
         this.drawSettings = drawSettings;
@@ -44,10 +59,13 @@ export default class Draw {
         this.targetDiv.append(this.parentDiv)
     }
 
+    /*
+    dataConstructor: Binary,
+    info: string(html)
+     */
     refresh(dataConstructor,info) {
         this.dataConstructor = dataConstructor;
         this.setParentSize();
-
         this.setCurrentLog();
         this.refreshBox();
         this.refreshArrow();
@@ -55,6 +73,9 @@ export default class Draw {
         this.animationSteps++;
     }
 
+    /*
+    info: string(html)
+     */
     refreshInfobox(info) {
         let infoDiv = document.getElementById(this.drawSettings.target + "-" + "info");
         this.tl.add({
@@ -63,6 +84,9 @@ export default class Draw {
         },`${(this.animationSteps) * this.animationInterval+this.delay}`)
     }
 
+    /*
+    枠外のボックスをスクロールで表示できるようにParentDivの幅、高さを設定する。
+     */
     setParentSize() {
         let roots = this.dataConstructor.getRootIDList();
         let height = 0;
@@ -80,6 +104,9 @@ export default class Draw {
         if(Number(parentDiv.clientHeight) < height) parentDiv.style.height = height+"px";
     }
 
+    /*
+    rootごとにポジションを計算
+     */
     setRootsPosition(){
         let roots = this.dataConstructor.getRootIDList();
         let tmpRootYPosition = 0;
@@ -100,6 +127,9 @@ export default class Draw {
         return rootsPositionList;
     }
 
+    /*
+    前のLogとの差分をアニメーションにする。
+     */
     refreshBox() {
         //change
         let prevBoxConfig = this.log[this.log.length-2].box;
@@ -109,7 +139,6 @@ export default class Draw {
         for(let ID in nextBoxConfig) {
             let newBoxDiv;
             if (!prevBoxConfig[ID]){
-
                 if(document.getElementById(this.drawSettings.target + "-" + ID)){
                     newBoxDiv = document.getElementById(this.drawSettings.target + "-" + ID);
                 }else{
@@ -156,6 +185,9 @@ export default class Draw {
         }
     }
 
+    /*
+    前のLogとの差分をアニメーションにする。
+     */
     refreshArrow() {
         //change
         let prevArrowConfig = this.log[this.log.length-2].arrow;
@@ -228,13 +260,31 @@ export default class Draw {
         }
     }
 
+    /*
+    this.log: {
+        this.animationStep:{
+            boxID: {
+                boxXY:{x: int, y: int},
+                boxColor: string,
+                textColor: string
+            },
+            arrowID: {
+                headXY:{x: int, y: int},
+                tailXY:{x: int, y: int}
+            }
+        }
+    }
+     */
     setCurrentLog() {
+        console.log(this.log)
         this.log.push({box:{},arrow:{}});
         this.log[this.log.length-1].box = this.setBoxXYConfig();
         this.log[this.log.length-1].arrow = this.setArrowXYConfig();
-
     }
 
+    /*
+    boxのポジション、色、文字の色をset
+     */
     setBoxXYConfig() {
         let config = {};
         let nodes = this.dataConstructor.getNodes();
@@ -246,7 +296,6 @@ export default class Draw {
             boxX += this.parentDiv.clientWidth/2 - rootPositionList[rootID].x//真ん中へ移動
             let boxY = node.getPosition().length * this.boxYMargin + rootPositionList[rootID].y;
             node.setBoxXY(boxX, boxY);
-
             config[node.getID()] = {
                 boxXY:{x:boxX, y:boxY},
                 boxColor: node.getBoxColor(),
@@ -256,6 +305,9 @@ export default class Draw {
         return config;
     }
 
+    /*
+    arrowのポジション、色、文字の色をset
+     */
     setArrowXYConfig() {
         let config = {};
         let nodes = this.dataConstructor.getNodes();
