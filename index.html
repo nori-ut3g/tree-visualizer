@@ -13,6 +13,9 @@
 
 <div class="container" style="background-color: #F7F7E4">
     <div>
+        <div>
+            目次
+        </div>
         <ul>
             <li><a href="#0.">0.まずは実行</a></li>
             <li><a href="#1.">1. Visualization</a></li>
@@ -24,7 +27,7 @@
     <div>
         <div class="container p-4">
             <h2><a name="0."> 0.まずは実行</a></h2>
-            <p>Treeを使うと、今までわかりにくかった木構造が可視化できます。</p>
+            <p>Tree Visualizerを使うと、今までわかりにくかった木構造が可視化できます。</p>
             <p>まず例をみてみましょう。</p>
         </div>
         <div class="container border rounded  p-2 col-8">
@@ -251,7 +254,8 @@
     <div><!--3. Setting-->
         <div class="container p-4">
             <h2><a name="3.">3. Setting</a></h2>
-            <p>階層表示された文字列を連続して入力すると、差分を自動で計算しAnimationを生成します。</p>
+            <p>Settingでは、ノード全体の葉のいろ、文字の色、矢印の色、アニメーションの間隔、ボックスのサイズ、X方向のマージン、Y方向のマージンを変えられます。</p>
+            <p></p>
             <p>AnimationはAnime.jsを使用しています。</p>
         </div>
         <div class="container border rounded  p-2 col-8">
@@ -264,10 +268,7 @@
             <div>ボックスのX方向マージン<label for="target3-setting-boxXMargin"></label><input type="text" id="target3-setting-boxXMargin" name="data" value="30" size="40"></div>
             <div>ボックスのY方向マージン<label for="target3-setting-boxYMargin"></label><input type="text" id="target3-setting-boxYMargin" name="data" value="45" size="40"></div>
             <div>step1<label for="target3-data1"></label><input type="text" id="target3-data1" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
-            <div>step2<label for="target3-data2"></label><input type="text" id="target3-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
-            <div>step3<label for="target3-data3"></label><input type="text" id="target3-data3" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
-            <div>step4<label for="target3-data4"></label><input type="text" id="target3-data4" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
-            <div>step5<label for="target3-data5"></label><input type="text" id="target3-data5" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+
             <input id = "example3-drawBtn" type="button" value="Draw">
 
             <script type="module">
@@ -336,18 +337,18 @@
             <h2><a name="4.">4. Option</a></h2>
             <p>boxごとの色が変えられます</p>
             <p>木構造の分離ができます。</p>
-            <p>これを全部１つ１つ設定するのは大変。。。</p>
+            <p></p>
         </div>
         <div class="container border rounded  p-2 col-8">
             <p>まずはボックスごとに色を変える</p>
             <div id = "target4-1" ></div>
 
-            <div>step1 data1<label for="target3-data1"></label><input type="text" id="target-data1" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
-            <div>step1 data2<label for="target3-data2"></label><input type="text" id="target4-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
-            <div>step1 box color<label for="target3-data2"></label><input type="text" id="target4-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
-            <div>step1 text color<label for="target3-data2"></label><input type="text" id="target3-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
-            <div>step2<label for="target3-data2"></label><input type="text" id="target3-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
-            <div>step3<label for="target3-data3"></label><input type="text" id="target3-data3" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div>data1<label for="target4-data1"></label><input type="text" id="target4-data1" name="data" value="[1,2,3,4,5,6]" size="40"></div>
+            <div>data1 box color<label for="target4-data1-boxColor"></label><input type="text" id="target4-data1-boxColor" name="data" value="[1,2,3,4,5,6]" size="40"></div>
+            <div>data1 text color<label for="target4-data1-textColor"></label><input type="text" id="target4-data1-textColor" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
+            <div>data2<label for="target4-data2"></label><input type="text" id="target4-data2" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]" size="40"></div>
+            <div>data2 box color<label for="target4-data2-boxColor"></label><input type="text" id="target4-data2-boxColor" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
+            <div>data2 text color<label for="target4-data2-textColor"></label><input type="text" id="target4-data2-textColor" name="data" value="[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]" size="40"></div>
             <input id = "example4-drawBtn" type="button" value="Draw">
 
             <script type="module">
