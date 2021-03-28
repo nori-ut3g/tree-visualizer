@@ -1,6 +1,304 @@
-import Tools from "./Tools.js";
-import {anime} from '../../../node_modules/animejs/lib/anime.es.js'
-// import anime from "ani"
+
+
+function treeVisualizer(settings) {
+    return new TreeVisualizerMain(settings);
+}
+
+class TreeVisualizerMain{
+    constructor(settings) {
+        this.drawSettings = {
+            target : settings.target || "target",//表示させるDivID
+            boxColor : settings.boxColor || 'rgb(233,203,107)',//ボックスのいろ
+            textColor : settings.textColor || 'rgb(69,54,10)',//テキストの色
+            arrowColor : settings.arrowColor || "rgb(153,103,49)",
+            dataType : settings.dataType || "BinaryTree",//データの種類
+            interval :Number(settings.interval )|| 2000,//アニメーションの間隔
+            boxSize : Number(settings.boxSize) || 30,//ボックスのサイズ
+            boxXMargin: Number(settings.boxXMargin) || 30,
+            boxYMargin: Number(settings.boxYMargin) || 45,
+        }
+        this.draw = new Draw(this.drawSettings);
+    }
+
+    /*
+    nodes:{
+        data: string,
+        ID: string,
+        boxColor: string,
+        textColor: string
+    }
+     */
+    createBoxController(nodes) {
+        switch (this.drawSettings.dataType) {
+            case "BinaryTree":
+                this.nodeController = new BinaryTreeController(nodes, this.drawSettings);
+        }
+    }
+
+
+    /*
+    Animationなしで描写。
+    nodes:{
+        data: string,
+        ID: string,
+        boxColor: string,
+        textColor: string
+    }
+    info: string
+     */
+    drawData(nodes, info) {
+        this.draw.initDraw(info);
+        this.createBoxController(nodes);
+        this.draw.refresh(this.nodeController, info);
+    }
+
+    /*
+    drawData後、差分からAnimationを生成する。
+    nodes:{
+        data: string,
+        ID: string,
+        boxColor: string,
+        textColor: string
+    }
+    info: string
+     */
+    nextStep(nodes, info) {
+        this.nodeController.refreshNodes(nodes);
+        this.draw.refresh(this.nodeController, info);
+    }
+}
+
+class BinaryTreeController {
+    constructor(nodes, drawingSettings) {
+        this.defaultSettings = drawingSettings;
+        this.refreshNodes(nodes)
+    }
+    /*
+    inputData:{
+        data: string,
+        ID: string or null,
+        boxColor: string or null,
+        textColor: string or null
+    }
+     */
+    refreshNodes(inputData) {
+        this.nodes = {};
+        this.rootIDList = [];
+        for(let nodeList of inputData) {
+            let dataLength = Tools.convertStringToArray(nodeList.data).length;
+            let newNodeList = {
+                data: Tools.convertStringToArray(nodeList.data),
+                ID: Tools.convertStringToArray(nodeList.ID) || Tools.convertStringToArray(nodeList.data),
+                boxColor:Tools.convertStringToRGBArray(nodeList.boxColor)  || Array(dataLength),
+                textColor:Tools.convertStringToRGBArray(nodeList.textColor) || Array(dataLength)
+            }
+            this.deserialize(newNodeList.ID, newNodeList.data);
+            this.setAllBoxConfig(newNodeList.ID, newNodeList.boxColor, newNodeList.textColor);
+        }
+        this.setBoxPosition();
+    }
+
+    /*
+    nodeIDList: array
+    boxColorList: array
+    textColorList: array
+     */
+    setAllBoxConfig(nodeIDList, boxColorList, textColorList) {
+        for(let i=0 ;i < boxColorList.length; i++) {
+            let ID = nodeIDList[i];
+            if(!this.nodes[ID]) continue;
+            let boxConfig = {
+                boxColor: boxColorList[i] || this.defaultSettings.boxColor,
+                textColor: textColorList[i] || this.defaultSettings.textColor,
+                boxSize: this.defaultSettings.boxSize
+            }
+            this.nodes[ID].setBoxConfig(boxConfig);
+        }
+    }
+    setBoxPosition() {
+        for(let i in this.rootIDList) {
+            let root = this.nodes[this.rootIDList[i]]
+            this.setBoxPositionHelper(root,this.rootIDList[i])
+        }
+    }
+    setBoxPositionHelper(node, rootID) {
+        if (node != null){
+            this.setBoxPositionHelper(node.setLeftBoxPositionFromRoot(rootID), rootID)
+            this.setBoxPositionHelper(node.setRightBoxPositionFromRoot(rootID), rootID)
+        }
+    }
+
+    /*
+    nodeIDList: array
+    nodeDataList: array
+     */
+    deserialize(nodeIDList, nodeDataList) {
+        if(nodeDataList.length === 0) return null;
+        let root = new BinaryTreeNode(nodeIDList[0], nodeDataList[0], nodeIDList[0]);
+        this.nodes[nodeIDList[0]] = root;
+        this.rootIDList.push(nodeIDList[0]);
+        let queue = [root];
+        let l = nodeDataList.length - 1;
+        let i = 0;
+        while(queue.length > 0){
+            let curr = queue.shift();
+            if(curr === null) continue;
+            if(l >= ++i && nodeDataList[i] !== null){
+                curr.left = new BinaryTreeNode(nodeIDList[i],nodeDataList[i], nodeIDList[0]);
+                this.nodes[nodeIDList[i]] = curr.left;
+                queue.push(curr.left);
+            }
+            if(l >= ++i && nodeDataList[i] !== null){
+                curr.right = new BinaryTreeNode(nodeIDList[i],nodeDataList[i],nodeIDList[0]);
+                this.nodes[nodeIDList[i]] = curr.right;
+                queue.push(curr.right);
+            }
+        }
+    }
+
+    // -> array
+    getRootIDList() {
+        return this.rootIDList;
+    }
+
+    // -> map
+    getNodes() {
+        return this.nodes;
+    }
+
+    // BinaryTreeNode -> int
+    getMaxDepth(root) {
+        if(root === null) return 0;
+        else return this.maxDepthHelper([root]);
+    }
+    maxDepthHelper(children) {
+        let parents = children.slice();
+        children = [];
+        while(parents.length !== 0) {
+            let node = parents.pop();
+            if(node.left != null) children.push(node.left);
+            if(node.right != null) children.push(node.right);
+        }
+        if(children.length) return this.maxDepthHelper(children) + 1;
+        else return 1;
+    }
+}
+
+class BinaryTreeNode {
+    constructor(ID, stringData, rootID) {
+        this.data = stringData;
+        this.left = null;
+        this.right = null;
+        this.position = [];
+        this.ID = ID;
+        this.rootID = rootID;
+        this.data = stringData;
+        this.boxXY = {x:0,y:0};
+    }
+
+    // -> string or int
+    getID() {
+        return this.ID;
+    }
+
+    // -> string or int
+    getMyRootID() {
+        return this.rootID;
+    }
+
+    // -> string or int
+    getBoxSize() {
+        return this.boxConfig.boxSize;
+    }
+
+    // -> string or int
+    getBoxColor() {
+        return this.boxConfig.boxColor;
+    }
+
+    // -> string
+    getTextColor() {
+        return this.boxConfig.textColor;
+    }
+
+    /*
+    ->
+    {
+        x: int,
+        y: int
+    }
+     */
+    getBoxXY() {
+        return this.boxXY;
+    }
+
+    /*
+    x: int
+    y: int
+     */
+    setBoxXY(x,y) {
+        this.boxXY.x = x;
+        this.boxXY.y = y;
+    }
+
+    /*
+    boxConfig {
+    boxColor: string
+    boxSize: int
+    textColor: string
+    }
+     */
+    setBoxConfig(boxConfig) {
+        this.boxConfig = boxConfig;
+    }
+
+    /*
+    parentID -> string(html)
+     */
+    createBoxDiv(parentDivID) {
+        let boxDiv = document.createElement("div");
+        boxDiv.setAttribute("id", parentDivID + "-" + `${this.ID}`);
+        boxDiv.innerHTML = `<div>${this.data}</div>`;
+        boxDiv.style.width = this.boxConfig.boxSize + "px";
+        boxDiv.style.height = this.boxConfig.boxSize + "px";
+        boxDiv.style.position = "absolute";
+        boxDiv.style.display = "flex"
+        boxDiv.style.flexDirection = "column";
+        boxDiv.style.justifyContent = "center";
+        boxDiv.style.alignItems = "center";
+        boxDiv.style.borderRadius = 100 + "%";
+        return boxDiv;
+    }
+
+    /*
+    this.positionはルートから自分までのleft(0), right(1)の軌跡
+    例：rootからleft,right,right の場合 [0,1,1]
+     */
+    setLeftBoxPositionFromRoot() {
+        if(this.left === null) return null;
+        this.left.setLeftPosition(this.getPosition());
+        this.left.rootID = this.rootID;
+        return this.left;
+    }
+    setRightBoxPositionFromRoot() {
+        if(this.right === null) return null;
+        this.right.setRightPosition(this.getPosition());
+        this.right.rootID = this.rootID;
+        return this.right;
+    }
+    setLeftPosition(parentPosition) {
+        this.position = parentPosition.concat([0]);
+    }
+    setRightPosition(parentPosition) {
+        this.position = parentPosition.concat([1]);
+    }
+
+    getPosition() {
+        return this.position;
+    }
+
+}
+
 
 /*
 <div>  targetDiv
@@ -14,10 +312,8 @@ import {anime} from '../../../node_modules/animejs/lib/anime.es.js'
         </div>
      </div>
 </div>
-
-
  */
-export default class Draw {
+class Draw {
     constructor(drawSettings) {
         this.drawSettings = drawSettings;
     }
@@ -44,6 +340,7 @@ export default class Draw {
         //
         this.boxXOffset = 0;
         this.boxYOffset = 0;
+        // const anime = require('https://unpkg.com/animejs@2.2.0/anime.js');
         // if(this.needsAnimation){
         this.tl = anime.timeline({
             easing: 'easeOutExpo',
@@ -333,5 +630,103 @@ export default class Draw {
             }
         }
         return config;
+    }
+}
+
+class Tools {
+
+    static convertStringToRGBArray(string) {
+        let tmpArray = Tools.convertStringToArray(string);
+
+        if(tmpArray === null) return null;
+        let flag = false;
+        let cache = [];
+        let RGBArray = [];
+
+        for(let str of tmpArray){
+            if(!flag && str !==  null && str.match(/^rgb\(.*$/) ){
+                flag = true;
+            }
+            if(flag  && str !==  null &&  str.match(/.*\)$/)) {
+                flag = false;
+                cache.push(str);
+                let rgb = cache.join(",")
+                RGBArray.push(rgb);
+                cache = [];
+                continue;
+            }
+
+            if(flag){
+                cache.push(str);
+            }else{
+                RGBArray.push(str);
+            }
+
+        }
+        return RGBArray;
+
+    }
+    static convertStringToArray(string) {
+        if(string === "[]" || string === "" || string === undefined) return null;
+        string = string.slice(1)
+        string = string.slice(0,-1)
+        return string.split(",").map((val)=>{return val === "null" ? null : val})
+
+    }
+    static createArrowDiv(settings) {
+        let id = settings.id
+        let thickness = 2;
+        let color = settings.arrowColor || "rgb(0,0,0)";
+        let headSize = 7;
+
+        let arrowDiv = document.createElement("div");
+        arrowDiv.setAttribute("id", id);
+
+        let lineDiv = document.createElement("div");
+        lineDiv.setAttribute("id", id + "-line");
+        let arrowHeadDiv = document.createElement("div");
+
+        arrowDiv.style.position = 'absolute';
+        arrowDiv.style.content = "";
+        // arrowDiv.style.opacity = 0;
+
+        lineDiv.style.position = "absolute";
+        lineDiv.style.top = - thickness/2  + "px";
+        lineDiv.style.height = thickness + "px";
+        lineDiv.style.background = color;
+        lineDiv.style.transform = "rotate(45deg)"
+        lineDiv.style.content = "";
+        lineDiv.style.transformOrigin = "center left";
+        //
+        // arrowHeadDiv.style.left = - thickness / Math.sqrt(2) + "px";
+        // arrowHeadDiv.style.top = - thickness / 2 + "px";
+        arrowHeadDiv.style.width = headSize + "px";
+        arrowHeadDiv.style.height = headSize + "px";
+        arrowHeadDiv.style.borderRight = thickness + "px solid";
+        arrowHeadDiv.style.borderBottom = thickness + "px solid";
+        arrowHeadDiv.style.borderRightColor = color;
+        arrowHeadDiv.style.borderBottomColor = color;
+        arrowHeadDiv.style.position = "absolute"
+        arrowHeadDiv.style.bottom = 0 + "px";
+        arrowHeadDiv.style.right = 0 + "px";
+
+        // arrowHeadDiv.style.position = "absolute";
+        arrowHeadDiv.style.content = "";
+        //
+        arrowDiv.append(arrowHeadDiv);
+        arrowDiv.append(lineDiv);
+        return arrowDiv;
+
+    }
+    static binToInt(binArray) {
+        if(binArray.length === 0) return 0;
+        let bin = binArray.join('');
+        return parseInt(bin, 2);
+    }
+    static calcArrowLength(x1,x2,y1,y2){
+        return Math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+    }
+    static calcArrowDeg(x1,x2,y1,y2){
+        return Math.atan2( y2 - y1, x2 - x1 )
     }
 }

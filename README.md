@@ -22,7 +22,7 @@ Prunerはその名の通り、木の剪定、つまり木構造（二分木）�
 ## Installation
 
 ```
-$ npm install pruner
+$ npm install treeVisualizer
 
 ```
 ```
@@ -41,4 +41,4 @@ mail to: xxxx@mail.com
 
 ## License
 
-"pruner" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License)
+"treeVisualizer" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License)
