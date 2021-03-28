@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title>Tree_Visualizer</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div class="container" style="background-color: #F7F7E4">
+    <div>
+        <div>
+            <h3>背景</h3>
+            <p>Prunerはその名の通り、木の剪定、つまり木構造を切ったり挿入したりを可視化することができます。</p>
+            <p>コンピューターサイエンスを学習していて、どうしても木構造のイメージが沸かない。。。</p>
+            <p>試しに前順走査などを実行しようとしたが、ちゃんと前順走査になっているかパット見わからない。。。</p>
+            <p>可視化することで、学習の手助けをします。</p>
+            <p></p>
+            <h3>特徴</h3>
+            <p>可視化する上で、どうしても必要な操作があります。</p>
+            <p>木構造（二分木）を表現するにはどうしても、階層順で配列にして入力する必要があります。</p>
+            <p>とはいえ、例を準備したのでまずは<a href="#0.">実行</a>してみてください。</p>
+            <p>便利ですよね？</p>
+            <p><a href="Documentation.html">test</a></p>
+            <ul>
+                <li><a href="#1.">1. Visualization</a></li>
+                <li><a href="#2.">2. Animation</a></li>
+                <li><a href="#3.">3. Setting</a></li>
+                <li><a href="#4.">4. Option</a></li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div>
+        <div class="container p-4">
+            <h2><a name="0."> 0.まずは実行</a></h2>
+            <p>Tree Visualizerを使うと、今までわかりにくかった木構造が可視化できます。</p>
+            <p>まず例をみてみましょう。</p>
+        </div>
+        <div class="container border rounded  p-2 col-8">
+            <p>[6,4,9,2,5,null,null,null]の順に並べられたBSTに、3を挿入し、3を検索してみましょう。</p>
+            <div><input id = "findBST-drawBtn" type="button" value="Draw"></div>
+            <div id = "findBST" style="height:250px" ></div>
+            <script type="module">
+                import pruner from "./src/Index.js";
+                let targetDiv = document.getElementById("findBST");
+                targetDiv.style.overflow = "scroll";
+                targetDiv.style.background = "rgb(171,216,167)"
+                let findBST = pruner(
+                    {target:"findBST"}
+                );
+                document.getElementById("findBST-drawBtn").onclick = () => {
+                    findBST.drawData(
+                        [{
+                            data:"[6,4,9,2,5,null,null,null]",
+                        }],"start"
+                    )
+                    findBST.nextStep(
+                        [{
+                            data:"[6,4,9,2,5,null,null,null,3]",
+                        }],"Insert 3"
+                    )
+                    findBST.nextStep(
+                        [{
+                            data:"[6,4,9,2,5,null,null,null,3]",
+                            boxColor:"[rgb(232,108,46),null,null,null,null,null,null,null,null]"
+                        }],"6"
+                    )
+                    findBST.nextStep(
+                        [{
+                            data:"[6,4,9,2,5,null,null,null,3]",
+                            boxColor:"[rgb(235,21,21),rgb(232,108,46),null,null,null,null,null,null,null]",
+                        }],"6 -> 4"
+                    )
+                    findBST.nextStep(
+                        [{
+                            data:"[6,4,9,2,5,null,null,null,3]",
+                            boxColor:"[rgb(235,21,21),rgb(235,21,21),null,rgb(232,108,46),null,null,null,null,null]"
+                        }],"6 -> 4 -> 2"
+                    )
+                    findBST.nextStep(
+                        [{
+                            data:"[6,4,9,2,5,null,null,null,3]",
+                            boxColor:"[rgb(235,21,21),rgb(235,21,21),null,rgb(235,21,21),null,null,null,null,rgb(232,108,46)]"
+                        }],"6 -> 4 -> 2 -> Found 3!"
+                    )
+                }
+            </script>
+        </div>
+        <br>
+        <div class="container border rounded  p-2 col-8">
+            <p>分離</p>
+            <p>"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]"この木構造を分離してみましょう</p>
+            <div><input id = "separateBST-drawBtn" type="button" value="Draw"></div>
+            <div id = "separateBST" style="height:450px" ></div>
+            <script type="module">
+                import pruner from "./src/Index";
+                let targetDiv = document.getElementById("separateBST");
+                targetDiv.style.overflow = "scroll";
+                targetDiv.style.background = "rgb(171,216,167)"
+                let separateBST = pruner(
+                    {target:"separateBST"}
+                );
+                document.getElementById("separateBST-drawBtn").onclick = () => {
+                    separateBST.drawData(
+                        [{
+                            data:"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]",
+                        }],"start"
+                    )
+                    separateBST.nextStep(
+                        [{
+                            data:"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]",
+                            boxColor:"[rgb(232,108,46),rgb(0,97,59),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(232,108,46),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                            textColor:"[null,rgb(255,255,255),null,rgb(255,255,255),rgb(255,255,255),null,null,rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),null,null,null,null,rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+                        }],"Separate"
+                    )
+                    separateBST.nextStep(
+                        [{
+                            data:"[1,null,3,6,7,12,13,14,15]",
+                            boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
+                        },{
+                            data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
+                            boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                            textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+                        }],"Separate"
+                    )
+                    separateBST.nextStep(
+                        [{
+                            data:"[3,6,7,12,13,14,15]",
+                            boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
+                        },{
+                            data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
+                            boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                            textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+                        }],"Separate -> Delete 3"
+                    )
+                    separateBST.nextStep(
+                        [{
+                            data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
+                            boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                            textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+                        },{
+                            data:"[3,6,7,12,13,14,15]",
+                            boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
+                        }
+                        ],"Separate -> Delete 3 -> exchange"
+                    )
+                }
+            </script>
+        </div>
+
+
+    </div>
+    <hr>
+    <div><!--1. Visualization-->
+        <div class="container p-4">
+            <h2><a name="1.">1. Visualization</a></h2>
+            <p>階層表示された二分木がわからなくなったら、ここで実行してみてください。</p>
+            <p>一点だけ注意。同じ値が存在する場合は、ノードごとにIDを設定する必要があります。</p>
+            <p>例1 : data:[0,-10,5,null,-3,null,9] ID:[]</p>
+            <p>例2 : data:[1,1,1,1,1,1,1] ID:[0,1,2,3,4,5,6]</p>
+        </div>
+        <div class="container border rounded  p-2 col-8">
+            <div id="target1" style="height:350px"></div>
+            <div>
+                <div>data<label for="target1-data"></label><input type="text" id="target1-data" name="data" value="[0,-10,5,null,-3,null,9]" size="40"></div>
+                <div>ID<label for="target1-id"></label><input type="text" id="target1-id" name="data" value="" size="40"></div>
+                <input id = "example1-drawBtn" type="button" value="Draw">
+            </div>
+            <script type="module">
+                import pruner from "./src/Index.js";
+                let targetDiv = document.getElementById("target1");
+                targetDiv.style.overflow = "scroll";
+                targetDiv.style.background = "rgb(171,216,167)"
+                let example1 = pruner(
+                    {target:"target1"}
+                );
+                document.getElementById("example1-drawBtn").onclick = () => {
+                    example1.drawData(
+                        [{
+                            data:document.getElementById("target1-data").value,
+                            ID:document.getElementById("target1-id").value,
+                        }],document.getElementById("target1-data").value
+                    )
+                }
+            </script>
+        </div>
+    </div>
+
+
+
+</div>
+
+
+</body>
+</html>

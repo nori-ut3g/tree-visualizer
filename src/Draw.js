@@ -1,5 +1,6 @@
 import Tools from "./Tools.js";
-import anime from "../animeJS/anime.es.js";
+import {anime} from '../../../node_modules/animejs/lib/anime.es.js'
+// import anime from "ani"
 
 /*
 <div>  targetDiv

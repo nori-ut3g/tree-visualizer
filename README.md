@@ -6,55 +6,33 @@ Prunerはその名の通り、木の剪定、つまり木構造（二分木）�
 
 木構造の表示は階層順にならべた配列を入力するだけです。
 
-![demo](https://u3g.github.io/Pruner/)
+[demo](https://u3g.github.io/Pruner/)
 でチェックしてください。
-
-
-***DEMO:***
-
-![Demo](https://image-url.gif)
-
-## Features
-- 階層表示された
-
 
 ## Requirement
 
-- Requirement
-- Requirement
-- Requirement
+- anime.js
 
 ## Usage
 
 1. npm経由でインストール
    
-2. Usage
-3. Usage
+2. ブラウザ
 
 ## Installation
 
+```
+$ npm install pruner
+
+```
 ```
 $ git clone https://github.com/u3g/Pruner
 
 ```
 
-## Test
+## Usage
 
-1. test
-2. test
-3. test
 
-## Deploy
-
-1. deploy
-2. deploy
-3. deploy
-
-## Anything Else
-
-AnythingAnythingAnything
-AnythingAnythingAnything
-AnythingAnythingAnything
 
 ## Author
 
@@ -62,3 +40,5 @@ AnythingAnythingAnything
 mail to: xxxx@mail.com
 
 ## License
+
+"pruner" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License)
