@@ -1,4 +1,4 @@
-import anime from "animeJS"
+import anime from "../../animejs/lib/anime.es.js"
 
 
 export default function treeVisualizer(settings) {
