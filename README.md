@@ -12,6 +12,7 @@ tree-visualizerは木構造（二分木）の挿入や削除を可視化する�
 [1,-5,15,-9,-4,10,17,null,-6,null,0,null,14,16,19]
 
 ![test](docs/pics/tree-vizualizer_sample_pic1.png)
+
 [demo](https://nori-ut3g.github.io/tree-visualizer/)
 でチェックしてください。
 
@@ -19,7 +20,6 @@ tree-visualizerは木構造（二分木）の挿入や削除を可視化する�
 
 ### Prerequisites
 - anime.js 
-
 
 ### Installing
 
