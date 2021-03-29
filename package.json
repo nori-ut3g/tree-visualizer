@@ -8,8 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/u3g/tree-visualizer.git"
+    "url": "git+ssh://git@github.com/ut3g/tree-visualizer.git"
   },
   "author": "Akinori Nakada <nori.ut3g@gmail.com>",
-  "homepage": ""
+  "homepage": "https://ut3g.github.io/tree-visualizer/",
+  "bugs": {
+    "url": "https://github.com/u3g/tree-visualizer/issues",
+    "email": "nori-ut3g@gmail.com"
+  }
 }
