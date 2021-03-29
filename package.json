@@ -1,6 +1,15 @@
 {
   "name": "tree-visualizer",
-  "version": "1.0.0",
+  "version": "0.0.0",
+  "description": "Binary Tree Structure Visualizer for html/js",
+  "main": "/src/tree-visualizer.es.js",
   "dependencies": {
-  }
+    "animejs": "^3.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/u3g/tree-visualizer.git"
+  },
+  "author": "Akinori Nakada <nori.ut3g@gmail.com>",
+  "homepage": ""
 }
