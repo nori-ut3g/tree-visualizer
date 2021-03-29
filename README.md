@@ -1,27 +1,27 @@
 # tree-visualizer
 
-## 特徴
 npmの公開テスト中です。
 偶然このライブラリーを見つけても使用しないでください。
 
-tree-visualizerはその名の通り、木の剪定、つまり木構造（二分木）の挿入や削除を可視化することができます。
+tree-visualizer can visualize tree structures(BST).
+
+tree-visualizerは木構造（二分木）の挿入や削除を可視化することができます。
 
 木構造の表示は階層順にならべた配列を入力するだけです。
 
-[demo](https://u3g.github.io/tree-visualizer/)
+[1,-5,15,-9,-4,10,17,null,-6,null,0,null,14,16,19]
+
+![test](docs/pics/tree-vizualizer_sample_pic1.png)
+[demo](https://nori-ut3g.github.io/tree-visualizer/)
 でチェックしてください。
 
-## Requirement
+## Getting Started
 
-- anime.js
+### Prerequisites
+- anime.js 
 
-## Usage
 
-1. npm経由でインストール
-   
-2. ブラウザ
-
-## Installation
+### Installing
 
 ```
 $ npm install treeVisualizer
@@ -32,9 +32,17 @@ or
 https://unpkg.com/tree-visualizer/tree-visualizer.js
 ```
 
-## Usage
+### Usage
+ES6 modules
 ```js
-let test = "test"
+import treeVisualizer from "tree-visualizer/src/tree-visualizer.es.js";
+```
+
+Link 
+```html
+    <script type="text/javascript" src="https://unpkg.com/animejs@3.2.1/lib/anime.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/tree-visualizer@0.0.1/src/tree-visualizer.js"></script>
+
 ```
 
 
