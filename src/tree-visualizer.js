@@ -1,5 +1,3 @@
-
-
 function treeVisualizer(settings) {
     return new TreeVisualizerMain(settings);
 }
@@ -8,14 +6,14 @@ class TreeVisualizerMain{
     constructor(settings) {
         this.drawSettings = {
             target : settings.target || "target",//表示させるDivID
-            boxColor : settings.boxColor || 'rgb(233,203,107)',//ボックスのいろ
-            textColor : settings.textColor || 'rgb(69,54,10)',//テキストの色
-            arrowColor : settings.arrowColor || "rgb(153,103,49)",
-            dataType : settings.dataType || "BinaryTree",//データの種類
-            interval :Number(settings.interval )|| 2000,//アニメーションの間隔
-            boxSize : Number(settings.boxSize) || 30,//ボックスのサイズ
-            boxXMargin: Number(settings.boxXMargin) || 30,
-            boxYMargin: Number(settings.boxYMargin) || 45,
+            boxColor : settings.boxColor || 'rgb(233,203,107)',//Only rgb()
+            textColor : settings.textColor || 'rgb(69,54,10)',//Only rgb()
+            arrowColor : settings.arrowColor || "rgb(153,103,49)",//Only rgb()
+            dataType : settings.dataType || "BinaryTree",
+            interval :Number(settings.interval )|| 2000,// ms
+            boxSize : Number(settings.boxSize) || 30,// px
+            boxXMargin: Number(settings.boxXMargin) || 30,// px
+            boxYMargin: Number(settings.boxYMargin) || 45,// px
         }
         this.draw = new Draw(this.drawSettings);
     }
@@ -47,6 +45,7 @@ class TreeVisualizerMain{
     info: string
      */
     drawData(nodes, info) {
+        info = info || "";
         this.draw.initDraw(info);
         this.createBoxController(nodes);
         this.draw.refresh(this.nodeController, info);
@@ -63,6 +62,7 @@ class TreeVisualizerMain{
     info: string
      */
     nextStep(nodes, info) {
+        info = info || "";
         this.nodeController.refreshNodes(nodes);
         this.draw.refresh(this.nodeController, info);
     }
@@ -71,7 +71,7 @@ class TreeVisualizerMain{
 class BinaryTreeController {
     constructor(nodes, drawingSettings) {
         this.defaultSettings = drawingSettings;
-        this.refreshNodes(nodes)
+        this.refreshNodes(nodes);
     }
     /*
     inputData:{
@@ -117,14 +117,14 @@ class BinaryTreeController {
     }
     setBoxPosition() {
         for(let i in this.rootIDList) {
-            let root = this.nodes[this.rootIDList[i]]
-            this.setBoxPositionHelper(root,this.rootIDList[i])
+            let root = this.nodes[this.rootIDList[i]];
+            this.setBoxPositionHelper(root,this.rootIDList[i]);
         }
     }
     setBoxPositionHelper(node, rootID) {
         if (node != null){
-            this.setBoxPositionHelper(node.setLeftBoxPositionFromRoot(rootID), rootID)
-            this.setBoxPositionHelper(node.setRightBoxPositionFromRoot(rootID), rootID)
+            this.setBoxPositionHelper(node.setLeftBoxPositionFromRoot(rootID), rootID);
+            this.setBoxPositionHelper(node.setRightBoxPositionFromRoot(rootID), rootID);
         }
     }
 
@@ -337,15 +337,15 @@ class Draw {
         //position
         this.boxXMargin = this.drawSettings.boxXMargin;
         this.boxYMargin = this.drawSettings.boxYMargin;
-        //
+
+        //for debug
         this.boxXOffset = 0;
         this.boxYOffset = 0;
-        // const anime = require('https://unpkg.com/animejs@2.2.0/anime.js');
-        // if(this.needsAnimation){
         this.tl = anime.timeline({
             easing: 'easeOutExpo',
         });
-        // }
+
+        // info
         let infoDiv = document.createElement("div");
         infoDiv.setAttribute("id", this.drawSettings.target + "-" +`info`);
         this.targetDiv.append(infoDiv);
@@ -354,7 +354,7 @@ class Draw {
 
         this.parentDiv = document.createElement("div")
         this.parentDiv.setAttribute("id", this.drawSettings.target+"-parent");
-        this.targetDiv.append(this.parentDiv)
+        this.targetDiv.append(this.parentDiv);
     }
 
     /*
@@ -637,7 +637,6 @@ class Tools {
 
     static convertStringToRGBArray(string) {
         let tmpArray = Tools.convertStringToArray(string);
-
         if(tmpArray === null) return null;
         let flag = false;
         let cache = [];
@@ -650,7 +649,7 @@ class Tools {
             if(flag  && str !==  null &&  str.match(/.*\)$/)) {
                 flag = false;
                 cache.push(str);
-                let rgb = cache.join(",")
+                let rgb = cache.join(",");
                 RGBArray.push(rgb);
                 cache = [];
                 continue;
@@ -661,7 +660,6 @@ class Tools {
             }else{
                 RGBArray.push(str);
             }
-
         }
         return RGBArray;
 
@@ -674,7 +672,7 @@ class Tools {
 
     }
     static createArrowDiv(settings) {
-        let id = settings.id
+        let id = settings.id;
         let thickness = 2;
         let color = settings.arrowColor || "rgb(0,0,0)";
         let headSize = 7;
@@ -688,7 +686,6 @@ class Tools {
 
         arrowDiv.style.position = 'absolute';
         arrowDiv.style.content = "";
-        // arrowDiv.style.opacity = 0;
 
         lineDiv.style.position = "absolute";
         lineDiv.style.top = - thickness/2  + "px";
@@ -697,9 +694,7 @@ class Tools {
         lineDiv.style.transform = "rotate(45deg)"
         lineDiv.style.content = "";
         lineDiv.style.transformOrigin = "center left";
-        //
-        // arrowHeadDiv.style.left = - thickness / Math.sqrt(2) + "px";
-        // arrowHeadDiv.style.top = - thickness / 2 + "px";
+
         arrowHeadDiv.style.width = headSize + "px";
         arrowHeadDiv.style.height = headSize + "px";
         arrowHeadDiv.style.borderRight = thickness + "px solid";
@@ -709,10 +704,8 @@ class Tools {
         arrowHeadDiv.style.position = "absolute"
         arrowHeadDiv.style.bottom = 0 + "px";
         arrowHeadDiv.style.right = 0 + "px";
-
-        // arrowHeadDiv.style.position = "absolute";
         arrowHeadDiv.style.content = "";
-        //
+
         arrowDiv.append(arrowHeadDiv);
         arrowDiv.append(lineDiv);
         return arrowDiv;
@@ -724,9 +717,9 @@ class Tools {
         return parseInt(bin, 2);
     }
     static calcArrowLength(x1,x2,y1,y2){
-        return Math.sqrt((x1 - x2)**2 + (y1 - y2)**2)
+        return Math.sqrt((x1-x2)**2 + (y1-y2)**2);
     }
     static calcArrowDeg(x1,x2,y1,y2){
-        return Math.atan2( y2 - y1, x2 - x1 )
+        return Math.atan2( y2-y1, x2-x1 );
     }
 }
