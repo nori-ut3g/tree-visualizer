@@ -3,189 +3,245 @@
 <head>
     <meta charset="UTF-8">
 
-    <title>Tree_Visualizer</title>
+    <title>tree-visualizer DEMO</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<!--    <script type="text/javascript" src="tree-visualizer.js"></script>-->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/vs.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
     <script type="text/javascript" src="https://unpkg.com/tree-visualizer/src/tree-visualizer.js"></script>
     <script type="text/javascript" src="https://unpkg.com/animejs@3.2.1/lib/anime.min.js"></script>
 </head>
 <body>
 
 <div class="container" style="background-color: #F7F7E4">
-    <div>
-        <div>
-            <h3>背景</h3>
-            <p>tree-visualizerはその名の通り、木構造（BST）を可視化することができます。</p>
-            <p>コンピューターサイエンスを学習していて、どうしても木構造のイメージが沸かない...</p>
-            <p>試しに前順走査などを実行しようとしたが、ちゃんと前順走査になっているかパット見わからない...</p>
-            <p>可視化することで、学習の木構造の手助けをします。</p>
-            <p>まずは<a href="#0.">実行</a>してみてください。</p>
-            <p><a href="Documentation.html"></a></p>
-
-
-        </div>
+    <div><h2 class="d-flex justify-content-center p-5" style="color:rgb(69,54,10)">tree-visualizer DEMO</h2>
     </div>
-
-    <div>
-        <div class="container p-4">
-            <h2><a name="0."> 0.まずは実行</a></h2>
-            <p>Tree Visualizerを使うと、今までわかりにくかった木構造が可視化できます。</p>
-            <p>まず例をみてみましょう。</p>
-        </div>
-        <div class="container border rounded  p-2 col-8">
-            <p>[6,4,9,2,5,null,null,null]の順に並べられたBSTに、3を挿入し、3を検索してみましょう。</p>
-            <div><input id = "findBST-drawBtn" type="button" value="Draw"></div>
-            <div id = "findBST" style="height:250px" ></div>
-            <script type="text/javascript">
-                let findBSTDiv = document.getElementById("findBST");
-                findBSTDiv.style.overflow = "scroll";
-                findBSTDiv.style.background = "rgb(171,216,167)"
-                let findBST = treeVisualizer(
-                    {target:"findBST"}
-                );
-                document.getElementById("findBST-drawBtn").onclick = () => {
-                    findBST.drawData(
-                        [{
-                            data:"[6,4,9,2,5,null,null,null]",
-                        }],"start"
-                    )
-                    findBST.nextStep(
-                        [{
-                            data:"[6,4,9,2,5,null,null,null,3]",
-                        }],"Insert 3"
-                    )
-                    findBST.nextStep(
-                        [{
-                            data:"[6,4,9,2,5,null,null,null,3]",
-                            boxColor:"[rgb(232,108,46),null,null,null,null,null,null,null,null]"
-                        }],"6"
-                    )
-                    findBST.nextStep(
-                        [{
-                            data:"[6,4,9,2,5,null,null,null,3]",
-                            boxColor:"[rgb(235,21,21),rgb(232,108,46),null,null,null,null,null,null,null]",
-                        }],"6 -> 4"
-                    )
-                    findBST.nextStep(
-                        [{
-                            data:"[6,4,9,2,5,null,null,null,3]",
-                            boxColor:"[rgb(235,21,21),rgb(235,21,21),null,rgb(232,108,46),null,null,null,null,null]"
-                        }],"6 -> 4 -> 2"
-                    )
-                    findBST.nextStep(
-                        [{
-                            data:"[6,4,9,2,5,null,null,null,3]",
-                            boxColor:"[rgb(235,21,21),rgb(235,21,21),null,rgb(235,21,21),null,null,null,null,rgb(232,108,46)]"
-                        }],"6 -> 4 -> 2 -> Found 3!"
-                    )
-                }
-            </script>
-        </div>
+    <div class="container p-2">
+        <p>Tree Visualizerを使うと、今までわかりにくかった木構造が可視化できます。</p>
+    </div>
+    <div class="container border rounded  p-2">
+        <p>[6,4,9,2,5,null,null,null]の順に並べられたBSTに、3を挿入し、3を検索してみましょう。</p>
+        <div><input id = "findBST-drawBtn" type="button" value="Draw"></div>
+        <div id = "findBST" style="height:250px" ></div>
+        <script type="text/javascript">
+            let findBSTDiv = document.getElementById("findBST");
+            findBSTDiv.style.overflow = "scroll";
+            findBSTDiv.style.background = "rgb(171,216,167)"
+            let findBST = treeVisualizer(
+                {target:"findBST"}
+            );
+            document.getElementById("findBST-drawBtn").onclick = () => {
+                findBST.drawData(
+                    [{
+                        data:"[6,4,9,2,5,null,null,null]",
+                    }],`<div class="d-flex justify-content-center">start</div>`
+                )
+                findBST.nextStep(
+                    [{
+                        data:"[6,4,9,2,5,null,null,null,3]",
+                    }],`<div class="d-flex justify-content-center">Insert 3</div>`
+                )
+                findBST.nextStep(
+                    [{
+                        data:"[6,4,9,2,5,null,null,null,3]",
+                        boxColor:"[rgb(232,108,46),null,null,null,null,null,null,null,null]"
+                    }],`<div class="d-flex justify-content-center">6</div>`
+                )
+                findBST.nextStep(
+                    [{
+                        data:"[6,4,9,2,5,null,null,null,3]",
+                        boxColor:"[rgb(235,21,21),rgb(232,108,46),null,null,null,null,null,null,null]",
+                    }],`<div class="d-flex justify-content-center">6 -> 4</div>`
+                )
+                findBST.nextStep(
+                    [{
+                        data:"[6,4,9,2,5,null,null,null,3]",
+                        boxColor:"[rgb(235,21,21),rgb(235,21,21),null,rgb(232,108,46),null,null,null,null,null]"
+                    }],`<div class="d-flex justify-content-center">6 -> 4 -> 2</div>`
+                )
+                findBST.nextStep(
+                    [{
+                        data:"[6,4,9,2,5,null,null,null,3]",
+                        boxColor:"[rgb(235,21,21),rgb(235,21,21),null,rgb(235,21,21),null,null,null,null,rgb(232,108,46)]"
+                    }],`<div class="d-flex justify-content-center">6 -> 4 -> 2 -> Found 3!</div>`
+                )
+            }
+        </script>
         <br>
-                <div class="container border rounded  p-2 col-8">
-                    <p>分離</p>
-                    <p>"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]"この木構造を分離してみましょう</p>
-                    <div><input id = "separateBST-drawBtn" type="button" value="Draw"></div>
-                    <div id = "separateBST" style="height:450px" ></div>
-                    <script type="text/javascript">
-                        // import treeVisualizer from "./src/tree-visualizer.js";
-                        let separateBSTDiv = document.getElementById("separateBST");
-                        separateBSTDiv.style.overflow = "scroll";
-                        separateBSTDiv.style.background = "rgb(171,216,167)"
-                        let separateBST = treeVisualizer(
-                            {target:"separateBST"}
-                        );
-                        document.getElementById("separateBST-drawBtn").onclick = () => {
-                            separateBST.drawData(
-                                [{
-                                    data:"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]",
-                                }],"start"
-                            )
-                            separateBST.nextStep(
-                                [{
-                                    data:"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]",
-                                    boxColor:"[rgb(232,108,46),rgb(0,97,59),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(232,108,46),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
-                                    textColor:"[null,rgb(255,255,255),null,rgb(255,255,255),rgb(255,255,255),null,null,rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),null,null,null,null,rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
-                                }],"Separate"
-                            )
-                            separateBST.nextStep(
-                                [{
-                                    data:"[1,null,3,6,7,12,13,14,15]",
-                                    boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
-                                },{
-                                    data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
-                                    boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
-                                    textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
-                                }],"Separate"
-                            )
-                            separateBST.nextStep(
-                                [{
-                                    data:"[3,6,7,12,13,14,15]",
-                                    boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
-                                },{
-                                    data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
-                                    boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
-                                    textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
-                                }],"Separate -> Delete 3"
-                            )
-                            separateBST.nextStep(
-                                [{
-                                    data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
-                                    boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
-                                    textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
-                                },{
-                                    data:"[3,6,7,12,13,14,15]",
-                                    boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
-                                }
-                                ],"Separate -> Delete 3 -> exchange"
-                            )
-                        }
-                    </script>
-                </div>
-
-
-            </div>
-            <hr>
-            <div><!--1. Visualization-->
-                <div class="container p-4">
-                    <h2><a name="1.">1. Visualization</a></h2>
-                    <p>階層表示された二分木がわからなくなったら、ここで実行してみてください。</p>
-                    <p>一点だけ注意。同じ値が存在する場合は、ノードごとにIDを設定する必要があります。</p>
-                    <p>例1 : data:[0,-10,5,null,-3,null,9] ID:[]</p>
-                    <p>例2 : data:[1,1,1,1,1,1,1] ID:[0,1,2,3,4,5,6]</p>
-                </div>
-                <div class="container border rounded  p-2 col-8">
-                    <div id="target1" style="height:350px"></div>
-                    <div>
-                        <div>data<label for="target1-data"></label><input type="text" id="target1-data" name="data" value="[0,-10,5,null,-3,null,9]" size="40"></div>
-                        <div>ID<label for="target1-id"></label><input type="text" id="target1-id" name="data" value="" size="40"></div>
-                        <input id = "example1-drawBtn" type="button" value="Draw">
-                    </div>
-                    <script type="text/javascript">
-                        // import treeVisualizer from "./src/tree-visualizer.js";
-                        let target1Div = document.getElementById("target1");
-                        target1Div.style.overflow = "scroll";
-                        target1Div.style.background = "rgb(171,216,167)"
-                        let example1 = treeVisualizer(
-                            {target:"target1"}
-                        );
-                        document.getElementById("example1-drawBtn").onclick = () => {
-                            example1.drawData(
-                                [{
-                                    data:document.getElementById("target1-data").value,
-                                    ID:document.getElementById("target1-id").value,
-                                }],document.getElementById("target1-data").value
-                            )
-                        }
-                    </script>
-                </div>
-            </div>
-
-
+        <div>
+            <p>Code</p>
+            <pre class="" style="height:250px">
+                <code>
+    let findBSTDiv = document.getElementById("findBST");
+    findBSTDiv.style.overflow = "scroll";
+    findBSTDiv.style.background = "rgb(171,216,167)"
+    let findBST = treeVisualizer(
+        {target:"findBST"}
+    );
+    document.getElementById("findBST-drawBtn").onclick = () => {
+        findBST.drawData(
+            [{
+                data:"[6,4,9,2,5,null,null,null]",
+            }],`&lt;div class="d-flex justify-content-center">start&lt/div&gt`
+        )
+        findBST.nextStep(
+            [{
+                data:"[6,4,9,2,5,null,null,null,3]",
+            }],`&lt;div class="d-flex justify-content-center">Insert 3&lt/div&gt`
+        )
+        findBST.nextStep(
+            [{
+                data:"[6,4,9,2,5,null,null,null,3]",
+                boxColor:"[rgb(232,108,46),null,null,null,null,null,null,null,null]"
+            }],`&lt;div class="d-flex justify-content-center">6&lt/div&gt`
+        )
+        findBST.nextStep(
+            [{
+                data:"[6,4,9,2,5,null,null,null,3]",
+                boxColor:"[rgb(235,21,21),rgb(232,108,46),null,null,null,null,null,null,null]",
+            }],`&lt;div class="d-flex justify-content-center">6 -> 4&lt/div&gt`
+        )
+        findBST.nextStep(
+            [{
+                data:"[6,4,9,2,5,null,null,null,3]",
+                boxColor:"[rgb(235,21,21),rgb(235,21,21),null,rgb(232,108,46),null,null,null,null,null]"
+            }],`&lt;div class="d-flex justify-content-center">6 -> 4 -> 2&lt/div&gt`
+        )
+        findBST.nextStep(
+            [{
+                data:"[6,4,9,2,5,null,null,null,3]",
+                boxColor:"[rgb(235,21,21),rgb(235,21,21),null,rgb(235,21,21),null,null,null,null,rgb(232,108,46)]"
+            }],`&lt;div class="d-flex justify-content-center">6 -> 4 -> 2 -> Found 3!&lt/div&gt`
+        )
+    }
+                </code>
+            </pre>
+        </div>
+    </div>
+    <br>
+    <div class="container border rounded  p-2">
+        <p>分離</p>
+        <p>"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]"この木構造を分離してみましょう</p>
+        <div><input id = "separateBST-drawBtn" type="button" value="Draw"></div>
+        <div id = "separateBST" style="height:450px" ></div>
+        <script type="text/javascript">
+            let separateBSTDiv = document.getElementById("separateBST");
+            separateBSTDiv.style.overflow = "scroll";
+            separateBSTDiv.style.background = "rgb(171,216,167)"
+            let separateBST = treeVisualizer(
+                {target:"separateBST"}
+            );
+            document.getElementById("separateBST-drawBtn").onclick = () => {
+                separateBST.drawData(
+                    [{
+                        data:"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]",
+                    }], `<div class="d-flex justify-content-center">start</div>`
+                )
+                separateBST.nextStep(
+                    [{
+                        data:"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]",
+                        boxColor:"[rgb(232,108,46),rgb(0,97,59),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(232,108,46),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                        textColor:"[null,rgb(255,255,255),null,rgb(255,255,255),rgb(255,255,255),null,null,rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),null,null,null,null,rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+                    }],`<div class="d-flex justify-content-center">Separate</div>`
+                )
+                separateBST.nextStep(
+                    [{
+                        data:"[1,null,3,6,7,12,13,14,15]",
+                        boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
+                    },{
+                        data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
+                        boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                        textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+                    }],`<div class="d-flex justify-content-center">Separate</div>`
+                )
+                separateBST.nextStep(
+                    [{
+                        data:"[3,6,7,12,13,14,15]",
+                        boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
+                    },{
+                        data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
+                        boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                        textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+                    }],`<div class="d-flex justify-content-center">Separate -> Delete 3"</div>`
+                )
+                separateBST.nextStep(
+                    [{
+                        data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
+                        boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                        textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+                    },{
+                        data:"[3,6,7,12,13,14,15]",
+                        boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
+                    }
+                    ],`<div class="d-flex justify-content-center">Separate -> Delete 3 -> exchange</div>`
+                )
+            }
+        </script>
+        <br>
+        <div>
+            <p>Code</p>
+            <pre class="" style="height:250px">
+                <code>
+    let separateBSTDiv = document.getElementById("separateBST");
+    separateBSTDiv.style.overflow = "scroll";
+    separateBSTDiv.style.background = "rgb(171,216,167)"
+    let separateBST = treeVisualizer(
+        {target:"separateBST"}
+    );
+    document.getElementById("separateBST-drawBtn").onclick = () => {
+        separateBST.drawData(
+            [{
+                data:"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]",
+            }], `<div class="d-flex justify-content-center">start</div>`
+        )
+        separateBST.nextStep(
+            [{
+                data:"[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]",
+                boxColor:"[rgb(232,108,46),rgb(0,97,59),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(232,108,46),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                textColor:"[null,rgb(255,255,255),null,rgb(255,255,255),rgb(255,255,255),null,null,rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),null,null,null,null,rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+            }],`<div class="d-flex justify-content-center">Separate</div>`
+        )
+        separateBST.nextStep(
+            [{
+                data:"[1,null,3,6,7,12,13,14,15]",
+                boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
+            },{
+                data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
+                boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+            }],`<div class="d-flex justify-content-center">Separate</div>`
+        )
+        separateBST.nextStep(
+            [{
+                data:"[3,6,7,12,13,14,15]",
+                boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
+            },{
+                data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
+                boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+            }],`<div class="d-flex justify-content-center">Separate -> Delete 3"</div>`
+        )
+        separateBST.nextStep(
+            [{
+                data:"[2,4,5,8,9,10,11,16,17,18,19,20]",
+                boxColor:"[rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59),rgb(0,97,59)]",
+                textColor:"[rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255),rgb(255,255,255)]"
+            },{
+                data:"[3,6,7,12,13,14,15]",
+                boxColor:"[rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46),rgb(232,108,46)]"
+            }
+            ],`<div class="d-flex justify-content-center">Separate -> Delete 3 -> exchange</div>`
+        )
+    }
+                </code>
+            </pre>
+        </div>
 
     </div>
+</div>
 
 
 </body>
