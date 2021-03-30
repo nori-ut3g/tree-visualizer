@@ -62,7 +62,7 @@ targetFn.drawData(
 ```
 
 #### Set Information
-If you want the text to be displayed at the same time as the Tree animation, you can the following.
+If you want the text to be displayed along with the animation, you can write the following
 ```js
 let targetFn = treeVisualizer(
     {target:"targetDiv"}
@@ -119,7 +119,7 @@ targetFn.nextStep(
 ```
 #### Node Settings
 You can change the color for each node.
-Of course, you can also animate the color changes by using nextStep.
+By using nextStep, you can animate the color change as well.
 ```js
 let targetFn = treeVisualizer(
     {target:"targetDiv"}
@@ -135,7 +135,6 @@ targetFn.drawData(
 
 #### Separate Tree
 You can also display multiple trees.
-Of course, you can also animate and change the color for each node.
 ```js
 let targetFn = treeVisualizer(
     {target:"targetDiv"}
