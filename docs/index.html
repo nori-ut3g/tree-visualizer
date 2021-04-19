@@ -31,7 +31,8 @@
             findBSTDiv.style.overflow = "scroll";
             findBSTDiv.style.background = "rgb(171,216,167)"
             let findBST = treeVisualizer(
-                {target:"findBST"}
+                {target:"findBST",
+                animation:true}
             );
             document.getElementById("findBST-drawBtn").onclick = () => {
                 findBST.drawData(
@@ -132,7 +133,8 @@
             separateBSTDiv.style.overflow = "scroll";
             separateBSTDiv.style.background = "rgb(171,216,167)"
             let separateBST = treeVisualizer(
-                {target:"separateBST"}
+                {target:"separateBST",
+                animation:true}
             );
             document.getElementById("separateBST-drawBtn").onclick = () => {
                 separateBST.drawData(
