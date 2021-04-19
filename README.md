@@ -2,14 +2,31 @@
 
 tree-visualizer can visualize tree structures(BST).
 
+Optionally, you can also visualize linked list structure.
 
-### input:
-[1,-5,15,-9,-4,10,17,null,-6,null,0,null,14,16,19]
+## Example
 
-### output:
+### BST:
+[1,-5,15,-9,-4,10,17,null,-6,null,0,null,14,16,19]=>
+
+
 ![samplePic](https://nori-ut3g.github.io/tree-visualizer/pics/tree-vizualizer_sample_pic1.png)
 
 See [demo](https://nori-ut3g.github.io/tree-visualizer/)
+
+### Singly Linked List
+[1,-5,15,-9,-4,10,17,-6,0,14,16,19]=>
+
+![sample2Pic](https://nori-ut3g.github.io/tree-visualizer/pics/SinglyLinkedList.png)
+
+
+### Singly Linked List
+[1,-5,15,-9,-4,10,17,-6,0,14,16,19]=>
+
+![sample3Pic](https://nori-ut3g.github.io/tree-visualizer/pics/DoublyLinkedList.png)
+
+
+
 
 
 ## Getting Started
@@ -47,16 +64,18 @@ targetFn.drawData(
 ```
 
 ### Option
-#### Set ID
-Use unique ID, if there are same data in the tree.
+####DataType
+The default is a tree structure, but LinkedList can also be visualized.
 ```js
 let targetFn = treeVisualizer(
-    {target:"targetDiv"}
+    {
+        target:"targetDiv",
+        dataType:"SinglyLinkedList"// or "DoublyLinkedList"
+    }
 )
 targetFn.drawData(
     [{
-        data:"[1,1,1,1]",
-        ID:"[0,1,2,3]"
+        data:"[1,-5,15,-9,-4,10,17,null,-6,null,0,null,14,16,19]"
     }]
 )
 ```
@@ -75,11 +94,14 @@ targetFn.drawData(
 ```
 
 #### Animation
-Use nextStep, if you want to use animation.
+If you want to run animation, set animation to true and connect it with nextStep.
 tree-visualizer animates the difference.
 ```js
 let targetFn = treeVisualizer(
-    {target:"targetDiv"}
+    {
+        target:"targetDiv",
+        animation:true
+    }
 )
 targetFn.drawData(
     [{
@@ -92,11 +114,35 @@ targetFn.nextStep(
     }],`2nd step`
 )
 ```
+
+If you have duplicate Data, please set the ID.
+```js
+let targetFn = treeVisualizer(
+    {
+        target:"targetDiv",
+        animation:true
+    }
+)
+targetFn.drawData(
+    [{
+        data:"[1,1,1,null,1,1]",
+        ID:"[0,1,2,3,4,5]"
+    }],`1st step`
+)
+targetFn.nextStep(
+    [{
+        data:"[1,1,1,null,1,1]",
+        ID:"[1,0,2,3,5,4]"
+    }],`2st step`
+)
+```
+
 #### Animation Settings
 You can change configuration.
 ```js
 let targetFn = treeVisualizer(
     {   target : "targetDiv",
+        animation: true,// default: false
         boxColor :'rgb(233,203,107)',//default:'rgb(233,203,107)'
         textColor : 'rgb(69,54,10)',//Only rgb() default:'rgb(69,54,10)'
         arrowColor : 'rgb(153,103,49)',//Only rgb() default: 'rgb(153,103,49)'
