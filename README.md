@@ -3,7 +3,7 @@
 tree-visualizer is a simple JavaScript library that allows you to visualize binary trees form arrays.
 Optionally, you can also visualize linked list structure.
 
-##Why
+## Why
 
 This is a visual aid for learning binary trees, to help learners understand the tree structure.
 When learning binary trees, it is common to write them on paper.
