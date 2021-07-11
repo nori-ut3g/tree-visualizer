@@ -29,7 +29,7 @@ See [demo](https://nori-ut3g.github.io/tree-visualizer/)
 ![sample2Pic](https://nori-ut3g.github.io/tree-visualizer/pics/SinglyLinkedList.png)
 
 
-### y Linked List
+### Doubly Linked List
 [1,-5,15,-9,-4,10,17,-6,0,14,16,19]=>
 
 ![sample3Pic](https://nori-ut3g.github.io/tree-visualizer/pics/DoublyLinkedList.png)
