@@ -45,7 +45,7 @@ tree-visualizer uses [anime.js](https://animejs.com/)
 ### Usage
 Via npm
 ```
-$ npm install treeVisualizer
+npm i tree-visualizer
 ```
 ```js
 import treeVisualizer from "./node_modules/tree-visualizer/src/tree-visualizer.es.js";
